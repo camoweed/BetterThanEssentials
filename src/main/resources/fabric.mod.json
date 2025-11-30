@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "btaessentials",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "BTAEssentials",
   "description": "This mod aims to help new BTA modders.",
   "authors": [
-    "Turnip Labs"
+    "wyspr"
   ],
   "contact": {
     "homepage": "",
@@ -19,20 +19,20 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"turniplabs.examplemod.ExampleMod"
+			"wyspr.BTAEssentials.BTAEssentials"
     ],
 		"beforeGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"wyspr.BTAEssentials.BTAEssentials"
 		],
 		"afterGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"wyspr.BTAEssentials.BTAEssentials"
 		],
 		"recipesReady": [
-			"turniplabs.examplemod.ExampleMod"
+			"wyspr.BTAEssentials.BTAEssentials"
 		]
 	},
   "mixins": [
-      "examplemod.mixins.json"
+		"BTAEssentials.mixins.json"
   ],
 
   "depends": {
