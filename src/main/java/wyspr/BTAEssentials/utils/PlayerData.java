@@ -28,13 +28,13 @@ public class PlayerData implements Serializable {
 //	private transient       int                             saveTick         = 0;
 
 	public PlayerData(Player player) {
-		this.player = player;
-		this.saveFile = new File(BTAEssentials.PLAYER_DIR.toFile(), player.uuid + ".json");
+		this.player      = player;
+		this.saveFile    = new File(BTAEssentials.PLAYER_DIR.toFile(), player.uuid + ".json");
 		this.TPARequests = new HashMap<>();
 
 		this.lastTPTime = Instant.now().minus(Duration.ofSeconds(BTAEssentials.TPTimeout));
-		this.backPos = new WorldPosition(player.x, player.y, player.z, player.dimension);
-		this.homes = new HashMap<>();
+		this.backPos    = new WorldPosition(player.x, player.y, player.z, player.dimension);
+		this.homes      = new HashMap<>();
 
 		if (!saveFile.exists()) {
 			this.save();
@@ -57,15 +57,13 @@ public class PlayerData implements Serializable {
 	}
 
 	public void load() {
-		Gson gson = new GsonBuilder()
-			.registerTypeAdapter(Instant.class, new InstantTypeAdapter())
-			.create();
+		Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantTypeAdapter()).create();
 		try {
-			String json = new String(Files.readAllBytes(saveFile.toPath()), StandardCharsets.UTF_8);
+			String     json       = new String(Files.readAllBytes(saveFile.toPath()), StandardCharsets.UTF_8);
 			PlayerData loadedInfo = gson.fromJson(json, PlayerData.class);
 			lastTPTime = loadedInfo.lastTPTime;
-			backPos = loadedInfo.backPos;
-			homes = loadedInfo.homes;
+			backPos    = loadedInfo.backPos;
+			homes      = loadedInfo.homes;
 		} catch (IOException e) {
 			BTAEssentials.LOGGER.error("Error reading file: {}", e.getMessage());
 		}
@@ -111,7 +109,7 @@ public class PlayerData implements Serializable {
 
 	public void updateBackPos() {
 		lastTPTime = Instant.now();
-		backPos = new WorldPosition(player.x, player.y, player.z, player.dimension);
+		backPos    = new WorldPosition(player.x, player.y, player.z, player.dimension);
 	}
 
 	public boolean atNewPos() {

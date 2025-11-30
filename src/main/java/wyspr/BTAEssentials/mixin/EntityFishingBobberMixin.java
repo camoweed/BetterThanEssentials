@@ -24,8 +24,7 @@ import wyspr.BTAEssentials.BTAEssentials;
 
 import java.util.List;
 
-@Environment(EnvType.SERVER)
-@Mixin(value = EntityFishingBobber.class, remap = false) public abstract class EntityFishingBobberMixin extends Entity {
+@Environment(EnvType.SERVER) @Mixin(value = EntityFishingBobber.class, remap = false) public abstract class EntityFishingBobberMixin extends Entity {
 	@Shadow
 	public  Player owner;
 	@Shadow
@@ -162,13 +161,7 @@ import java.util.List;
 			Entity entity = null;
 			List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(
 				this,
-				this.bb
-					.expand(
-						this.xd,
-						this.yd,
-						this.zd
-					)
-					.grow(1.0F, 1.0F, 1.0F)
+				this.bb.expand(this.xd, this.yd, this.zd).grow(1.0F, 1.0F, 1.0F)
 			);
 			double d3 = 0.0F;
 
@@ -274,10 +267,11 @@ import java.util.List;
 						// from:
 						// this.ticksCatchable = this.random.nextInt(30) + 10;
 						// to:
-						if (BTAEssentials.AddedTicksCatchable <=-40) {
+						if (BTAEssentials.AddedTicksCatchable <= -40) {
 							this.remove();
 						} else {
-							this.ticksCatchable = this.random.nextInt(30) + 10 + BTAEssentials.AddedTicksCatchable;
+							this.ticksCatchable
+								= this.random.nextInt(30) + 10 + BTAEssentials.AddedTicksCatchable;
 						}
 						// END
 						this.yd -= 0.2;

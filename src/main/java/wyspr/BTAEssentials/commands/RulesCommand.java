@@ -16,7 +16,7 @@ import wyspr.BTAEssentials.BTAEssentials;
 			.literal("rules")
 			.executes(context -> {
 				CommandSource source = (CommandSource) context.getSource();
-				Player player = source.getSender();
+				Player        player = source.getSender();
 
 				for (String line : BTAEssentials.rules.get(1)) player.sendMessage(line);
 
@@ -25,8 +25,8 @@ import wyspr.BTAEssentials.BTAEssentials;
 			.argument("page", ArgumentTypeInteger.integer(1))
 			.executes(context -> {
 				CommandSource source = (CommandSource) context.getSource();
-				Player player = source.getSender();
-				int page = context.getArgument("page", Integer.class);
+				Player        player = source.getSender();
+				int           page   = context.getArgument("page", Integer.class);
 
 				for (String line : BTAEssentials.rules.get(page)) player.sendMessage(line);
 

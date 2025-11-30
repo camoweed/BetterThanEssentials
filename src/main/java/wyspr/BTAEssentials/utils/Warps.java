@@ -40,10 +40,7 @@ public class Warps {
 		Gson gson = new Gson();
 		try {
 			String json = new String(Files.readAllBytes(warpFile.toPath()), StandardCharsets.UTF_8);
-			warps = gson.fromJson(
-				json, new TypeToken<HashMap<String, WorldPosition>>() {
-				}.getType()
-			);
+			warps = gson.fromJson(json, new TypeToken<HashMap<String, WorldPosition>>() {}.getType());
 			if (warps == null) {
 				warps = new HashMap<>();
 			}

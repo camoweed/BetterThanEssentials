@@ -10,7 +10,8 @@ import java.util.*;
 
 public class ConfigBuilder {
 	private static final Map<String, String> colorMap = new HashMap<>(24);
-	static  {
+
+	static {
 		colorMap.put("white", "0");
 		colorMap.put("orange", "1");
 		colorMap.put("magenta", "2");
@@ -37,16 +38,16 @@ public class ConfigBuilder {
 		colorMap.put("reset", "r");
 	}
 
-	private final Path cfgPath;
-	private final String fileName;
+	private final Path         cfgPath;
+	private final String       fileName;
 	private final List<String> defaultContent;
-	private final boolean syntaxEnabled;
+	private final boolean      syntaxEnabled;
 
 	public ConfigBuilder(String fileName, List<String> defaultContent, boolean syntaxEnabled) {
-		this.fileName = fileName;
+		this.fileName       = fileName;
 		this.defaultContent = defaultContent;
-		this.syntaxEnabled = syntaxEnabled;
-		this.cfgPath = BTAEssentials.DATA_DIR.resolve(fileName.toLowerCase());
+		this.syntaxEnabled  = syntaxEnabled;
+		this.cfgPath        = BTAEssentials.DATA_DIR.resolve(fileName.toLowerCase());
 		if (!Files.exists(this.cfgPath)) {
 			try {
 				Files.createDirectory(this.cfgPath);
@@ -71,6 +72,7 @@ public class ConfigBuilder {
 			}
 		}
 	}
+
 	public List<String> get(int pageNumber) {
 		if (pageNumber <= 1) {
 			return readFile(cfgPath.resolve(fileName + ".txt"));

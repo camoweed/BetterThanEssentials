@@ -21,9 +21,9 @@ import java.util.List;
 			.literal("tpall")
 			.requires(source -> ((CommandSource) source).hasAdmin())
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				Player player = source.getSender();
-				PlayerData playerData = PlayerData.get(player);
+				CommandSource source     = (CommandSource) context.getSource();
+				Player        player     = source.getSender();
+				PlayerData    playerData = PlayerData.get(player);
 
 				List<PlayerServer> players = MinecraftServer.getInstance().playerList.playerEntities;
 

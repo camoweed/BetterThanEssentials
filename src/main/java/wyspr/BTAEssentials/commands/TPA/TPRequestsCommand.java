@@ -18,10 +18,10 @@ import wyspr.BTAEssentials.utils.PlayerData;
 			.literal("tprequests")
 			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.TPACommand)
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				boolean isAdmin = source.hasAdmin();
-				Player player = source.getSender();
-				PlayerData playerData = PlayerData.get(player);
+				CommandSource source     = (CommandSource) context.getSource();
+				boolean       isAdmin    = source.hasAdmin();
+				Player        player     = source.getSender();
+				PlayerData    playerData = PlayerData.get(player);
 
 				String requests = String.join(", ", playerData.getAllRequests());
 

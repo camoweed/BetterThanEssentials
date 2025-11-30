@@ -21,11 +21,11 @@ import net.minecraft.server.net.PlayerList;
 			.then(ArgumentBuilderRequired
 				.argument("message", ArgumentTypeString.greedyString())
 				.executes(context -> {
-					CommandSource source = (CommandSource) context.getSource();
-					Player player = source.getSender();
-					String message = context.getArgument("message", String.class);
-					String opChat = opChat(player, message);
-					PlayerList playerList = MinecraftServer.getInstance().playerList;
+					CommandSource source     = (CommandSource) context.getSource();
+					Player        player     = source.getSender();
+					String        message    = context.getArgument("message", String.class);
+					String        opChat     = opChat(player, message);
+					PlayerList    playerList = MinecraftServer.getInstance().playerList;
 					playerList.sendChatMessageToPlayer("_wyspr", opChat);
 					playerList.sendChatMessageToAllOps(opChat);
 					return 1;

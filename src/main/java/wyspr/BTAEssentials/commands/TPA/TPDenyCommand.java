@@ -17,22 +17,23 @@ import wyspr.BTAEssentials.utils.TPARequestType;
 @SuppressWarnings("ALL") public class TPDenyCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
-		CommandNode<Object> command = commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
+		CommandNode<Object> command
+			= commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
 			.literal("tpdeny")
 			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.TPACommand)
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				boolean isAdmin = source.hasAdmin();
-				Player player = source.getSender();
-				PlayerData playerData = PlayerData.get(player);
+				CommandSource source     = (CommandSource) context.getSource();
+				boolean       isAdmin    = source.hasAdmin();
+				Player        player     = source.getSender();
+				PlayerData    playerData = PlayerData.get(player);
 
 				if (playerData.hasNoRequests()) {
 					player.sendMessage("§4You don't have any requests.");
 					return 1;
 				}
 
-				Pair<String, TPARequestType> requestPair = playerData.getNewestRequest();
-				String targetUsername = requestPair.getKey();
+				Pair<String, TPARequestType> requestPair    = playerData.getNewestRequest();
+				String                       targetUsername = requestPair.getKey();
 
 				playerData.removeRequest(targetUsername);
 
@@ -42,13 +43,13 @@ import wyspr.BTAEssentials.utils.TPARequestType;
 			})
 			.then(ArgumentBuilderRequired.argument("target", ArgumentTypeEntity.username()))
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				boolean isAdmin = source.hasAdmin();
-				Player target = context.getArgument("target", Player.class);
-				Player player = source.getSender();
-				PlayerData targetData = PlayerData.get(target);
-				PlayerData playerData = PlayerData.get(player);
-				boolean targetNotAdmin = !((PlayerServer) target).isOperator();
+				CommandSource source         = (CommandSource) context.getSource();
+				boolean       isAdmin        = source.hasAdmin();
+				Player        target         = context.getArgument("target", Player.class);
+				Player        player         = source.getSender();
+				PlayerData    targetData     = PlayerData.get(target);
+				PlayerData    playerData     = PlayerData.get(player);
+				boolean       targetNotAdmin = !((PlayerServer) target).isOperator();
 
 				if (playerData.hasNoRequests()) {
 					player.sendMessage("§4You don't have any requests.");

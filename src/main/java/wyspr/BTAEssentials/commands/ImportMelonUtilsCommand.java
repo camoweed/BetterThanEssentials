@@ -48,9 +48,7 @@ import java.util.List;
 				// Load full JSON document
 				JsonObject root = null;
 				try {
-					root = JsonParser
-						.parseReader(new FileReader(melonutilsConfig))
-						.getAsJsonObject();
+					root = JsonParser.parseReader(new FileReader(melonutilsConfig)).getAsJsonObject();
 				} catch (FileNotFoundException e) {
 					BTAEssentials.LOGGER.error(
 						"Failed to load file: {}",
@@ -91,8 +89,8 @@ import java.util.List;
 
 				// Convert JSON array to List<Warp>
 				List<MelonPosition> warpList = gson.fromJson(
-					warpsArray, new TypeToken<List<MelonPosition>>() {
-					}.getType()
+					warpsArray,
+					new TypeToken<List<MelonPosition>>() {}.getType()
 				);
 
 				// Fill the hashmap
@@ -109,12 +107,7 @@ import java.util.List;
 
 				if (playersDirList != null) {
 					ChunkCoordinates spawnCC = source.getWorld().getSpawnPoint();
-					WorldPosition spawn = new WorldPosition(
-						spawnCC.x,
-						spawnCC.y,
-						spawnCC.z,
-						0
-					);
+					WorldPosition    spawn   = new WorldPosition(spawnCC.x, spawnCC.y, spawnCC.z, 0);
 
 					for (File melonUserfile : playersDirList) {
 						try {
@@ -136,9 +129,7 @@ import java.util.List;
 	}
 
 	private void loadPlayerFile(File melonUserFile, WorldPosition spawn) throws Exception {
-		JsonObject melonPlayerJson = JsonParser
-			.parseReader(new FileReader(melonUserFile))
-			.getAsJsonObject();
+		JsonObject melonPlayerJson = JsonParser.parseReader(new FileReader(melonUserFile)).getAsJsonObject();
 		Gson gson = new GsonBuilder()
 			.setPrettyPrinting()
 			.registerTypeAdapter(Instant.class, new InstantTypeAdapter())
@@ -151,8 +142,8 @@ import java.util.List;
 		JsonArray homesArray = melonPlayerJson.getAsJsonObject("Home Data").getAsJsonArray("homes");
 
 		List<MelonPosition> homesList = gson.fromJson(
-			homesArray, new TypeToken<List<MelonPosition>>() {
-			}.getType()
+			homesArray,
+			new TypeToken<List<MelonPosition>>() {}.getType()
 		);
 
 		HashMap<String, WorldPosition> homesMap = new HashMap<>();
@@ -165,8 +156,8 @@ import java.util.List;
 
 		MockPlayerData playerData = new MockPlayerData();
 		playerData.lastTPTime = Instant.now().minus(Duration.ofSeconds(BTAEssentials.TPTimeout));
-		playerData.backPos = spawn;
-		playerData.homes = homesMap;
+		playerData.backPos    = spawn;
+		playerData.homes      = homesMap;
 
 		String json     = gson.toJson(playerData);
 		File   saveFile = new File(BTAEssentials.PLAYER_DIR.toFile(), uuid + ".json");

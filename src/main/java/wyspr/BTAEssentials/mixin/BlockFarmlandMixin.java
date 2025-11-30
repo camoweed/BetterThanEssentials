@@ -13,8 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wyspr.BTAEssentials.BTAEssentials;
 
-@Environment(EnvType.SERVER)
-@Mixin(value = BlockLogicFarmland.class, remap = false) public abstract class BlockFarmlandMixin  {
+@Environment(EnvType.SERVER) @Mixin(value = BlockLogicFarmland.class, remap = false) public abstract class BlockFarmlandMixin {
 	@Inject(
 		method = "onEntityWalking", at = @At("HEAD"), cancellable = true
 	)

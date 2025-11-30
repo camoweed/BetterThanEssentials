@@ -34,10 +34,10 @@ public class Teleport {
 			));
 		}
 
-		MinecraftServer server = MinecraftServer.getInstance();
-		WorldServer world = server.getDimensionWorld(destination.dimID);
-		int chunkCordX = (int) destination.x >> 4;
-		int chunkCordZ = (int) destination.z >> 4;
+		MinecraftServer server     = MinecraftServer.getInstance();
+		WorldServer     world      = server.getDimensionWorld(destination.dimID);
+		int             chunkCordX = (int) destination.x >> 4;
+		int             chunkCordZ = (int) destination.z >> 4;
 
 		world.getChunkProvider().prepareChunk(chunkCordX, chunkCordZ);
 
@@ -59,11 +59,11 @@ public class Teleport {
 			stationaryPlayer.sendMessage("§4You cannot teleport as, or to, a passenger!");
 			return false;
 		}
-		double x = stationaryPlayer.x;
-		double y = stationaryPlayer.y;
-		double z = stationaryPlayer.z;
-		float xr = stationaryPlayer.xRot;
-		float yr = stationaryPlayer.yRot;
+		double     x          = stationaryPlayer.x;
+		double     y          = stationaryPlayer.y;
+		double     z          = stationaryPlayer.z;
+		float      xr         = stationaryPlayer.xRot;
+		float      yr         = stationaryPlayer.yRot;
 		PlayerList playerList = MinecraftServer.getInstance().playerList;
 		if (movingPlayer.dimension != stationaryPlayer.dimension) {
 			playerList.sendPlayerToOtherDimension(

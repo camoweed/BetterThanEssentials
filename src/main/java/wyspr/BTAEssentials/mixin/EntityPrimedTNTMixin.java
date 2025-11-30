@@ -11,12 +11,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import wyspr.BTAEssentials.BTAEssentials;
 
-@Environment(EnvType.SERVER)
-@Mixin(value = EntityPrimedTNT.class, remap = false) public class EntityPrimedTNTMixin {
+@Environment(EnvType.SERVER) @Mixin(value = EntityPrimedTNT.class, remap = false) public class EntityPrimedTNTMixin {
 	@Redirect(
 		method = "tick", at = @At(
-		value = "INVOKE",
-		target = "Lnet/minecraft/core/world/World;createExplosion(Lnet/minecraft/core/entity/Entity;DDDF)Lnet/minecraft/core/world/Explosion;"
+		value = "INVOKE", target = "Lnet/minecraft/core/world/World;createExplosion(Lnet/minecraft/core/entity/Entity;DDDF)Lnet/minecraft/core/world/Explosion;"
 	)
 	)
 	public Explosion stopTNTBoom(

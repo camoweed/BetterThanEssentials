@@ -10,9 +10,9 @@ public class WorldPosition implements Serializable {
 	public int dimID;
 
 	public WorldPosition(double x, double y, double z, int dimID) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.x     = x;
+		this.y     = y;
+		this.z     = z;
 		this.dimID = dimID;
 	}
 
@@ -26,9 +26,9 @@ public class WorldPosition implements Serializable {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		WorldPosition that = (WorldPosition) o;
-		return Double.compare(that.x, x) == 0 &&
-			   Double.compare(that.y, y) == 0 &&
-			   Double.compare(that.z, z) == 0 &&
-			   dimID == that.dimID;
+		return Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0 && Double.compare(
+			that.z,
+			z
+		) == 0 && dimID == that.dimID;
 	}
 }

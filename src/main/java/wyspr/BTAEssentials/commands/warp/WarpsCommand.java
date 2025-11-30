@@ -17,8 +17,8 @@ import java.util.List;
 			.literal("warps")
 			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.WarpCommand)
 			.executes(context -> {
-				CommandSource source     = (CommandSource) context.getSource();
-				Player        player     = source.getSender();
+				CommandSource source = (CommandSource) context.getSource();
+				Player        player = source.getSender();
 
 				List<String> warps = Warps.getWarps();
 

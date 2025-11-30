@@ -8,7 +8,9 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import wyspr.BTAEssentials.utils.Warps;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 // Adapted from
@@ -35,25 +37,32 @@ public class ArgumentTypeWarp implements ArgumentType<String> {
 				return warp;
 			}
 		}
-		throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(), () -> "Failed to find Warp: " + string + " (Warp Doesn't Exist)");
+		throw new CommandSyntaxException(
+			CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+			() -> "Failed to find Warp: " + string + " (Warp Doesn't Exist)"
+		);
 	}
 
-	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-		List<String> warps= Warps.getWarps();
-			for(String warp : warps) {
-				if (warp.startsWith(builder.getRemaining())) {
-					builder.suggest(warp);
-				}
+	public <S> CompletableFuture<Suggestions> listSuggestions(
+		CommandContext<S> context,
+		SuggestionsBuilder builder
+	)
+	{
+		List<String> warps = Warps.getWarps();
+		for (String warp : warps) {
+			if (warp.startsWith(builder.getRemaining())) {
+				builder.suggest(warp);
+			}
 		}
 
 		return builder.buildFuture();
 	}
 
-	public Collection<String> warps() {
-		return Warps.getWarps();
-	}
-
 	public Collection<String> getExamples() {
 		return EXAMPLES;
+	}
+
+	public Collection<String> warps() {
+		return Warps.getWarps();
 	}
 }

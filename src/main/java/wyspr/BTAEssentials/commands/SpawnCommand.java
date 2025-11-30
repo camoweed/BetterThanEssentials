@@ -32,9 +32,9 @@ import wyspr.BTAEssentials.utils.PlayerData;
 			.then(ArgumentBuilderLiteral.literal(""))
 			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.SpawnCommand)
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				Player sender = source.getSender();
-				World world = source.getWorld(0);
+				CommandSource    source           = (CommandSource) context.getSource();
+				Player           sender           = source.getSender();
+				World            world            = source.getWorld(0);
 				ChunkCoordinates spawnCoordinates = world.getSpawnPoint();
 				if (sender == null) {
 					throw CommandExceptions.notInWorld().create();
@@ -69,9 +69,9 @@ import wyspr.BTAEssentials.utils.PlayerData;
 			.<CommandSource>literal("set")
 			.requires(CommandSource::hasAdmin)
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				Player sender = source.getSender();
-				World world = source.getWorld(0);
+				CommandSource    source           = (CommandSource) context.getSource();
+				Player           sender           = source.getSender();
+				World            world            = source.getWorld(0);
 				ChunkCoordinates spawnCoordinates = world.getSpawnPoint();
 
 				world.setSpawnPoint(new ChunkCoordinates(
@@ -94,8 +94,8 @@ import wyspr.BTAEssentials.utils.PlayerData;
 			.requires(CommandSource::hasAdmin)
 			.executes(context -> {
 				CommandSource source = (CommandSource) context.getSource();
-				Player sender = source.getSender();
-				World world = source.getWorld(0);
+				Player        sender = source.getSender();
+				World         world  = source.getWorld(0);
 				if (sender == null) {
 					return 0;
 				}

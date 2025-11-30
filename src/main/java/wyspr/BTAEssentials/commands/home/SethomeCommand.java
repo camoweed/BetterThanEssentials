@@ -20,23 +20,23 @@ import wyspr.BTAEssentials.utils.PlayerData;
 			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.HomeCommand)
 			.executes(context -> {
 				// NO ARG
-				CommandSource source = (CommandSource) context.getSource();
-				boolean isAdmin = source.hasAdmin();
-				Player player = source.getSender();
-				PlayerData playerData = PlayerData.get(player);
-				int homesAmount = playerData.getHomesAmount();
+				CommandSource source      = (CommandSource) context.getSource();
+				boolean       isAdmin     = source.hasAdmin();
+				Player        player      = source.getSender();
+				PlayerData    playerData  = PlayerData.get(player);
+				int           homesAmount = playerData.getHomesAmount();
 
 				return setHome(homesAmount, player, playerData, "home");
 			})
 			.then(ArgumentBuilderRequired
 				.argument("homeName", ArgumentTypeString.string())
 				.executes(context -> {
-					CommandSource source = (CommandSource) context.getSource();
-					boolean isAdmin = source.hasAdmin();
-					Player player = source.getSender();
-					PlayerData playerData = PlayerData.get(player);
-					int homesAmount = playerData.getHomesAmount();
-					String homeName = context.getArgument("homeName", String.class);
+					CommandSource source      = (CommandSource) context.getSource();
+					boolean       isAdmin     = source.hasAdmin();
+					Player        player      = source.getSender();
+					PlayerData    playerData  = PlayerData.get(player);
+					int           homesAmount = playerData.getHomesAmount();
+					String        homeName    = context.getArgument("homeName", String.class);
 
 					if (homeName.equals("bed")) {
 						player.sendMessage("§4This home is reserved for your bed.");

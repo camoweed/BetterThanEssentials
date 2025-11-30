@@ -13,17 +13,18 @@ import wyspr.BTAEssentials.utils.Teleport;
 import java.util.Random;
 
 @SuppressWarnings("ALL") public class RTPCommand implements CommandManager.CommandRegistry {
-    Random r = new Random();
+	Random r = new Random();
 
-    @Override
-    public void register(CommandDispatcher<CommandSource> commandDispatcher) {
-        commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral.literal("rtp")
-            .requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.RTPCommand)
-            .executes(context -> {
-                CommandSource source  = (CommandSource) context.getSource();
-                boolean       isAdmin = source.hasAdmin();
-                Player        player  = source.getSender();
-                PlayerData playerData = PlayerData.get(player);
+	@Override
+	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
+		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
+			.literal("rtp")
+			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.RTPCommand)
+			.executes(context -> {
+				CommandSource source     = (CommandSource) context.getSource();
+				boolean       isAdmin    = source.hasAdmin();
+				Player        player     = source.getSender();
+				PlayerData    playerData = PlayerData.get(player);
 
 				int cost = BTAEssentials.RTPCost;
 				if (player.score < cost && !isAdmin) {
@@ -31,36 +32,37 @@ import java.util.Random;
 					player.sendMessage("§4You need §1" + (cost - player.score) + "§4 more points!");
 					return 1;
 				}
-                if (player.dimension != 0) {
-                    player.sendMessage("§4You may only use this in the overworld!");
-                    return 1;
-                }
-                if (!playerData.canTP() && !isAdmin) {
-                    int waitTime = playerData.TPCooldown();
-                    player.sendMessage("§4Teleport available in §1" + waitTime + "§4 seconds.");
-                    return 1;
-                }
+				if (player.dimension != 0) {
+					player.sendMessage("§4You may only use this in the overworld!");
+					return 1;
+				}
+				if (!playerData.canTP() && !isAdmin) {
+					int waitTime = playerData.TPCooldown();
+					player.sendMessage("§4Teleport available in §1" + waitTime + "§4 seconds.");
+					return 1;
+				}
 
-                int min = BTAEssentials.RTPMin;
-                int max = BTAEssentials.RTPMax;
-		        int randX = (int) (r.nextDouble() * (max - min) + min);
-		        int randZ = (int) (r.nextDouble() * (max - min) + min);
+				int min   = BTAEssentials.RTPMin;
+				int max   = BTAEssentials.RTPMax;
+				int randX = (int) (r.nextDouble() * (max - min) + min);
+				int randZ = (int) (r.nextDouble() * (max - min) + min);
 
-                playerData.updateBackPos();
+				playerData.updateBackPos();
 
-                if (Teleport.teleport(player, randX, 256, randZ, player.dimension)) {
-                    player.sendMessage("§4Teleported! §lShould you get stuck, rejoin§4.");
+				if (Teleport.teleport(player, randX, 256, randZ, player.dimension)) {
+					player.sendMessage("§4Teleported! §lShould you get stuck, rejoin§4.");
 
-                    player.score -= BTAEssentials.RTPCost;
-                    player.fireImmuneTicks = 200;
-                    player.onGround = false;
-                    player.maxHurtTime = 200;
-                    player.hurtTime = 200;
-                    player.airSupply = 1000;
-                    player.fallDistance = -1000;
-                }
+					player.score -= BTAEssentials.RTPCost;
 
-                return 1;
-            }));
-    }
+					player.fireImmuneTicks = 200;
+					player.onGround        = false;
+					player.maxHurtTime     = 200;
+					player.hurtTime        = 200;
+					player.airSupply       = 1000;
+					player.fallDistance    = -1000;
+				}
+
+				return 1;
+			}));
+	}
 }

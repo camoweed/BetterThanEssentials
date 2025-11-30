@@ -17,49 +17,46 @@ import wyspr.BTAEssentials.utils.PlayerData;
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		CommandNode<Object> command
-			= commandDispatcher.register((ArgumentBuilderLiteral) (ArgumentBuilderLiteral.literal(
-			"delhome"))
+			= commandDispatcher.register((ArgumentBuilderLiteral) (ArgumentBuilderLiteral.literal("delhome"))
 			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.HomeCommand)
-			.then(ArgumentBuilderRequired
-				.argument("home", ArgumentTypeHome.home())
-				.executes(context -> {
-					CommandSource source     = (CommandSource) context.getSource();
-					boolean       isAdmin    = source.hasAdmin();
-					Player        player     = source.getSender();
-					PlayerData    playerData = PlayerData.get(player);
-					int           homes      = playerData.getHomesAmount();
-					String        homeName   = context.getArgument("home", String.class);
+			.then(ArgumentBuilderRequired.argument("home", ArgumentTypeHome.home()).executes(context -> {
+				CommandSource source     = (CommandSource) context.getSource();
+				boolean       isAdmin    = source.hasAdmin();
+				Player        player     = source.getSender();
+				PlayerData    playerData = PlayerData.get(player);
+				int           homes      = playerData.getHomesAmount();
+				String        homeName   = context.getArgument("home", String.class);
 
-					if (homes == 0) {
-						player.sendMessage("§1You do not have any homes!");
-						player.sendMessage("§1Set a home with: §3/sethome [name]");
-						return 1;
-					}
-
-					if (homeName.equals("bed")) {
-						player.sendMessage("§4This home is reserved for your bed.");
-						return 1;
-					}
-
-					if (playerData.delHome(homeName)) {
-						player.sendMessage("§4Removed home: §1" + homeName);
-						playerData.save();
-					} else {
-						player.sendMessage("§4You don't have a home named: §1" + homeName);
-						player.sendMessage("§4Use: §3/sethome " + homeName + "§4 to create");
-					}
-
+				if (homes == 0) {
+					player.sendMessage("§1You do not have any homes!");
+					player.sendMessage("§1Set a home with: §3/sethome [name]");
 					return 1;
-				}))
+				}
+
+				if (homeName.equals("bed")) {
+					player.sendMessage("§4This home is reserved for your bed.");
+					return 1;
+				}
+
+				if (playerData.delHome(homeName)) {
+					player.sendMessage("§4Removed home: §1" + homeName);
+					playerData.save();
+				} else {
+					player.sendMessage("§4You don't have a home named: §1" + homeName);
+					player.sendMessage("§4Use: §3/sethome " + homeName + "§4 to create");
+				}
+
+				return 1;
+			}))
 			.then(ArgumentBuilderRequired
 				.argument("player", ArgumentTypeEntity.username())
 				.requires(source -> ((CommandSource) source).hasAdmin())
 				.then(ArgumentBuilderRequired.argument("home", ArgumentTypeString.string()))
 				.executes(context -> {
-					CommandSource source   = (CommandSource) context.getSource();
-					Player        player   = source.getSender();
+					CommandSource source       = (CommandSource) context.getSource();
+					Player        player       = source.getSender();
 					Player        targetPlayer = context.getArgument("player", Player.class);
-					String        homeName = context.getArgument("home", String.class);
+					String        homeName     = context.getArgument("home", String.class);
 
 					// TODO: Finish later
 

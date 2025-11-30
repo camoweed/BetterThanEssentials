@@ -24,7 +24,10 @@ import wyspr.BTAEssentials.utils.WorldPosition;
 				Player        player = source.getSender();
 				String        target = context.getArgument("target", String.class);
 
-				if (Warps.addWarp(target, new WorldPosition(player.x, player.y, player.z, player.dimension))) {
+				if (Warps.addWarp(
+					target,
+					new WorldPosition(player.x, player.y, player.z, player.dimension)
+				)) {
 					player.sendMessage("§1Created warp: §4" + target);
 				} else {
 					player.sendMessage("§4" + target + "§1 already exists");

@@ -27,17 +27,17 @@ import java.util.List;
 				.then(ArgumentBuilderRequired
 					.argument("command", ArgumentTypeString.greedyString())
 					.executes(context -> {
-						CommandSource source = (CommandSource) context.getSource();
-						Player player = source.getSender();
-						String commandParam = context.getArgument("command", String.class);
-						String command = "/" + commandParam;
+						CommandSource source       = (CommandSource) context.getSource();
+						Player        player       = source.getSender();
+						String        commandParam = context.getArgument("command", String.class);
+						String        command      = "/" + commandParam;
 
 						EntitySelector entitySelector = (EntitySelector) context.getArgument(
 							"target",
 							EntitySelector.class
 						);
 						List<? extends Entity> entities = entitySelector.get(source);
-						PlayerServer target = (PlayerServer) entities.get(0);
+						PlayerServer           target   = (PlayerServer) entities.get(0);
 
 						target.playerNetServerHandler.handleChat(new PacketChat(command));
 

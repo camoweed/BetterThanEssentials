@@ -24,16 +24,16 @@ import java.util.List;
 				.then(ArgumentBuilderRequired
 					.argument("amount", ArgumentTypeInteger.integer(1))
 					.executes(context -> {
-						CommandSource source = (CommandSource) context.getSource();
-						Player sender = source.getSender();
-						boolean senderIsAdmin = source.hasAdmin();
+						CommandSource source        = (CommandSource) context.getSource();
+						Player        sender        = source.getSender();
+						boolean       senderIsAdmin = source.hasAdmin();
 						EntitySelector entitySelector = (EntitySelector) context.getArgument(
 							"target",
 							EntitySelector.class
 						);
 						List<? extends Entity> entities = entitySelector.get(source);
-						PlayerServer reciever = (PlayerServer) entities.get(0);
-						int amount = context.getArgument("amount", Integer.class);
+						PlayerServer           reciever = (PlayerServer) entities.get(0);
+						int                    amount   = context.getArgument("amount", Integer.class);
 
 						if (sender.score < amount && !senderIsAdmin) {
 							sender.sendMessage("§e§lInsufficient funds!");

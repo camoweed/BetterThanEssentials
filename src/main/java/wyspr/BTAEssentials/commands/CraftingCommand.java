@@ -17,7 +17,7 @@ import wyspr.BTAEssentials.BTAEssentials;
 				.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.CraftCommand)
 				.executes(context -> {
 					CommandSource source = (CommandSource) context.getSource();
-					Player player = source.getSender();
+					Player        player = source.getSender();
 					player.displayWorkbenchScreen((int) player.x, (int) player.y, (int) player.z);
 					return 1;
 				}));

@@ -18,9 +18,9 @@ public class MojangAPI {
 	 */
 	public static String getUUID(String username) {
 		try {
-			String urlStr = "https://api.mojang.com/users/profiles/minecraft/" + username;
-			URL url = new URL(urlStr);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			String            urlStr = "https://api.mojang.com/users/profiles/minecraft/" + username;
+			URL               url    = new URL(urlStr);
+			HttpURLConnection conn   = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 
 			// If the username doesn't exist, Mojang returns HTTP 204
@@ -28,9 +28,9 @@ public class MojangAPI {
 				return null;
 			}
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			StringBuilder response = new StringBuilder();
-			String line;
+			BufferedReader reader   = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			StringBuilder  response = new StringBuilder();
+			String         line;
 
 			while ((line = reader.readLine()) != null) {
 				response.append(line);

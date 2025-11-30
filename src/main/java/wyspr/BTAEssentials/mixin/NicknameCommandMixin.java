@@ -23,8 +23,7 @@ import wyspr.BTAEssentials.BTAEssentials;
 
 import java.util.List;
 
-@Environment(EnvType.SERVER)
-@SuppressWarnings("ALL") @Mixin(
+@Environment(EnvType.SERVER) @SuppressWarnings("ALL") @Mixin(
 	value = CommandNickname.class, remap = false
 ) public class NicknameCommandMixin implements CommandManager.CommandRegistry {
 
@@ -46,55 +45,53 @@ import java.util.List;
 				.literal("set")
 				.then(((ArgumentBuilderRequired) ArgumentBuilderRequired
 					.argument("target", ArgumentTypeEntity.username())
-					.requires(source -> ((CommandSource) source).hasAdmin()))
-						.then(ArgumentBuilderRequired
-						.argument("nickname", ArgumentTypeString.string())
-						.executes((c) -> {
-							CommandSource source = (CommandSource) c.getSource();
-							EntitySelector entitySelector = (EntitySelector) c.getArgument(
-								"target",
-								EntitySelector.class
+					.requires(source -> ((CommandSource) source).hasAdmin())).then(ArgumentBuilderRequired
+					.argument("nickname", ArgumentTypeString.string())
+					.executes((c) -> {
+						CommandSource source = (CommandSource) c.getSource();
+						EntitySelector entitySelector = (EntitySelector) c.getArgument(
+							"target",
+							EntitySelector.class
+						);
+						String nickname = (String) c.getArgument("nickname", String.class);
+						if (nickname.length() > BTAEssentials.NickLength) {
+							throw NICKNAME_TOO_LARGE.create();
+						} else if (nickname.isEmpty()) {
+							throw NICKNAME_TOO_SMALL.create();
+						} else {
+							List<? extends Entity> entities = entitySelector.get(source);
+							PlayerServer player = (PlayerServer) entities.get(0);
+							player.nickname = nickname;
+							player.hadNicknameSet = true;
+							player.mcServer.playerList.updatePlayerProfile(
+								player.username,
+								player.nickname,
+								player.uuid,
+								player.score,
+								player.chatColor,
+								true,
+								player.isOperator()
 							);
-							String nickname = (String) c.getArgument("nickname", String.class);
-							if (nickname.length() > BTAEssentials.NickLength) {
-								throw NICKNAME_TOO_LARGE.create();
-							} else if (nickname.isEmpty()) {
-								throw NICKNAME_TOO_SMALL.create();
-							} else {
-								List<? extends Entity> entities = entitySelector.get(source);
-								PlayerServer player = (PlayerServer) entities.get(0);
-								player.nickname = nickname;
-								player.hadNicknameSet = true;
-								player.mcServer.playerList.updatePlayerProfile(
-									player.username,
-									player.nickname,
-									player.uuid,
-									player.score,
-									player.chatColor,
-									true,
-									player.isOperator()
+							if (source.getSender() == player) {
+								source.sendTranslatableMessage(
+									"command.commands.nickname.set.success",
+									new Object[]{nickname}
 								);
-								if (source.getSender() == player) {
-									source.sendTranslatableMessage(
-										"command.commands.nickname.set.success",
-										new Object[]{nickname}
-									);
-								} else {
-									source.sendTranslatableMessage(
-										"command.commands.nickname.set.success_other",
-										new Object[]{player.username, nickname}
-									);
-									source.sendTranslatableMessage(
-										player,
-										"command.commands.nickname.set.success_receiver",
-										new Object[]{nickname}
-									);
-								}
-
-								return 1;
+							} else {
+								source.sendTranslatableMessage(
+									"command.commands.nickname.set.success_other",
+									new Object[]{player.username, nickname}
+								);
+								source.sendTranslatableMessage(
+									player,
+									"command.commands.nickname.set.success_receiver",
+									new Object[]{nickname}
+								);
 							}
-						}))))
-				.then(ArgumentBuilderRequired
+
+							return 1;
+						}
+					})))).then(ArgumentBuilderRequired
 				.argument("nickname", ArgumentTypeString.string())
 				.executes((c) -> {
 					CommandSource source = (CommandSource) c.getSource();

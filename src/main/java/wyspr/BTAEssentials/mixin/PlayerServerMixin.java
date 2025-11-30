@@ -8,8 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import wyspr.BTAEssentials.BTAEssentials;
 import wyspr.BTAEssentials.utils.PlayerData;
 
-@Mixin(value = PlayerServer.class, remap = false)
-public abstract class PlayerServerMixin extends Player {
+@Mixin(value = PlayerServer.class, remap = false) public abstract class PlayerServerMixin extends Player {
 	public PlayerServerMixin(World world) {
 		super(world);
 		PlayerData.set(this);

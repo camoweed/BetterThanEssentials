@@ -19,11 +19,11 @@ import java.util.List;
 			.literal("homes")
 			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.HomeCommand)
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				boolean isAdmin = source.hasAdmin();
-				Player player = source.getSender();
-				PlayerData playerData = PlayerData.get(player);
-				List<String> homes = playerData.getHomesList();
+				CommandSource source     = (CommandSource) context.getSource();
+				boolean       isAdmin    = source.hasAdmin();
+				Player        player     = source.getSender();
+				PlayerData    playerData = PlayerData.get(player);
+				List<String>  homes      = playerData.getHomesList();
 
 				if (homes.isEmpty()) {
 					player.sendMessage("§1You do not have any homes!");
@@ -40,11 +40,11 @@ import java.util.List;
 				.argument("player", ArgumentTypeEntity.username())
 				.requires(source -> ((CommandSource) source).hasAdmin())
 				.executes(context -> {
-					CommandSource source = (CommandSource) context.getSource();
-					Player player = source.getSender();
-					Player target = context.getArgument("player", Player.class);
-					PlayerData playerData = PlayerData.get(target);
-					List<String> homes = playerData.getHomesList();
+					CommandSource source     = (CommandSource) context.getSource();
+					Player        player     = source.getSender();
+					Player        target     = context.getArgument("player", Player.class);
+					PlayerData    playerData = PlayerData.get(target);
+					List<String>  homes      = playerData.getHomesList();
 
 					if (homes.isEmpty()) {
 						player.sendMessage("§1" + target.nickname + " does not have any homes!");

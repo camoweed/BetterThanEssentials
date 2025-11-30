@@ -22,12 +22,12 @@ import wyspr.BTAEssentials.utils.TPARequestType;
 			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.TPACommand)
 			.then(ArgumentBuilderRequired.argument("target", ArgumentTypeEntity.username()))
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				boolean isAdmin = source.hasAdmin();
-				Player target = context.getArgument("target", Player.class);
-				Player player = source.getSender();
-				PlayerData targetData = PlayerData.get(target);
-				PlayerData playerData = PlayerData.get(player);
+				CommandSource source     = (CommandSource) context.getSource();
+				boolean       isAdmin    = source.hasAdmin();
+				Player        target     = context.getArgument("target", Player.class);
+				Player        player     = source.getSender();
+				PlayerData    targetData = PlayerData.get(target);
+				PlayerData    playerData = PlayerData.get(player);
 
 				int cost = BTAEssentials.TPACost;
 				if (player.score < cost && !isAdmin) {
@@ -36,10 +36,7 @@ import wyspr.BTAEssentials.utils.TPARequestType;
 					return 1;
 				}
 
-				boolean isOnlyRequest = targetData.sendTPARequest(
-					player.username,
-					TPARequestType.TPAHERE
-				);
+				boolean isOnlyRequest = targetData.sendTPARequest(player.username, TPARequestType.TPAHERE);
 
 				if (isOnlyRequest) {
 					player.sendMessage("§4Sent a request to " + target.getDisplayName());

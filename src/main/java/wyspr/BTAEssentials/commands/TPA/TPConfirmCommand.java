@@ -24,24 +24,24 @@ import wyspr.BTAEssentials.utils.Teleport;
 			.literal("tpconfirm")
 			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.TPACommand)
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				boolean isAdmin = source.hasAdmin();
-				Player player = source.getSender();
-				PlayerData playerData = PlayerData.get(player);
+				CommandSource source     = (CommandSource) context.getSource();
+				boolean       isAdmin    = source.hasAdmin();
+				Player        player     = source.getSender();
+				PlayerData    playerData = PlayerData.get(player);
 
 				if (playerData.hasNoRequests()) {
 					player.sendMessage("§4You don't have any requests.");
 					return 1;
 				}
 
-				Pair<String, TPARequestType> requestPair = playerData.getNewestRequest();
-				String targetUsername = requestPair.getKey();
-				TPARequestType request = requestPair.getValue();
+				Pair<String, TPARequestType> requestPair    = playerData.getNewestRequest();
+				String                       targetUsername = requestPair.getKey();
+				TPARequestType               request        = requestPair.getValue();
 
 				Player target = (Player) MinecraftServer.getInstance().playerList.getPlayerEntity(
 					targetUsername);
-				PlayerData targetData = PlayerData.get(target);
-				boolean targetNotAdmin = !((PlayerServer) target).isOperator();
+				PlayerData targetData     = PlayerData.get(target);
+				boolean    targetNotAdmin = !((PlayerServer) target).isOperator();
 
 				int cost = BTAEssentials.TPACost;
 				if (target.score < cost && targetNotAdmin) {
@@ -79,13 +79,13 @@ import wyspr.BTAEssentials.utils.Teleport;
 			})
 			.then(ArgumentBuilderRequired.argument("target", ArgumentTypeEntity.username()))
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				boolean isAdmin = source.hasAdmin();
-				Player target = context.getArgument("target", Player.class);
-				Player player = source.getSender();
-				PlayerData targetData = PlayerData.get(target);
-				PlayerData playerData = PlayerData.get(player);
-				boolean targetNotAdmin = !((PlayerServer) target).isOperator();
+				CommandSource source         = (CommandSource) context.getSource();
+				boolean       isAdmin        = source.hasAdmin();
+				Player        target         = context.getArgument("target", Player.class);
+				Player        player         = source.getSender();
+				PlayerData    targetData     = PlayerData.get(target);
+				PlayerData    playerData     = PlayerData.get(player);
+				boolean       targetNotAdmin = !((PlayerServer) target).isOperator();
 
 				if (playerData.hasNoRequests()) {
 					player.sendMessage("§4You don't have any requests.");

@@ -20,11 +20,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 //	}
 
 	@Redirect(
-		method = "handleChat",
-		at = @At(
-			value = "INVOKE",
-			target = "Ljava/lang/String;trim()Ljava/lang/String;"
-		)
+		method = "handleChat", at = @At(
+		value = "INVOKE", target = "Ljava/lang/String;trim()Ljava/lang/String;"
+	)
 	)
 	public String redirectChat(String message) {
 		if (message.startsWith("> ")) {

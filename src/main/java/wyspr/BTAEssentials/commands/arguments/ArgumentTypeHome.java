@@ -29,13 +29,17 @@ public class ArgumentTypeHome implements ArgumentType<String> {
 		return reader.readString();
 	}
 
-	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
+	public <S> CompletableFuture<Suggestions> listSuggestions(
+		CommandContext<S> context,
+		SuggestionsBuilder builder
+	)
+	{
 
-		if(context.getSource() instanceof ServerCommandSource){
-			Player sender = ((ServerCommandSource) context.getSource()).getSender();
-			PlayerData playerData = PlayerData.get(sender);
-			List<String> homes = playerData.getHomesList();
-			for(String home : homes){
+		if (context.getSource() instanceof ServerCommandSource) {
+			Player       sender     = ((ServerCommandSource) context.getSource()).getSender();
+			PlayerData   playerData = PlayerData.get(sender);
+			List<String> homes      = playerData.getHomesList();
+			for (String home : homes) {
 				if (home.startsWith(builder.getRemaining())) {
 					builder.suggest(home);
 				}

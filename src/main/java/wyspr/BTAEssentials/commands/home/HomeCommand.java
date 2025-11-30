@@ -22,38 +22,36 @@ import java.util.Optional;
 			.literal("home")
 			.requires(source -> ((CommandSource) source).hasAdmin() || BTAEssentials.HomeCommand)
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				boolean isAdmin = source.hasAdmin();
-				Player player = source.getSender();
-				PlayerData playerData = PlayerData.get(player);
-				String homeName = "home";
-				Optional<WorldPosition> homePos = playerData.getHomePos(homeName);
+				CommandSource           source     = (CommandSource) context.getSource();
+				boolean                 isAdmin    = source.hasAdmin();
+				Player                  player     = source.getSender();
+				PlayerData              playerData = PlayerData.get(player);
+				String                  homeName   = "home";
+				Optional<WorldPosition> homePos    = playerData.getHomePos(homeName);
 
 				return goHome(homePos, player, homeName, playerData, isAdmin);
-			})).then(ArgumentBuilderRequired
-			.argument("home", ArgumentTypeHome.home())
-			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				boolean isAdmin = source.hasAdmin();
-				Player player = source.getSender();
-				PlayerData playerData = PlayerData.get(player);
-				String homeName = context.getArgument("home", String.class);
+			})).then(ArgumentBuilderRequired.argument("home", ArgumentTypeHome.home()).executes(context -> {
+			CommandSource source     = (CommandSource) context.getSource();
+			boolean       isAdmin    = source.hasAdmin();
+			Player        player     = source.getSender();
+			PlayerData    playerData = PlayerData.get(player);
+			String        homeName   = context.getArgument("home", String.class);
 
-				Optional<WorldPosition> homePos;
+			Optional<WorldPosition> homePos;
 
-				if (homeName.equals("bed")) {
-					ChunkCoordinates bed = player.getPlayerSpawnCoordinate();
-					if (bed == null) {
-						player.sendMessage("§1You do not have a bed! You should work on that!");
-						return 1;
-					}
-					homePos = Optional.of(new WorldPosition(bed.x, bed.y + 1.0, bed.z, 0));
-				} else {
-					homePos = playerData.getHomePos(homeName);
+			if (homeName.equals("bed")) {
+				ChunkCoordinates bed = player.getPlayerSpawnCoordinate();
+				if (bed == null) {
+					player.sendMessage("§1You do not have a bed! You should work on that!");
+					return 1;
 				}
+				homePos = Optional.of(new WorldPosition(bed.x, bed.y + 1.0, bed.z, 0));
+			} else {
+				homePos = playerData.getHomePos(homeName);
+			}
 
-				return goHome(homePos, player, homeName, playerData, isAdmin);
-			})));
+			return goHome(homePos, player, homeName, playerData, isAdmin);
+		})));
 	}
 
 	private static Integer goHome(

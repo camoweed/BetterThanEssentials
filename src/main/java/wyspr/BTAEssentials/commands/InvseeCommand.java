@@ -31,8 +31,8 @@ import java.util.List;
 						EntitySelector.class
 					);
 					List<? extends Entity> entities = entitySelector.get(source);
-					PlayerServer target = (PlayerServer) entities.get(0);
-					Player player = source.getSender();
+					PlayerServer           target   = (PlayerServer) entities.get(0);
+					Player                 player   = source.getSender();
 					player.displayContainerScreen(new ContainerInvsee(target));
 
 					return 1;
