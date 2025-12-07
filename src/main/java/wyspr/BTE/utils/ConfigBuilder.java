@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class ConfigBuilder {
-	private static final Map<String, String> colorMap = new HashMap<>(24);
+	private static final Map<String, String> colorMap = new HashMap<>(33);
 
 	static {
 		colorMap.put("white", TextFormatting.WHITE.toString());
@@ -33,12 +33,14 @@ public class ConfigBuilder {
 		colorMap.put("green", TextFormatting.GREEN.toString());
 		colorMap.put("red", TextFormatting.RED.toString());
 		colorMap.put("black", TextFormatting.BLACK.toString());
+		colorMap.put("o", TextFormatting.OBFUSCATED.toString());
 		colorMap.put("obf", TextFormatting.OBFUSCATED.toString());
 		colorMap.put("obfuscated", TextFormatting.OBFUSCATED.toString());
 		colorMap.put("b", TextFormatting.BOLD.toString());
 		colorMap.put("bold", TextFormatting.BOLD.toString());
 		colorMap.put("s", TextFormatting.STRIKETHROUGH.toString());
 		colorMap.put("strike", TextFormatting.STRIKETHROUGH.toString());
+		colorMap.put("strikethrough", TextFormatting.STRIKETHROUGH.toString());
 		colorMap.put("u", TextFormatting.UNDERLINE.toString());
 		colorMap.put("underline", TextFormatting.UNDERLINE.toString());
 		colorMap.put("i", TextFormatting.ITALIC.toString());

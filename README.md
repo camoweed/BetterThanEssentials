@@ -6,39 +6,39 @@ Adds various new commands and features for server administration and gameplay en
 
 ## Commands
 
-| Command        | OP Required | Config Toggle | Aliases                           | Description                                                                                   |
-|----------------|:-----------:|:-------------:|-----------------------------------|-----------------------------------------------------------------------------------------------|
-| `/back`        |      ❌      |       ✅       |                                   | Go back                                                                                       |
-| `/colorcodes`  |      ❌      |       ❌       | `/colourcodes`                    | Print a list of formatting codes                                                              |
-| `/craft`       |      ❌      |       ✅       | `/craftingtable`, `/craft`, `/cb` | Opens a crafting table                                                                        |
-| `/delhome`     |      ❌      |       ✅       | `/rmhome`                         | Remove a home (OPs can remove other players homes)                                            |
-| `/delwarp`     |      ❌      |       ✅       | `/rmwarp`                         | Remove a warp                                                                                 |
-| `/fix`         |      ❌      |       ✅       | `/repair`                         | Repairs currently held item                                                                   |
-| `/give`        |      ❌      |       ✅       | `/i`                              | Shorthand for giving items                                                                    |
-| `/gm`          |      ❌      |       ✅       | `/gms`, `/gmc`, `/gmsp`           | Shorthand for changing game modes                                                             |
-| `/home`        |      ❌      |       ✅       |                                   | Travel to a home (OPs can travel to other players homes)                                      |
-| `/homes`       |      ❌      |       ✅       |                                   | Lists your homes<sup>(OPs can view other players homes)(With no argument, defaults to "home") |
-| `/info`        |      ❌      |       ❌       |                                   | Prints info pages into chat, see below for creating info pages                                |
-| `/invsee`      |      ✅      |       ❌       | `/openinv`                        | View and modify other players inventories                                                     |
-| `/motd`        |     ❌/✅     |       ❌       |                                   | View and edit the server MOTD (Anyone can view, OPs can edit)                                 |
-| `/mute`        |      ✅      |       ❌       |                                   | Stop players from chatting (OPs can still see muted messages)                                 |
-| `/opchat`      |      ✅      |       ❌       | `/chatop`, `/opc`                 | A private chat channel for OPs                                                                |
-| `/pay`         |      ❌      |       ✅       |                                   | Send points to another player                                                                 |
-| `/ping`        |      ❌      |       ❌       |                                   | Pong!                                                                                         |
-| `/rtp`         |      ❌      |       ✅       |                                   | Random teleport in a configurable area                                                        |
-| `/rules`       |      ❌      |       ❌       |                                   | Prints rules pages into chat, see below for creating rules pages                              | 
-| `/sethome`     |      ❌      |       ✅       | `/addhome`                        | Adds a home (With no argument, defaults to home)                                              |
-| `/setwarp`     |      ❌      |       ✅       | `/addwarp`                        | Adds a warp                                                                                   |
-| `/sudo`        |      ✅      |       ❌       | `/doas`                           | Run commands as another player                                                                |
-| `/tpall`       |      ✅      |       ✅       | `/tpaall`                         | Sends a tpa request to all players                                                            |
-| `/tpa`         |      ❌      |       ✅       | `/tpask`                          | Sends a request to teleport yourself to a player                                              |
-| `/tpahere`     |      ❌      |       ✅       | `/tphere` , `/tph`                | Sends a request to teleport a player to you                                                   |
-| `/tpconfirm`   |      ❌      |       ✅       | `/ty` , `/tpyes`                  | Accepts a teleport request                                                                    |
-| `/tpdeny`      |      ❌      |       ✅       | `/tn` , `/tpno`                   | Denies a teleport request                                                                     |
-| `/tprequests`  |      ❌      |       ✅       | `/tpreq` , `/tpr`                 | Prints teleport requests into chat                                                            |
-| `/vanish`      |      ✅      |       ❌       |                                   | Extend spectator mode to hide your name from the playerlist                                   |
-| `/warp`        |      ❌      |       ✅       |                                   | Travel to a warp                                                                              |
-| `/warps`       |      ❌      |       ✅       |                                   | Lists the available warps                                                                     |
+| Command       | OP Required | Config Toggle | Aliases                           | Description                                                                                    |
+|---------------|:-----------:|:-------------:|-----------------------------------|------------------------------------------------------------------------------------------------|
+| `/back`       |      ❌      |       ✅       |                                   | Go back                                                                                        |
+| `/colorcodes` |      ❌      |       ❌       | `/colourcodes`                    | Print a list of formatting codes                                                               |
+| `/craft`      |      ❌      |       ✅       | `/craftingtable`, `/craft`, `/cb` | Opens a crafting table                                                                         |
+| `/delhome`    |      ❌      |       ✅       | `/rmhome`                         | Remove a home (OPs can remove other players homes)                                             |
+| `/delwarp`    |      ✅      |       ❌       | `/rmwarp`                         | Remove a warp                                                                                  |
+| `/fix`        |      ❌      |       ✅       | `/repair`                         | Repairs currently held item                                                                    |
+| `/give`       |      ❌      |       ✅       | `/i`                              | Shorthand for giving items                                                                     |
+| `/gm`         |      ❌      |       ✅       | `/gms`, `/gmc`, `/gmsp`           | Shorthand for changing game modes                                                              |
+| `/home`       |      ❌      |       ✅       |                                   | Travel to a home (OPs can travel to other players homes)                                       |
+| `/homes`      |      ❌      |       ✅       |                                   | Lists your homes<sup>(OPs can view other players homes) (With no argument, defaults to "home") |
+| `/info`       |      ❌      |       ❌       |                                   | Prints info pages into chat, see below for creating info pages                                 |
+| `/invsee`     |      ✅      |       ❌       | `/openinv`                        | View and modify other players inventories                                                      |
+| `/motd`       |     ❌/✅     |       ❌       |                                   | View and edit the server MOTD (Anyone can view, OPs can edit)                                  |
+| `/mute`       |      ✅      |       ❌       |                                   | Stop players from chatting (OPs can still see muted messages)                                  |
+| `/opchat`     |      ✅      |       ❌       | `/chatop`, `/opc`                 | A private chat channel for OPs                                                                 |
+| `/pay`        |      ❌      |       ✅       |                                   | Send points to another player                                                                  |
+| `/ping`       |      ❌      |       ❌       |                                   | Pong!                                                                                          |
+| `/rtp`        |      ❌      |       ✅       |                                   | Random teleport in a configurable area                                                         |
+| `/rules`      |      ❌      |       ❌       |                                   | Prints rules pages into chat, see below for creating rules pages                               | 
+| `/sethome`    |      ❌      |       ✅       | `/addhome`                        | Adds a home (With no argument, defaults to home)                                               |
+| `/setwarp`    |      ✅      |       ❌       | `/addwarp`                        | Adds a warp                                                                                    |
+| `/sudo`       |      ✅      |       ❌       | `/doas`                           | Run commands as another player                                                                 |
+| `/tpall`      |      ✅      |       ✅       | `/tpaall`                         | Sends a tpa request to all players                                                             |
+| `/tpa`        |      ❌      |       ✅       | `/tpask`                          | Sends a request to teleport yourself to a player                                               |
+| `/tpahere`    |      ❌      |       ✅       | `/tphere` , `/tph`                | Sends a request to teleport a player to you                                                    |
+| `/tpconfirm`  |      ❌      |       ✅       | `/ty` , `/tpyes`                  | Accepts a teleport request                                                                     |
+| `/tpdeny`     |      ❌      |       ✅       | `/tn` , `/tpno`                   | Denies a teleport request                                                                      |
+| `/tprequests` |      ❌      |       ✅       | `/tpreq` , `/tpr`                 | Prints teleport requests into chat                                                             |
+| `/vanish`     |      ✅      |       ❌       |                                   | Extend spectator mode to hide your name from the playerlist                                    |
+| `/warp`       |      ❌      |       ✅       |                                   | Travel to a warp                                                                               |
+| `/warps`      |      ❌      |       ✅       |                                   | Lists the available warps                                                                      |
 
 ## Features
 
@@ -69,34 +69,35 @@ The commands read these files as pages.
 Rules and info have a text parser that allows html-like tags to be used to format the pages. 
 
 - Lines staring with '///' are a comment and are not displayed to the player.
-- Example: `<red><b>BOLD RED<r> normal text`
+- Format example: `<red><b>BOLD RED<r> normal text`
+- Comment example: `/// this is a comment that will not be shown in game!`
 
 ### Formatting Tags
 
-|   Color    |       Aliases       |
-|:----------:|:-------------------:|
-|   white    |                     |
-|    gray    |        grey         |
-| light_gray | silver / light_grey |
-|   black    |                     |
-|   brown    |                     |
-|    pink    |                     |
-|    red     |                     |
-|   orange   |                     |
-|   yellow   |                     |
-|   green    |                     |
-|    lime    |                     |
-| light_blue |        aqua         |
-|    cyan    |                     |
-|    blue    |                     |
-|  magenta   |                     |
-|   purple   |                     |
-|    obf     |     obfuscated      |
-|     b      |        bold         |
-|     s      |       strike        |
-|     u      |      underline      |
-|     i      |       italic        |
-|     r      |        reset        |
+|   Color    |        Aliases         |
+|:----------:|:----------------------:|
+|   white    |                        |
+|    gray    |          grey          |
+| light_gray |  silver / light_grey   |
+|   black    |                        |
+|   brown    |                        |
+|    pink    |                        |
+|    red     |                        |
+|   orange   |                        |
+|   yellow   |                        |
+|   green    |                        |
+|    lime    |                        |
+| light_blue |          aqua          |
+|    cyan    |                        |
+|    blue    |                        |
+|  magenta   |                        |
+|   purple   |                        |
+|     o      |    obf / obfuscated    |
+|     b      |          bold          |
+|     s      | strike / strikethrough |
+|     u      |       underline        |
+|     i      |         italic         |
+|     r      |         reset          |
 
 #### Default configuration file
 

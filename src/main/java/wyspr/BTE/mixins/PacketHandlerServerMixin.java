@@ -58,7 +58,7 @@ import java.util.Objects;
 		value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;)V"
 	)
 	)
-	public void mutePlayer(Logger logger, String message) {
+	public void redirectMutePlayer(Logger logger, String message) {
 		if (PlayerData.get(this.playerEntity).muted) {
 			MinecraftServer.getInstance().playerList.sendChatMessageToAllOps(TextFormatting.RED + "" + TextFormatting.BOLD + "[MUTED] " + TextFormatting.RESET + message);
 		} else {
@@ -114,7 +114,7 @@ import java.util.Objects;
 
 		player.collision = false;
 		player.noPhysics = true;
-		return false;
+		return true;
 	}
 
 	@Inject(

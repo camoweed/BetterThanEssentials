@@ -2,12 +2,15 @@ package wyspr.BTE.commands;
 
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.ArgumentTypeString;
 import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
 import com.mojang.brigadier.builder.ArgumentBuilderRequired;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.CommandNode;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
+import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.core.net.packet.PacketChat;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.commands.arguments.ArgumentTypeUser;
@@ -15,34 +18,33 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 @SuppressWarnings("ALL") public class SudoCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
-		CommandNode<Object> cmd = commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
-			.literal("")
-			.then(ArgumentBuilderRequired
-				.argument("target", ArgumentTypeUser.user())
-				.then(ArgumentBuilderRequired
-					.argument("command", ArgumentTypeUser.user())
-					.executes(context -> {
-						CommandSource source  = (CommandSource) context.getSource();
-						Player        player  = source.getSender();
-						String        command = context.getArgument("command", String.class);
-						PlayerServer  target  = context.getArgument("target", PlayerServer.class);
-
-						if (!command.startsWith("/")) {
-							command = "/" + command;
-						}
-
-						target.playerNetServerHandler.handleChat(new PacketChat(command));
-
-						return 1;
-					}))));
-
 		String[] literals = {"sudo", "doas"};
 		for (String literal : literals) {
 			commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
 				.literal(literal)
 				.requires(source -> ((CommandSource) source).hasAdmin())
-				.redirect(cmd));
+				.then(ArgumentBuilderRequired
+					.argument("player", ArgumentTypeUser.user())
+					.then(ArgumentBuilderRequired
+						.argument("command", ArgumentTypeString.greedyString())
+						.executes(this::exec))));
 		}
+	}
+
+	private int exec(CommandContext<Object> context) {
+		CommandSource source  = (CommandSource) context.getSource();
+		Player        player  = source.getSender();
+		PlayerServer  target  = context.getArgument("player", PlayerServer.class);
+		String        command = context.getArgument("command", String.class);
+
+		if (!command.startsWith("/")) {
+			command = "/" + command;
+		}
+
+		player.sendMessage(TextFormatting.YELLOW + "Ran " + TextFormatting.LIGHT_BLUE + command + TextFormatting.YELLOW + " as " + TextFormatting.RESET + target.getDisplayName());
+		target.playerNetServerHandler.handleChat(new PacketChat(command));
+
+		return 1;
 	}
 }
 //import java.util.Arrays;

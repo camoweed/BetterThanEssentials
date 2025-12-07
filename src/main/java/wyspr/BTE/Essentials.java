@@ -234,9 +234,9 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 
 	@Override
 	public void onInitialize() {
-		System.out.println("╭───────────────────────────────────╮");
+		System.out.println("┌───────────────────────────────────┐");
 		System.out.println("│ Better than Essentials loading... │");
-		System.out.println("╰───────────────────────────────────╯");
+		System.out.println("└───────────────────────────────────┘");
 
 		for (Path dir : new Path[]{DATA_DIR, PLAYER_DIR}) {
 			if (!Files.exists(dir)) {
@@ -254,9 +254,9 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 		initCommands();
 		Warps.load();
 
-		System.out.println("╭─────────────────────────────────────╮");
+		System.out.println("┌─────────────────────────────────────┐");
 		System.out.println("│ Better than Essentials initialized! │");
-		System.out.println("╰─────────────────────────────────────╯");
+		System.out.println("└─────────────────────────────────────┘");
 	}
 
 	static void initInfo() {
@@ -347,6 +347,7 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 		CommandManager.registerServerCommand(new BackCommand());
 		CommandManager.registerServerCommand(new ColorsCommand());
 		CommandManager.registerServerCommand(new CraftingCommand());
+		CommandManager.registerServerCommand(new FixCommand());
 		CommandManager.registerServerCommand(new GamemodeCreativeCommand());
 		CommandManager.registerServerCommand(new GamemodeSpectatorCommand());
 		CommandManager.registerServerCommand(new GamemodeSurvivalCommand());

@@ -57,7 +57,7 @@ import wyspr.BTE.utils.TPARequestType;
 	private int playerArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source         = (CommandSource) context.getSource();
 		boolean       isAdmin        = source.hasAdmin();
-		Player        target         = context.getArgument("target", Player.class);
+		PlayerServer  target         = context.getArgument("target", PlayerServer.class);
 		Player        player         = source.getSender();
 		PlayerData    targetData     = PlayerData.get(target);
 		PlayerData    playerData     = PlayerData.get(player);

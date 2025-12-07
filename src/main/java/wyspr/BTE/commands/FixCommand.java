@@ -23,14 +23,14 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 				.executes(context -> {
 					CommandSource source = (CommandSource) context.getSource();
 					Player        player = source.getSender();
-
-					ItemStack held = player.getHeldItem();
+					ItemStack     held   = player.getHeldItem();
 					if (held.isItemStackDamageable()) {
-						held.setMetadata(held.getMaxDamage());
+						held.setMetadata(0);
+						player.sendMessage(TextFormatting.LIGHT_BLUE + held.getDisplayName() + TextFormatting.YELLOW + " has been repaired.");
+					} else {
+						player.sendMessage(TextFormatting.LIGHT_BLUE + held.getDisplayName() + TextFormatting.YELLOW + " is not repairable.");
 					}
-					player.inventory.setHeldItemStack(held);
 
-					player.sendMessage(TextFormatting.YELLOW + "Repaired held item.");
 					return 1;
 				})
 				.then(ArgumentBuilderRequired
@@ -38,19 +38,19 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 					.requires(source -> ((CommandSource) source).hasAdmin())
 					.executes(context -> {
 						CommandSource source = (CommandSource) context.getSource();
-						Player       player   = source.getSender();
-						PlayerServer target = context.getArgument("player", PlayerServer.class);
-						ItemStack held = target.getHeldItem();
+						Player        player = source.getSender();
+						PlayerServer  target = context.getArgument("player", PlayerServer.class);
+						ItemStack     held   = target.getHeldItem();
 						if (held.isItemStackDamageable()) {
-							held.setMetadata(held.getMaxDamage());
+							held.setMetadata(0);
+							player.sendMessage(TextFormatting.LIGHT_BLUE + held.getDisplayName() + TextFormatting.YELLOW + " has been repaired for " + TextFormatting.RESET + target.getDisplayName() + TextFormatting.YELLOW + ".");
+							target.sendMessage(TextFormatting.LIGHT_BLUE + held.getDisplayName() + TextFormatting.YELLOW + " has been repaired.");
+						} else {
+							player.sendMessage(TextFormatting.LIGHT_BLUE + held.getDisplayName() + TextFormatting.YELLOW + " is not repairable.");
 						}
-						target.inventory.setHeldItemStack(held);
 
-						player.sendMessage(TextFormatting.YELLOW + "Repaired " + TextFormatting.RESET + target.getDisplayName() + TextFormatting.YELLOW + "'s held item.");
-						target.sendMessage(TextFormatting.YELLOW + "Held item repaired.");
 						return 1;
-					}))
-			);
+					})));
 
 		}
 	}
