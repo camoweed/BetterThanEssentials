@@ -60,9 +60,12 @@ Adds various new commands and features for server administration and gameplay en
 
 ### Pages
 
-The `info` and `rules` directories will be created automatically in the plugin configuration folder and populated with `Info.txt` and `Rules.txt` respectively.<br>
+The `info` and `rules` directories will be created automatically in the plugin configuration folder and populated with `Info.txt` and `Rules.txt` respectively.
 The commands read these files as pages. 
-- Example: `/info 2` = `config/BTEssentials/info/Info2.txt`
+#### Examples: 
+- `/info`   = `config/BTEssentials/info/Info.txt`
+- `/info 1` = `config/BTEssentials/info/Info.txt`
+- `/info 2` = `config/BTEssentials/info/Info2.txt`
 
 ### Syntax
 
@@ -73,6 +76,7 @@ Rules and info have a text parser that allows html-like tags to be used to forma
 - Comment example: `/// this is a comment that will not be shown in game!`
 
 ### Formatting Tags
+
 
 |   Color    |        Aliases         |
 |:----------:|:----------------------:|
@@ -98,6 +102,8 @@ Rules and info have a text parser that allows html-like tags to be used to forma
 |     u      |       underline        |
 |     i      |         italic         |
 |     r      |         reset          |
+
+---
 
 #### Default configuration file
 

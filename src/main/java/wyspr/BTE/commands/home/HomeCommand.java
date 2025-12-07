@@ -1,7 +1,6 @@
 package wyspr.BTE.commands.home;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.ArgumentTypeString;
 import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
 import com.mojang.brigadier.builder.ArgumentBuilderRequired;
 import com.mojang.brigadier.context.CommandContext;
@@ -29,13 +28,13 @@ import java.util.Optional;
 			.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.HomeCommand)
 			.executes(this::noArg)
 			.then(ArgumentBuilderRequired
-				.argument("home", ArgumentTypeHome.homes())
+				.argument("home", ArgumentTypeHome.senderHomes())
 				.executes(this::homeArg))
 			.then(ArgumentBuilderRequired
 				.argument("player", ArgumentTypeUser.user())
 				.requires(source -> ((CommandSource) source).hasAdmin())
 				.then(ArgumentBuilderRequired
-					.argument("home", ArgumentTypeString.string())
+					.argument("home", ArgumentTypeHome.otherHomes())
 					.executes(this::playerHomeArg))));
 	}
 

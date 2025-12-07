@@ -34,8 +34,6 @@ public class Warps {
 		}
 	}
 
-	public Warps() {}
-
 	public static void load() {
 		Gson gson = new Gson();
 		try {

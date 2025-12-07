@@ -24,10 +24,8 @@ import java.util.List;
 		List<String>    scoresList  = new ArrayList<>();
 
 		for (PlayerServer player : server.playerList.playerEntities) {
-//			if (VanishedPlayers.isVanished(player)) {
-			if (PlayerData.get(player).vanished) {
-				if (player.gamemode == Gamemode.spectator) continue;  // skip spectators
-			}
+			if (PlayerData.get(player).vanished && player.gamemode == Gamemode.spectator)
+				continue;  // skip spectators
 			playersList.add(player.getDisplayName());
 			scoresList.add(String.valueOf(player.getScore()));
 		}

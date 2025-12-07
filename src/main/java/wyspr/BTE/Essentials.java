@@ -395,6 +395,6 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 	@Override
 	public void afterGameStart() {
 		MinecraftServer mcs = MinecraftServer.getInstance();
-		mcs.motd = MOTD;
+		mcs.motd = MOTD.replace("$$", "§");
 	}
 }

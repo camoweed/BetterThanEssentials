@@ -29,10 +29,12 @@ public class Teleport {
 				DyeColor.MAGENTA,
 				false
 			);
-			((PlayerServer) player).playerNetServerHandler.sendPacket(new PacketRespawn(
-				(byte) destination.dimID,
-				(byte) 0
-			));
+			playerList.sendPacketToPlayer(
+				player.username, new PacketRespawn(
+					(byte) destination.dimID,
+					(byte) 0
+				)
+			);
 		}
 
 		MinecraftServer server     = MinecraftServer.getInstance();
@@ -40,17 +42,31 @@ public class Teleport {
 		int             chunkCordX = (int) destination.x >> 4;
 		int             chunkCordZ = (int) destination.z >> 4;
 
-		world.getChunkProvider().prepareChunk(chunkCordX, chunkCordZ);
+		world
+			.getChunkProvider()
+			.prepareChunk(chunkCordX, chunkCordZ);
 
-		((PlayerServer) player).playerNetServerHandler.teleportAndRotate(
+
+		((PlayerServer) player).teleport(
 			destination.x,
 			destination.y,
 			destination.z,
 			player.yRot,
 			player.xRot
 		);
-
 		player.moveTo(destination.x, destination.y, destination.z, player.yRot, player.xRot);
+		player.world.playSoundAtEntity(null, player, "mob.ghast.fireball", 1, 1.5f);
+		// Show the teleported player  instantly
+		// instead of waiting on the server to send the packet
+		playerList.sendPacketToPlayersAroundPoint(
+			destination.x,
+			destination.y,
+			destination.z,
+			64,
+			destination.dimID,
+			new PacketAddEntity(player)
+		);
+
 		return true;
 	}
 
@@ -70,19 +86,29 @@ public class Teleport {
 			playerList.sendPlayerToOtherDimension(
 				(PlayerServer) movingPlayer,
 				stationaryPlayer.dimension,
-				DyeColor.MAGENTA,
+				null,
 				false
 			);
-			((PlayerServer) movingPlayer).playerNetServerHandler.sendPacket(new PacketRespawn(
-				(byte) stationaryPlayer.dimension,
-				(byte) 0
-			));
+			playerList.sendPacketToPlayer(
+				movingPlayer.username, new PacketRespawn(
+					(byte) stationaryPlayer.dimension,
+					(byte) 0
+				)
+			);
 		}
-		((PlayerServer) movingPlayer).playerNetServerHandler.teleportAndRotate(x, y, z, yr, xr);
+		((PlayerServer) movingPlayer).teleport(x, y, z, yr, xr);
 		movingPlayer.moveTo(x, y, z, yr, xr);
+		movingPlayer.world.playSoundAtEntity(null, movingPlayer, "mob.ghast.fireball", 1, 1.5f);
 		// Show the teleported player to the accepting player instantly
-		// instead of waiting on the server to send it
-		((PlayerServer) stationaryPlayer).playerNetServerHandler.sendPacket(new PacketAddEntity(movingPlayer));
+		// instead of waiting on the server to send the packet
+		playerList.sendPacketToPlayersAroundPoint(
+			stationaryPlayer.x,
+			stationaryPlayer.y,
+			stationaryPlayer.z,
+			64,
+			stationaryPlayer.dimension,
+			new PacketAddEntity(movingPlayer)
+		);
 		return true;
 	}
 }

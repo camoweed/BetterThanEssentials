@@ -32,6 +32,7 @@ import java.util.List;
 					for (PlayerServer targetPlayer : players) {
 						PlayerData targetData = PlayerData.get(targetPlayer);
 						targetData.sendTPARequest(player.username, TPARequestType.TPAHERE);
+						targetPlayer.world.playSoundAtEntity(null, targetPlayer, "note.celesta", 1, 2);
 						targetPlayer.sendMessage(TextFormatting.YELLOW + player.username + TextFormatting.ORANGE + " has sent you a request to teleport to them.");
 						targetPlayer.sendMessage(TextFormatting.LIME + "/tpyes " + TextFormatting.ORANGE + "to accept, " + TextFormatting.RED + "/tpno " + TextFormatting.ORANGE + "to deny.");
 					}
