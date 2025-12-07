@@ -21,7 +21,7 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 
 @Environment(EnvType.SERVER) @SuppressWarnings("ALL") @Mixin(
 	value = CommandNickname.class, remap = false
-) public class NicknameCommandMixin implements CommandManager.CommandRegistry {
+) public class CommandNicknameMixin implements CommandManager.CommandRegistry {
 
 	@Shadow
 	private static SimpleCommandExceptionType NICKNAME_TOO_LARGE;

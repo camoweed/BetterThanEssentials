@@ -82,13 +82,13 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 	public static       boolean           PayCommand;
 	public static       boolean           CraftCommand;
 	public static       boolean           GiveCommand;
-	public static       boolean           GamemodeCommand;
-	public static       boolean           HealCommand;
+	public static       boolean GamemodeCommand;
+	public static       boolean FixCommand;
 
 	static {
 		Toml cfg = new Toml();
 		cfg.addCategory("Options");
-		cfg.addEntry("Options.MOTD", "Message of the day, shows up in server list.", "§5§lWelcome!");
+		cfg.addEntry("Options.MOTD", "Message of the day, rendered in server list.", "§5§lWelcome!");
 		cfg.addEntry("Options.NickLength", "Nickname length limit, default = 16", 16);
 		cfg.addEntry(
 			"Options.TPTimeout",
@@ -183,7 +183,7 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 		cfg.addEntry("Commands.Craft", "Let non-opped players use /craft", false);
 		cfg.addEntry("Commands.Give", "Let non-opped players use /give.", false);
 		cfg.addEntry("Commands.Gamemode", "Let non-opped players use /gamemode.", false);
-		cfg.addEntry("Commands.HealCommand", "Let non-opped players use /heal.", false);
+		cfg.addEntry("Commands.FixCommand", "Let non-opped players use /fix.", false);
 
 		CFG = new TomlConfigHandler(MOD_ID, cfg);
 
@@ -229,7 +229,7 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 		CraftCommand    = CFG.getBoolean("Commands.Craft");
 		GiveCommand     = CFG.getBoolean("Commands.Give");
 		GamemodeCommand = CFG.getBoolean("Commands.Gamemode");
-		HealCommand     = CFG.getBoolean("Commands.HealCommand");
+		FixCommand      = CFG.getBoolean("Commands.FixCommand");
 	}
 
 	@Override

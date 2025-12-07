@@ -19,7 +19,7 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 		for (String literal : literals) {
 			commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
 				.literal(literal)
-				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.HealCommand)
+				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.FixCommand)
 				.executes(context -> {
 					CommandSource source = (CommandSource) context.getSource();
 					Player        player = source.getSender();

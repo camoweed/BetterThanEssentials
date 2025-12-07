@@ -4,6 +4,7 @@
   "package": "wyspr.BTE.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "CommandGiveMixin"
   ],
   "client": [
   ],
@@ -15,9 +16,9 @@
     "BlockFarmlandMixin",
     "BlockTNTMixin",
     "CommandGameModeMixin",
+    "CommandNicknameMixin",
     "EntityFishingBobberMixin",
     "EntityPrimedTNTMixin",
-    "NicknameCommandMixin",
     "PacketHandlerServerMixin",
     "PlayerDataMixin",
     "PlayerListBoxMixin",

@@ -1,5 +1,6 @@
 package wyspr.BTE.utils;
 
+import net.minecraft.core.net.command.TextFormatting;
 import wyspr.BTE.Essentials;
 
 import java.io.IOException;
@@ -12,30 +13,38 @@ public class ConfigBuilder {
 	private static final Map<String, String> colorMap = new HashMap<>(24);
 
 	static {
-		colorMap.put("white", "0");
-		colorMap.put("orange", "1");
-		colorMap.put("magenta", "2");
-		colorMap.put("aqua", "3");
-		colorMap.put("yellow", "4");
-		colorMap.put("lime", "5");
-		colorMap.put("pink", "6");
-		colorMap.put("grey", "7");
-		colorMap.put("gray", "7");
-		colorMap.put("silver", "8");
-		colorMap.put("cyan", "9");
-		colorMap.put("purple", "a");
-		colorMap.put("blue", "b");
-		colorMap.put("brown", "c");
-		colorMap.put("green", "d");
-		colorMap.put("red", "e");
-		colorMap.put("black", "f");
-		colorMap.put("obf", "k");
-		colorMap.put("b", "l");
-		colorMap.put("s", "m");
-		colorMap.put("u", "n");
-		colorMap.put("i", "o");
-		colorMap.put("r", "r");
-		colorMap.put("reset", "r");
+		colorMap.put("white", TextFormatting.WHITE.toString());
+		colorMap.put("orange", TextFormatting.ORANGE.toString());
+		colorMap.put("magenta", TextFormatting.MAGENTA.toString());
+		colorMap.put("aqua", TextFormatting.LIGHT_BLUE.toString());
+		colorMap.put("light_blue", TextFormatting.LIGHT_BLUE.toString());
+		colorMap.put("yellow", TextFormatting.YELLOW.toString());
+		colorMap.put("lime", TextFormatting.LIME.toString());
+		colorMap.put("pink", TextFormatting.PINK.toString());
+		colorMap.put("grey", TextFormatting.GRAY.toString());
+		colorMap.put("gray", TextFormatting.GRAY.toString());
+		colorMap.put("silver", TextFormatting.LIGHT_GRAY.toString());
+		colorMap.put("light_gray", TextFormatting.LIGHT_GRAY.toString());
+		colorMap.put("light_grey", TextFormatting.LIGHT_GRAY.toString());
+		colorMap.put("cyan", TextFormatting.CYAN.toString());
+		colorMap.put("purple", TextFormatting.PURPLE.toString());
+		colorMap.put("blue", TextFormatting.BLUE.toString());
+		colorMap.put("brown", TextFormatting.BROWN.toString());
+		colorMap.put("green", TextFormatting.GREEN.toString());
+		colorMap.put("red", TextFormatting.RED.toString());
+		colorMap.put("black", TextFormatting.BLACK.toString());
+		colorMap.put("obf", TextFormatting.OBFUSCATED.toString());
+		colorMap.put("obfuscated", TextFormatting.OBFUSCATED.toString());
+		colorMap.put("b", TextFormatting.BOLD.toString());
+		colorMap.put("bold", TextFormatting.BOLD.toString());
+		colorMap.put("s", TextFormatting.STRIKETHROUGH.toString());
+		colorMap.put("strike", TextFormatting.STRIKETHROUGH.toString());
+		colorMap.put("u", TextFormatting.UNDERLINE.toString());
+		colorMap.put("underline", TextFormatting.UNDERLINE.toString());
+		colorMap.put("i", TextFormatting.ITALIC.toString());
+		colorMap.put("italic", TextFormatting.ITALIC.toString());
+		colorMap.put("r", TextFormatting.RESET.toString());
+		colorMap.put("reset", TextFormatting.RESET.toString());
 	}
 
 	private final Path         cfgPath;
@@ -108,12 +117,14 @@ public class ConfigBuilder {
 
 	private String parseTags(String line) {
 		// Handle escaping
-		line = line.replaceAll("\\\\<", "ESCAPED_LT").replaceAll("\\\\>", "ESCAPED_GT");
+		line = line.replaceAll("\\\\<", "ESCAPED_LT")
+			.replaceAll("\\\\>", "ESCAPED_GT");
 		// Process color tags
 		for (Map.Entry<String, String> entry : colorMap.entrySet()) {
-			line = line.replaceAll("<" + entry.getKey() + ">", "§" + entry.getValue());
+			line = line.replaceAll("<" + entry.getKey() + ">", entry.getValue());
 		}
 		// Revert escaped characters
-		return line.replaceAll("ESCAPED_LT", "<").replaceAll("ESCAPED_GT", ">");
+		return line.replaceAll("ESCAPED_LT", "<")
+			.replaceAll("ESCAPED_GT", ">");
 	}
 }
