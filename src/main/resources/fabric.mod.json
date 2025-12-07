@@ -1,44 +1,40 @@
 {
-  "schemaVersion": 1,
-  "id": "btaessentials",
-  "version": "${version}",
-
-  "name": "BTAEssentials",
-  "description": "This mod aims to help new BTA modders.",
-  "authors": [
-    "wyspr"
-  ],
-  "contact": {
-    "homepage": "",
-    "sources": ""
-  },
-
+	"schemaVersion": 1,
+	"id": "btessentials",
+	"version": "${version}",
+	"name": "Better Than Essentials",
+	"description": "An Essentials-like plugin for Better Than Adventure servers!",
+	"authors": [
+		"wyspr"
+	],
+	"contact": {
+		"homepage": "",
+		"sources": ""
+	},
 	"icon": "icon.png",
-  "license": "CC0-1.0",
-
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-			"wyspr.BTAEssentials.BTAEssentials"
-    ],
+	"license": "CC0-1.0",
+	"environment": "server",
+	"entrypoints": {
+		"main": [
+			"wyspr.BTE.Essentials"
+		],
 		"beforeGameStart": [
-			"wyspr.BTAEssentials.BTAEssentials"
+			"wyspr.BTE.Essentials"
 		],
 		"afterGameStart": [
-			"wyspr.BTAEssentials.BTAEssentials"
+			"wyspr.BTE.Essentials"
 		],
 		"recipesReady": [
-			"wyspr.BTAEssentials.BTAEssentials"
+			"wyspr.BTE.Essentials"
 		]
 	},
-  "mixins": [
-		"BTAEssentials.mixins.json"
-  ],
-
-  "depends": {
+	"mixins": [
+		"BTE.mixins.json"
+	],
+	"depends": {
 		"minecraft": "*",
-    "fabricloader": ">=0.15.5"
-  },
-  "suggests": {
-  }
+		"fabricloader": ">=0.15.5"
+	},
+	"suggests": {
+	}
 }

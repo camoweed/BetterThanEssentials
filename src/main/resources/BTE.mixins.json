@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "wyspr.BTE.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "server": [
+    "BlockBedMixin",
+    "BlockFarmlandMixin",
+    "BlockTNTMixin",
+    "CommandGameModeMixin",
+    "EntityFishingBobberMixin",
+    "EntityPrimedTNTMixin",
+    "NicknameCommandMixin",
+    "PacketHandlerServerMixin",
+    "PlayerDataMixin",
+    "PlayerListBoxMixin",
+    "PlayerListMixin",
+    "PlayerServerMixin",
+    "SpawnCommandMixin"
+  ]
+}
