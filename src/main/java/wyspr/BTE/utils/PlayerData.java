@@ -25,6 +25,7 @@ public class PlayerData implements Serializable {
 	private final transient Player                          player;
 	private final transient ArrayList<String>               TPARequestsOrder = new ArrayList<>();
 	private final transient HashMap<String, TPARequestType> TPARequests      = new HashMap<>();
+	public transient        boolean                         craftCommandOpen = false;
 	public                  Instant                         lastTPTime;
 	public                  WorldPosition                   backPos;
 	public                  HashMap<String, WorldPosition>  homes            = new HashMap<>();
@@ -37,7 +38,8 @@ public class PlayerData implements Serializable {
 		this.player   = player;
 		this.saveFile = new File(Essentials.PLAYER_DIR.toFile(), player.uuid + ".json");
 
-		this.lastTPTime = Instant.now()
+		this.lastTPTime = Instant
+			.now()
 			.minus(Duration.ofSeconds(Essentials.TPTimeout));
 		this.backPos    = new WorldPosition(player.x, player.y, player.z, player.dimension);
 
@@ -49,7 +51,8 @@ public class PlayerData implements Serializable {
 	}
 
 	public void save() {
-		Gson gson = new GsonBuilder().setPrettyPrinting()
+		Gson gson = new GsonBuilder()
+			.setPrettyPrinting()
 			.registerTypeAdapter(Instant.class, new InstantTypeAdapter())
 			.create();
 		String json = gson.toJson(this);
@@ -61,7 +64,8 @@ public class PlayerData implements Serializable {
 	}
 
 	public void load() {
-		Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantTypeAdapter())
+		Gson gson = new GsonBuilder()
+			.registerTypeAdapter(Instant.class, new InstantTypeAdapter())
 			.create();
 		try {
 			String     json       = new String(Files.readAllBytes(saveFile.toPath()), StandardCharsets.UTF_8);
@@ -107,7 +111,8 @@ public class PlayerData implements Serializable {
 			return 0;
 		}
 
-		return Math.toIntExact(Duration.between(now, TPAvailable)
+		return Math.toIntExact(Duration
+			.between(now, TPAvailable)
 			.getSeconds());
 	}
 

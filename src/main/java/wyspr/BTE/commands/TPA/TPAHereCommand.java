@@ -24,7 +24,7 @@ import wyspr.BTE.utils.TPARequestType;
 				.literal(literal)
 				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.TPACommand)
 				.then(ArgumentBuilderRequired
-					.argument("target", ArgumentTypeUser.user())
+					.argument("player", ArgumentTypeUser.user())
 					.executes(this::exec)));
 		}
 	}
@@ -32,7 +32,7 @@ import wyspr.BTE.utils.TPARequestType;
 	private int exec(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source     = (CommandSource) context.getSource();
 		boolean       isAdmin    = source.hasAdmin();
-		PlayerServer  target     = context.getArgument("target", PlayerServer.class);
+		PlayerServer  target     = context.getArgument("player", PlayerServer.class);
 		Player        player     = source.getSender();
 		PlayerData    targetData = PlayerData.get(target);
 		PlayerData    playerData = PlayerData.get(player);
@@ -51,6 +51,7 @@ import wyspr.BTE.utils.TPARequestType;
 
 		if (isOnlyRequest) {
 			player.sendMessage(TextFormatting.YELLOW + "Sent a request to " + target.getDisplayName());
+			target.world.playSoundAtEntity(null, target, "note.celesta", 1, 2);
 			target.sendMessage(TextFormatting.YELLOW + "" + player.username + TextFormatting.ORANGE + " has sent you a request to teleport to them.");
 			target.sendMessage(TextFormatting.LIME + "/tpyes " + TextFormatting.ORANGE + "to accept, " + TextFormatting.RED + "/tpno " + TextFormatting.ORANGE + "to deny.");
 		} else {

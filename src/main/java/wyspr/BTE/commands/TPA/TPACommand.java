@@ -46,6 +46,7 @@ import wyspr.BTE.utils.TPARequestType;
 
 					if (isOnlyRequest) {
 						player.sendMessage(TextFormatting.YELLOW + "Sent a request to " + target.username);
+						target.world.playSoundAtEntity(null, target, "note.celesta", 1, 2);
 						target.sendMessage(TextFormatting.YELLOW + "" + player.username + TextFormatting.ORANGE + " has sent you a TP request.");
 						target.sendMessage(TextFormatting.LIME + "/tpyes " + TextFormatting.ORANGE + "to accept, " + TextFormatting.RED + "/tpno " + TextFormatting.ORANGE + "to deny.");
 					} else {

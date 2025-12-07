@@ -51,6 +51,11 @@ import wyspr.BTE.utils.Teleport;
 		TPARequestType               request        = requestPair.getValue();
 
 		Player target = (Player) MinecraftServer.getInstance().playerList.getPlayerEntity(targetUsername);
+		if (target == null) {
+			player.sendMessage(TextFormatting.LIGHT_BLUE + targetUsername + TextFormatting.ORANGE + " is offline.");
+			return 1;
+		}
+
 		PlayerData targetData     = PlayerData.get(target);
 		boolean    targetNotAdmin = !((PlayerServer) target).isOperator();
 

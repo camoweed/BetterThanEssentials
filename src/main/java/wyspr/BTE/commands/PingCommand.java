@@ -11,8 +11,7 @@ import net.minecraft.core.net.command.CommandSource;
 		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
 			.literal("ping")
 			.executes(context -> {
-				CommandSource source = (CommandSource) context.getSource();
-				source.sendMessage("Pong!");
+				((CommandSource) context.getSource()).sendMessage("Pong!");
 				return 1;
 			}));
 	}

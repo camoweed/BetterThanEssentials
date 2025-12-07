@@ -11,7 +11,8 @@ import net.minecraft.server.MinecraftServer;
 @SuppressWarnings("ALL") public class MOTDCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
-		commandDispatcher.register((ArgumentBuilderLiteral) (ArgumentBuilderLiteral.literal("motd"))
+		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
+			.literal("motd")
 			.executes(context -> {
 				CommandSource source = (CommandSource) context.getSource();
 				source.sendMessage(MinecraftServer.getInstance().motd);
@@ -24,7 +25,7 @@ import net.minecraft.server.MinecraftServer;
 					.argument("motd", ArgumentTypeString.greedyString())
 					.executes(context -> {
 						String newMOTD = context.getArgument("motd", String.class);
-						MinecraftServer.getInstance().motd = newMOTD;
+						MinecraftServer.getInstance().motd = newMOTD.replace("$$", "§");
 						return 1;
 					}))));
 	}

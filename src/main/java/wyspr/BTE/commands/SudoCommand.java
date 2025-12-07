@@ -2,17 +2,16 @@ package wyspr.BTE.commands;
 
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.ArgumentTypeString;
 import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
 import com.mojang.brigadier.builder.ArgumentBuilderRequired;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.CommandNode;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.core.net.packet.PacketChat;
 import net.minecraft.server.entity.player.PlayerServer;
+import wyspr.BTE.commands.arguments.ArgumentTypeCommand;
 import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 
 @SuppressWarnings("ALL") public class SudoCommand implements CommandManager.CommandRegistry {
@@ -26,23 +25,23 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 				.then(ArgumentBuilderRequired
 					.argument("player", ArgumentTypeUser.user())
 					.then(ArgumentBuilderRequired
-						.argument("command", ArgumentTypeString.greedyString())
+						.argument("command", ArgumentTypeCommand.commands())
 						.executes(this::exec))));
 		}
 	}
 
 	private int exec(CommandContext<Object> context) {
 		CommandSource source  = (CommandSource) context.getSource();
-		Player        player  = source.getSender();
-		PlayerServer  target  = context.getArgument("player", PlayerServer.class);
+		Player        sender  = source.getSender();
+		PlayerServer  player  = context.getArgument("player", PlayerServer.class);
 		String        command = context.getArgument("command", String.class);
 
 		if (!command.startsWith("/")) {
 			command = "/" + command;
 		}
 
-		player.sendMessage(TextFormatting.YELLOW + "Ran " + TextFormatting.LIGHT_BLUE + command + TextFormatting.YELLOW + " as " + TextFormatting.RESET + target.getDisplayName());
-		target.playerNetServerHandler.handleChat(new PacketChat(command));
+		sender.sendMessage(TextFormatting.YELLOW + "Ran " + TextFormatting.LIGHT_BLUE + command + TextFormatting.YELLOW + " as " + TextFormatting.RESET + player.getDisplayName());
+		player.playerNetServerHandler.handleChat(new PacketChat(command));
 
 		return 1;
 	}
