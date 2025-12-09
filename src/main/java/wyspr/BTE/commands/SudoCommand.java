@@ -5,12 +5,15 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
 import com.mojang.brigadier.builder.ArgumentBuilderRequired;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.core.net.packet.PacketChat;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.entity.player.PlayerServer;
+import net.minecraft.server.net.command.ServerCommandSource;
 import wyspr.BTE.commands.arguments.ArgumentTypeCommand;
 import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 
@@ -37,58 +40,45 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 		String        command = context.getArgument("command", String.class);
 
 		if (!command.startsWith("/")) {
-			command = "/" + command;
+			player.playerNetServerHandler.handleChat(new PacketChat(command));
+			sender.sendMessage((
+				TextFormatting.YELLOW + "Sent \"" +
+				TextFormatting.LIGHT_BLUE + command +
+				TextFormatting.YELLOW + "\" as " +
+				TextFormatting.RESET + player.getDisplayName()
+			));
+			return 1;
 		}
 
-		sender.sendMessage(TextFormatting.YELLOW + "Ran " + TextFormatting.LIGHT_BLUE + command + TextFormatting.YELLOW + " as " + TextFormatting.RESET + player.getDisplayName());
-		player.playerNetServerHandler.handleChat(new PacketChat(command));
+		MinecraftServer mcServer = MinecraftServer.getInstance();
+		ServerCommandSource playerCommandSource = new ServerCommandSource(mcServer, player);
+		CommandDispatcher<CommandSource> dispatcher = mcServer
+			.getDimensionWorld(player.dimension)
+			.getCommandManager()
+			.getDispatcher();
+
+		try {
+			command = command.substring(1);
+			dispatcher.execute(command, playerCommandSource);
+			sender.sendMessage((
+				TextFormatting.YELLOW + "Ran " +
+				TextFormatting.LIGHT_BLUE + "/" + command +
+				TextFormatting.YELLOW + " as " +
+				TextFormatting.RESET + player.getDisplayName()
+			));
+		} catch (CommandSyntaxException e) {
+			sender.sendMessage((
+				TextFormatting.ORANGE + "Failed to run " +
+				TextFormatting.LIGHT_BLUE + "/" + command +
+				TextFormatting.ORANGE + " as " +
+				TextFormatting.RESET + player.getDisplayName()
+			));
+			sender.sendMessage((
+				TextFormatting.RED + "Error: " +
+				TextFormatting.WHITE + e.getMessage()
+			));
+		}
 
 		return 1;
 	}
 }
-//import java.util.Arrays;
-//
-//public class SudoCommand extends Command {
-//
-//	@Override
-//	public boolean execute(CommandHandler handler, CommandSender sender, String[] args) {
-//		if (args.length < 2) return false;
-//
-//		String username = args[0];
-//		String commandTitle = args[1];
-//		String[] commandArgs = null;
-//		if (args.length > 2) {
-//			commandArgs = Arrays.copyOfRange(args, 2, args.length);
-//		}
-//
-//		EntityPlayerMP targetPlayer;
-//
-//		if (handler.playerExists(username)) {
-//			targetPlayer = (EntityPlayerMP) handler.getPlayer(username);
-//		} else {
-//			sender.sendMessage(TextFormatting.RED + "Player not found: " + TextFormatting.ORANGE + username);
-//			return false;
-//		}
-//		ServerPlayerCommandSender targetPlayerSender = new ServerPlayerCommandSender(handler.asServer().minecraftServer, targetPlayer);
-//
-//		for (Command command : Commands.commands) {
-//			if (!command.isName(commandTitle)) continue;
-//			if (!targetPlayer.isOperator() && command.opRequired(commandArgs)) {
-//				sender.sendMessage(TextFormatting.ORANGE + username + TextFormatting.RED + "doesn't have permission to use this command!");
-//				return true;
-//			}
-//			try {
-//				boolean success = command.execute(handler, targetPlayerSender, commandArgs);
-//				if (!success) {
-//					sender.sendMessage(TextFormatting.RED + "Error: invalid arguments");
-//					command.sendCommandSyntax(handler, sender);
-//				}
-//			} catch (CommandError e) {
-//				sender.sendMessage(TextFormatting.RED + e.getMessage());
-//			}
-//			return true;
-//		}
-//
-//		sender.sendMessage(TextFormatting.RED + "Command not found: " + TextFormatting.ORANGE + commandTitle);
-//		return false;
-//	}
