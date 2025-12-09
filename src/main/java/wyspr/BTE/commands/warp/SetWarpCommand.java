@@ -12,7 +12,7 @@ import net.minecraft.core.net.command.TextFormatting;
 import wyspr.BTE.utils.Warps;
 import wyspr.BTE.utils.WorldPosition;
 
-@SuppressWarnings("ALL") public class SetWarpCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL") public class 	SetWarpCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		CommandNode<Object> command
@@ -40,6 +40,7 @@ import wyspr.BTE.utils.WorldPosition;
 
 		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
 			.literal("setwarp")
+			.requires(source -> ((CommandSource) source).hasAdmin())
 			.redirect(command));
 	}
 }
