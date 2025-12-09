@@ -37,26 +37,27 @@ public class ArgumentTypeHome implements ArgumentType<String> {
 		return reader.readString();
 	}
 
-//	public String parse(StringReader reader) throws CommandSyntaxException {
-//       return reader.readString();
-//	}
-//
-//	public <S> String parse(StringReader reader, S source) throws CommandSyntaxException {
-//		Player       sender     = ((ServerCommandSource) source).getSender();
-//		PlayerData   playerData = PlayerData.get(sender);
-//		final String input      = reader.readString();
-//		List<String> homes      = playerData.getHomesList();
-//
-//		for (String home : homes) {
-//			if (home.equalsIgnoreCase(input)) {
-//				this.parse(reader);
-//			}
-//		}
-//		throw new CommandSyntaxException(
-//			CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
-//			() -> "Failed to find Home: " + input
-//		);
-//	}
+	public <S> String parse(StringReader reader, S source) throws CommandSyntaxException {
+		final String input      = reader.readString();
+		List<String> homes;
+		if (type== HomesType.SELF) {
+			Player       sender     = ((ServerCommandSource) source).getSender();
+			PlayerData   playerData = PlayerData.get(sender);
+			homes      = playerData.getHomesList();
+		} else {
+			return input;
+		}
+
+		for (String home : homes) {
+			if (home.equalsIgnoreCase(input)) {
+				return input;
+			}
+		}
+		throw new CommandSyntaxException(
+			CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+			() -> "Failed to find Home: " + input
+		);
+	}
 
 	public <S> CompletableFuture<Suggestions> listSuggestions(
 		CommandContext<S> context,

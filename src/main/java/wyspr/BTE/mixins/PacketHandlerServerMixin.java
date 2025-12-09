@@ -28,15 +28,6 @@ import java.util.Objects;
 	@Shadow
 	private       PlayerServer playerEntity;
 
-	@Inject(
-		method = "handleRespawn", at = @At(
-		shift = At.Shift.BEFORE, value = "INVOKE", target = "Lnet/minecraft/server/net/PlayerList;recreatePlayerEntity(Lnet/minecraft/server/entity/player/PlayerServer;I)Lnet/minecraft/server/entity/player/PlayerServer;"
-	)
-	)
-	public void respawnHook(PacketRespawn packet, CallbackInfo ci) {
-		this.playerEntity.score = (int) (this.playerEntity.score * Essentials.DeathCost);
-	}
-
 	@Redirect(
 		method = "handleChat", at = @At(
 		value = "INVOKE", target = "Ljava/lang/String;trim()Ljava/lang/String;"
