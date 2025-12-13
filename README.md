@@ -29,7 +29,7 @@ Adds various new commands and features for server administration and gameplay en
 | `/ping`       |      ❌      |       ❌       |                                   | Pong!                                                                                                      |
 | `/rtp`        |      ❌      |       ✅       |                                   | Random teleport in a configurable area                                                                     |
 | `/rules`      |      ❌      |       ❌       |                                   | Prints rules pages into chat, see below for creating rules pages                                           | 
-| `/sethome`    |      ❌      |       ✅       | `/addhome`                        | Adds a home<br><sup>(With no argument, defaults to home")                                                  |
+| `/sethome`    |      ❌      |       ✅       | `/addhome`                        | Adds a home<br><sup>(With no argument, defaults to "home")                                                 |
 | `/setwarp`    |      ✅      |       ❌       | `/addwarp`                        | Adds a warp                                                                                                |
 | `/smite`      |      ✅      |       ❌       |                                   | Strikes the area under the crosshair with lightning                                                        |
 | `/sudo`       |      ✅      |       ❌       | `/doas`                           | Run commands as another player                                                                             |
