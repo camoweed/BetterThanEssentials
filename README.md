@@ -13,9 +13,11 @@ Adds various new commands and features for server administration and gameplay en
 | `/craft`      |      ❌      |       ✅       | `/craftingtable`, `/craft`, `/cb` | Opens a crafting table                                                                                     |
 | `/delhome`    |     ❌/✅     |       ✅       | `/rmhome`                         | Remove a home<br><sup>(OPs can remove other players homes)                                                 |
 | `/delwarp`    |      ✅      |       ❌       | `/rmwarp`                         | Remove a warp                                                                                              |
+| `/fireball`   |      ✅      |       ❌       |                                   | Fires a ghast fireball from the player                                                                     |
 | `/fix`        |      ❌      |       ✅       | `/repair`                         | Repairs currently held item                                                                                |
 | `/give`       |      ❌      |       ✅       | `/i`                              | Shorthand for giving items                                                                                 |
 | `/gm`         |      ❌      |       ✅       | `/gms`, `/gmc`, `/gmsp`           | Shorthand for changing game modes                                                                          |
+| `/god`        |      ✅      |       ❌       | `/godmode`                        | Prevent damage in survival or adventure mode                                                               |
 | `/home`       |     ❌/✅     |       ✅       |                                   | Travel to a home<sup><br>(With no argument, defaults to "home")<br>(OPs can travel to other players homes) |
 | `/homes`      |      ❌      |       ✅       |                                   | Lists your homes<br><sup>(OPs can view other players homes)                                                |
 | `/info`       |      ❌      |       ❌       |                                   | Prints info pages into chat, see below for creating info pages                                             |
@@ -29,7 +31,9 @@ Adds various new commands and features for server administration and gameplay en
 | `/rules`      |      ❌      |       ❌       |                                   | Prints rules pages into chat, see below for creating rules pages                                           | 
 | `/sethome`    |      ❌      |       ✅       | `/addhome`                        | Adds a home<br><sup>(With no argument, defaults to home")                                                  |
 | `/setwarp`    |      ✅      |       ❌       | `/addwarp`                        | Adds a warp                                                                                                |
+| `/smite`      |      ✅      |       ❌       |                                   | Strikes the area under the crosshair with lightning                                                        |
 | `/sudo`       |      ✅      |       ❌       | `/doas`                           | Run commands as another player                                                                             |
+| `/tnt`        |      ✅      |       ❌       | `/grenade`                        | Fires a lit tnt from the player                                                                            |
 | `/tpall`      |      ✅      |       ✅       | `/tpaall`                         | Sends a tpa request to all players                                                                         |
 | `/tpa`        |      ❌      |       ✅       | `/tpask`                          | Sends a request to teleport yourself to a player                                                           |
 | `/tpahere`    |      ❌      |       ✅       | `/tphere` , `/tph`                | Sends a request to teleport a player to you                                                                |
@@ -52,7 +56,7 @@ Adds various new commands and features for server administration and gameplay en
 - Per-world TNT controls: Set a Y level that TNT will stop working below. 
 - Disable bed explosions in non-sleeping dimensions
 - Greentext in chat by starting a message with "> "
-- Selection symbol <sup>(§)</sup> in chat with $$
+- Selection symbol (§) in chat with $$
 - Lose a portion of points on death (instead of all)
 - Custom rules and info pages
 
