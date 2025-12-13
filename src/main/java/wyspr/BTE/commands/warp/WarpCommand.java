@@ -12,6 +12,7 @@ import net.minecraft.core.net.command.TextFormatting;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeWarp;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.Teleport;
 import wyspr.BTE.utils.Warps;
 import wyspr.BTE.utils.WorldPosition;
@@ -30,37 +31,37 @@ import java.util.Optional;
 	}
 
 	private int exec(CommandContext<Object> context) throws CommandSyntaxException {
-			CommandSource source     = (CommandSource) context.getSource();
-			Player        player     = source.getSender();
-			PlayerData    playerData = PlayerData.get(player);
-			boolean       isAdmin    = source.hasAdmin();
-			String        target     = context.getArgument("target", String.class);
+		CommandSource source    = (CommandSource) context.getSource();
+		Player        player    = source.getSender();
+		TPManager     playerTPM = PlayerData.get(player).tpManager;
+		boolean       isAdmin   = source.hasAdmin();
+		String        target    = context.getArgument("target", String.class);
 
-			Optional<WorldPosition> warp = Warps.getWarp(target);
+		Optional<WorldPosition> warp = Warps.getWarp(target);
 
-			if (!warp.isPresent()) {
-				player.sendMessage(TextFormatting.ORANGE + "There is no warp named: " + TextFormatting.YELLOW + target);
-				return 1;
-			}
-
-			int cost = Essentials.WarpCost;
-			if (player.score < cost && !isAdmin) {
-				player.sendMessage(TextFormatting.YELLOW + "You do not have enough points to use this command!");
-				player.sendMessage(TextFormatting.YELLOW + "You need " + TextFormatting.ORANGE + (cost - player.score) + TextFormatting.YELLOW + " more points!");
-				return 1;
-			}
-
-			if (playerData.canTP() || isAdmin) {
-				playerData.updateBackPos();
-				WorldPosition warpPos = warp.get();
-				if (Teleport.teleport(player, warpPos)) {
-					player.sendMessage(TextFormatting.YELLOW + "Teleported to " + TextFormatting.ORANGE + target);
-				}
-			} else {
-				int waitTime = playerData.TPCooldown();
-				player.sendMessage(TextFormatting.YELLOW + "Teleport available in " + TextFormatting.ORANGE + waitTime + TextFormatting.YELLOW + " seconds.");
-			}
-
+		if (!warp.isPresent()) {
+			player.sendMessage(TextFormatting.ORANGE + "There is no warp named: " + TextFormatting.YELLOW + target);
 			return 1;
+		}
+
+		int cost = Essentials.WarpCost;
+		if (player.score < cost && !isAdmin) {
+			player.sendMessage(TextFormatting.YELLOW + "You do not have enough points to use this command!");
+			player.sendMessage(TextFormatting.YELLOW + "You need " + TextFormatting.ORANGE + (cost - player.score) + TextFormatting.YELLOW + " more points!");
+			return 1;
+		}
+
+		if (playerTPM.canTP() || isAdmin) {
+			playerTPM.updateBackPos();
+			WorldPosition warpPos = warp.get();
+			if (Teleport.teleport(player, warpPos)) {
+				player.sendMessage(TextFormatting.YELLOW + "Teleported to " + TextFormatting.ORANGE + target);
+			}
+		} else {
+			int waitTime = playerTPM.TPCooldown();
+			player.sendMessage(TextFormatting.YELLOW + "Teleport available in " + TextFormatting.ORANGE + waitTime + TextFormatting.YELLOW + " seconds.");
+		}
+
+		return 1;
 	}
 }

@@ -11,6 +11,9 @@ import turniplabs.halplibe.util.TomlConfigHandler;
 import turniplabs.halplibe.util.toml.Toml;
 import wyspr.BTE.commands.*;
 import wyspr.BTE.commands.TPA.*;
+import wyspr.BTE.commands.gamemode.CreativeCommand;
+import wyspr.BTE.commands.gamemode.SpectatorCommand;
+import wyspr.BTE.commands.gamemode.SurvivalCommand;
 import wyspr.BTE.commands.home.DelhomeCommand;
 import wyspr.BTE.commands.home.HomeCommand;
 import wyspr.BTE.commands.home.HomesCommand;
@@ -35,9 +38,9 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 	public static final TomlConfigHandler CFG;
 	//  server/config/
 	public static final Path              CFG_DIR    = Paths.get("config");
-	//  server/config/BTAEssentials
+	//  server/config/BTEssentials
 	public static final Path              DATA_DIR   = CFG_DIR.resolve(MOD_ID);
-	//  server/config/BTAEssentials/players
+	//  server/config/BTEssentials/players
 	public static final Path              PLAYER_DIR = DATA_DIR.resolve("players");
 	public static       ConfigBuilder     info;
 	public static       ConfigBuilder     rules;
@@ -82,8 +85,8 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 	public static       boolean           PayCommand;
 	public static       boolean           CraftCommand;
 	public static       boolean           GiveCommand;
-	public static       boolean GamemodeCommand;
-	public static       boolean FixCommand;
+	public static       boolean           GamemodeCommand;
+	public static       boolean           FixCommand;
 
 	static {
 		Toml cfg = new Toml();
@@ -348,22 +351,30 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 		CommandManager.registerServerCommand(new ColorsCommand());
 		CommandManager.registerServerCommand(new CraftingCommand());
 		CommandManager.registerServerCommand(new FixCommand());
-		CommandManager.registerServerCommand(new GamemodeCreativeCommand());
-		CommandManager.registerServerCommand(new GamemodeSpectatorCommand());
-		CommandManager.registerServerCommand(new GamemodeSurvivalCommand());
+		CommandManager.registerServerCommand(new FireballCommand());
 		CommandManager.registerServerCommand(new ImportMelonUtilsCommand());
-		CommandManager.registerServerCommand(new InfoCommand());
+		CommandManager.registerServerCommand(new GodCommand());
 		CommandManager.registerServerCommand(new InvseeCommand());
 		CommandManager.registerServerCommand(new MOTDCommand());
-		CommandManager.registerServerCommand(new MuteCommand());
 		CommandManager.registerServerCommand(new OPChatCommand());
 		CommandManager.registerServerCommand(new PayCommand());
 		CommandManager.registerServerCommand(new PingCommand());
 		CommandManager.registerServerCommand(new RTPCommand());
-		CommandManager.registerServerCommand(new RulesCommand());
 		CommandManager.registerServerCommand(new SudoCommand());
-		CommandManager.registerServerCommand(new UnmuteCommand());
+		CommandManager.registerServerCommand(new TntCommand());
+		CommandManager.registerServerCommand(new TrollCommand());
+		CommandManager.registerServerCommand(new SmiteCommand());
 		CommandManager.registerServerCommand(new VanishCommand());
+
+		CommandManager.registerServerCommand(new InfoCommand());
+		CommandManager.registerServerCommand(new RulesCommand());
+
+		CommandManager.registerServerCommand(new MuteCommand());
+		CommandManager.registerServerCommand(new UnmuteCommand());
+
+		CommandManager.registerServerCommand(new CreativeCommand());
+		CommandManager.registerServerCommand(new SpectatorCommand());
+		CommandManager.registerServerCommand(new SurvivalCommand());
 
 		CommandManager.registerServerCommand(new DelhomeCommand());
 		CommandManager.registerServerCommand(new HomeCommand());

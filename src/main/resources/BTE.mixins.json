@@ -21,7 +21,7 @@
     "EntityPrimedTNTMixin",
     "MenuCraftingMixin",
     "PacketHandlerServerMixin",
-    "PlayerDataMixin",
+    "PlayerDataInterfaceMixin",
     "PlayerListBoxMixin",
     "PlayerListMixin",
     "PlayerServerMixin",

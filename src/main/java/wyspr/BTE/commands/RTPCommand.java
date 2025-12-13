@@ -9,6 +9,7 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.Teleport;
 
 import java.util.Random;
@@ -22,24 +23,32 @@ import java.util.Random;
 			.literal("rtp")
 			.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.RTPCommand)
 			.executes(context -> {
-				CommandSource source     = (CommandSource) context.getSource();
-				boolean       isAdmin    = source.hasAdmin();
-				Player        player     = source.getSender();
-				PlayerData    playerData = PlayerData.get(player);
+				CommandSource source    = (CommandSource) context.getSource();
+				boolean       isAdmin   = source.hasAdmin();
+				Player        player    = source.getSender();
+				TPManager     playerTPM = PlayerData.get(player).tpManager;
 
 				int cost = Essentials.RTPCost;
 				if (player.score < cost && !isAdmin) {
 					player.sendMessage(TextFormatting.YELLOW + "You do not have enough points to use this command!");
-					player.sendMessage(TextFormatting.YELLOW + "You need " + TextFormatting.ORANGE + (cost - player.score) + TextFormatting.YELLOW + " more points!");
+					player.sendMessage(
+						TextFormatting.YELLOW + "You need " +
+							TextFormatting.ORANGE + (cost - player.score) +
+							TextFormatting.YELLOW + " more points!"
+					);
 					return 1;
 				}
 				if (player.dimension != 0) {
 					player.sendMessage(TextFormatting.YELLOW + "You may only use this in the overworld!");
 					return 1;
 				}
-				if (!playerData.canTP() && !isAdmin) {
-					int waitTime = playerData.TPCooldown();
-					player.sendMessage(TextFormatting.YELLOW + "Teleport available in " + TextFormatting.ORANGE + waitTime + TextFormatting.YELLOW + " seconds.");
+				if (!playerTPM.canTP() && !isAdmin) {
+					int waitTime = playerTPM.TPCooldown();
+					player.sendMessage(
+						TextFormatting.YELLOW + "Teleport available in " +
+							TextFormatting.ORANGE + waitTime +
+							TextFormatting.YELLOW + " seconds."
+					);
 					return 1;
 				}
 
@@ -48,10 +57,13 @@ import java.util.Random;
 				int randX = (int) (r.nextDouble() * (max - min) + min);
 				int randZ = (int) (r.nextDouble() * (max - min) + min);
 
-				playerData.updateBackPos();
+				playerTPM.updateBackPos();
 
 				if (Teleport.teleport(player, randX, 256, randZ, player.dimension)) {
-					player.sendMessage(TextFormatting.YELLOW + "Teleported! " + TextFormatting.BOLD + "Should you get stuck, rejoin.");
+					player.sendMessage(
+						TextFormatting.YELLOW + "Teleported! " +
+							TextFormatting.BOLD + "Should you get stuck, rejoin."
+					);
 
 					player.score -= Essentials.RTPCost;
 

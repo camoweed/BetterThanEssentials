@@ -1,4 +1,4 @@
-package wyspr.BTE.commands;
+package wyspr.BTE.commands.gamemode;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
@@ -16,7 +16,7 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 
 import java.text.MessageFormat;
 
-@SuppressWarnings("ALL") public class GamemodeCreativeCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL") public class CreativeCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"creative", "gmc"};

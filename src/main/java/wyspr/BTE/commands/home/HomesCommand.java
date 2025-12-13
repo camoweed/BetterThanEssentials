@@ -34,7 +34,7 @@ import java.util.List;
 		boolean       isAdmin    = source.hasAdmin();
 		Player        player     = source.getSender();
 		PlayerData    playerData = PlayerData.get(player);
-		List<String>  homes      = playerData.getHomesList();
+		List<String>  homes      = playerData.homes.getHomesList();
 
 		if (homes.isEmpty()) {
 			player.sendMessage(TextFormatting.ORANGE + "You do not have any homes!");
@@ -53,7 +53,7 @@ import java.util.List;
 		Player        player     = source.getSender();
 		Player        target     = context.getArgument("player", PlayerServer.class);
 		PlayerData    playerData = PlayerData.get(target);
-		List<String>  homes      = playerData.getHomesList();
+		List<String>  homes      = playerData.homes.getHomesList();
 
 		if (homes.isEmpty()) {
 			player.sendMessage(TextFormatting.ORANGE + "" + target.nickname + " does not have any homes!");

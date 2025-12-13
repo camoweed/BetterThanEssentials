@@ -55,7 +55,8 @@ public class Teleport {
 			player.xRot
 		);
 		player.moveTo(destination.x, destination.y, destination.z, player.yRot, player.xRot);
-		player.world.playSoundAtEntity(null, player, "mob.ghast.fireball", 1, 1.5f);
+		player.world.playSoundAtEntity(null, player, "random.explode", 2, 2);
+		player.world.spawnParticle("smoke", destination.x + 0.5, destination.y, destination.z + 0.5, 0, 0, 0, 0);
 		// Show the teleported player  instantly
 		// instead of waiting on the server to send the packet
 		playerList.sendPacketToPlayersAroundPoint(
@@ -98,13 +99,14 @@ public class Teleport {
 		}
 		((PlayerServer) movingPlayer).teleport(x, y, z, yr, xr);
 		movingPlayer.moveTo(x, y, z, yr, xr);
-		movingPlayer.world.playSoundAtEntity(null, movingPlayer, "mob.ghast.fireball", 1, 1.5f);
+		movingPlayer.world.playSoundAtEntity(null, movingPlayer, "random.explode", 2, 2);
+		movingPlayer.world.spawnParticle("smoke", x + 0.5, y, z + 0.5, 0, 0, 0, 0);
 		// Show the teleported player to the accepting player instantly
 		// instead of waiting on the server to send the packet
 		playerList.sendPacketToPlayersAroundPoint(
-			stationaryPlayer.x,
-			stationaryPlayer.y,
-			stationaryPlayer.z,
+			x,
+			y,
+			z,
 			64,
 			stationaryPlayer.dimension,
 			new PacketAddEntity(movingPlayer)

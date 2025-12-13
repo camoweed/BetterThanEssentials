@@ -3,6 +3,7 @@ package wyspr.BTE.mixins;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.player.gamemode.Gamemode;
+import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
 import net.minecraft.server.entity.player.PlayerServer;
 import net.minecraft.server.player.PlayerListBox;
@@ -20,13 +21,49 @@ import wyspr.BTE.utils.PlayerData;
 	}
 
 	@Override
+	public boolean isInLava() {
+		if (PlayerData.get(this).godMode) return false;
+		return super.isInLava();
+	}
+
+	@Override
+	public boolean isOnFire() {
+		if (PlayerData.get(this).godMode) return false;
+		return super.isOnFire();
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+		PlayerData playerData = PlayerData.get(this);
+		this.speed            = playerData.speed;
+		this.flySpeed         = playerData.flySpeed;
+	}
+
+	@Override
 	public void onDeath(Entity entityKilledBy) {
 		if (Essentials.BackOnDeath) {
-			PlayerData
-				.get(this)
-				.updateBackPos();
+			PlayerData.get(this).tpManager.updateBackPos();
 		}
 		super.onDeath(entityKilledBy);
+	}
+
+	@Override
+	public boolean hurt(Entity attacker, int damage, DamageType type) {
+		if (PlayerData.get(this).godMode) return false;
+		return super.hurt(attacker, damage, type);
+	}
+
+	@Override
+	public void lavaHurt() {
+		if (PlayerData.get(this).godMode) return;
+		super.lavaHurt();
+	}
+
+	@Override
+	public void fireHurt() {
+		if (PlayerData.get(this).godMode) return;
+		super.fireHurt();
 	}
 
 	@Override
@@ -44,10 +81,7 @@ import wyspr.BTE.utils.PlayerData;
 	public void updateListOnGamemode(Gamemode newGamemode, CallbackInfo ci) {
 		PlayerData playerData = PlayerData.get(this);
 		if (playerData.vanished) {
-			if (
-				this.gamemode == Gamemode.spectator
-			 && newGamemode   != Gamemode.spectator
-			) {
+			if (this.gamemode == Gamemode.spectator && newGamemode != Gamemode.spectator) {
 				playerData.removeVanish();
 				PlayerListBox.updateList();
 			}

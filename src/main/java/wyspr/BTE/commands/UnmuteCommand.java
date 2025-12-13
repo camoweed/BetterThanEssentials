@@ -30,9 +30,15 @@ import wyspr.BTE.utils.PlayerData;
 					targetData.unmute();
 
 					if (isAlreadyUnmuted) {
-						player.sendMessage(TextFormatting.LIGHT_BLUE + target.username + TextFormatting.YELLOW + " is already unmuted.");
+						player.sendMessage(
+						TextFormatting.LIGHT_BLUE + target.username +
+							TextFormatting.YELLOW + " is already unmuted."
+						);
 					} else {
-						player.sendMessage(TextFormatting.YELLOW + "You have unmuted " + TextFormatting.LIGHT_BLUE + target.username);
+						player.sendMessage(
+						TextFormatting.YELLOW + "You have unmuted " +
+							TextFormatting.LIGHT_BLUE + target.username
+						);
 						target.sendMessage(TextFormatting.ORANGE + "You have been unmuted.");
 					}
 					return 1;

@@ -15,6 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.TPARequestType;
 
 @SuppressWarnings("ALL") public class TPDenyCommand implements CommandManager.CommandRegistry {
@@ -36,18 +37,18 @@ import wyspr.BTE.utils.TPARequestType;
 	private int noArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source     = (CommandSource) context.getSource();
 		boolean       isAdmin    = source.hasAdmin();
-		Player        player     = source.getSender();
-		PlayerData    playerData = PlayerData.get(player);
+		Player               player     = source.getSender();
+		TPManager playerTPM = PlayerData.get(player).tpManager;
 
-		if (playerData.hasNoRequests()) {
+		if (playerTPM.hasNoRequests()) {
 			player.sendMessage(TextFormatting.YELLOW + "You don't have any requests.");
 			return 1;
 		}
 
-		Pair<String, TPARequestType> requestPair    = playerData.getNewestRequest();
+		Pair<String, TPARequestType> requestPair    = playerTPM.getNewestRequest();
 		String                       targetUsername = requestPair.getKey();
 
-		playerData.removeRequest(targetUsername);
+		playerTPM.removeRequest(targetUsername);
 
 		player.sendMessage(TextFormatting.ORANGE + "Denied TP request from " + TextFormatting.YELLOW + targetUsername);
 
@@ -60,20 +61,20 @@ import wyspr.BTE.utils.TPARequestType;
 		PlayerServer  target         = context.getArgument("target", PlayerServer.class);
 		Player        player         = source.getSender();
 		PlayerData    targetData     = PlayerData.get(target);
-		PlayerData    playerData     = PlayerData.get(player);
+		TPManager     playerTPM      = PlayerData.get(player).tpManager;
 		boolean       targetNotAdmin = !((PlayerServer) target).isOperator();
 
-		if (playerData.hasNoRequests()) {
+		if (playerTPM.hasNoRequests()) {
 			player.sendMessage(TextFormatting.YELLOW + "You don't have any requests.");
 			return 1;
 		}
 
-		if (!playerData.hasRequestFrom(target.username)) {
+		if (!playerTPM.hasRequestFrom(target.username)) {
 			player.sendMessage(TextFormatting.ORANGE + "You don't have a request from " + TextFormatting.YELLOW + target);
 			return 1;
 		}
 
-		playerData.removeRequest(target.username);
+		playerTPM.removeRequest(target.username);
 
 		player.sendMessage(TextFormatting.ORANGE + "Denied TP request from " + TextFormatting.YELLOW + target.username);
 

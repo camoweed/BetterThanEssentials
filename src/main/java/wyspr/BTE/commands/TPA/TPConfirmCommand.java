@@ -15,6 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.TPARequestType;
 import wyspr.BTE.utils.Teleport;
 
@@ -36,17 +37,17 @@ import wyspr.BTE.utils.Teleport;
 	}
 
 	private int noArg(CommandContext<Object> context) throws CommandSyntaxException {
-		CommandSource source     = (CommandSource) context.getSource();
-		boolean       isAdmin    = source.hasAdmin();
-		Player        player     = source.getSender();
-		PlayerData    playerData = PlayerData.get(player);
+		CommandSource source    = (CommandSource) context.getSource();
+		boolean       isAdmin   = source.hasAdmin();
+		Player        player    = source.getSender();
+		TPManager     playerTPM = PlayerData.get(player).tpManager;
 
-		if (playerData.hasNoRequests()) {
+		if (playerTPM.hasNoRequests()) {
 			player.sendMessage(TextFormatting.YELLOW + "You don't have any requests.");
 			return 1;
 		}
 
-		Pair<String, TPARequestType> requestPair    = playerData.getNewestRequest();
+		Pair<String, TPARequestType> requestPair    = playerTPM.getNewestRequest();
 		String                       targetUsername = requestPair.getKey();
 		TPARequestType               request        = requestPair.getValue();
 
@@ -70,13 +71,13 @@ import wyspr.BTE.utils.Teleport;
 		boolean didTeleport = false;
 
 		if (request == TPARequestType.TPA) {
-			targetData.updateBackPos();
+			targetData.tpManager.updateBackPos();
 			didTeleport = Teleport.teleport(target, player);
 			if (didTeleport) {
 				target.sendMessage(TextFormatting.ORANGE + "Teleported to " + player.getDisplayName());
 			}
 		} else if (request == TPARequestType.TPAHERE) {
-			playerData.updateBackPos();
+			playerTPM.updateBackPos();
 			didTeleport = Teleport.teleport(player, target);
 			if (didTeleport) {
 				target.sendMessage(TextFormatting.ORANGE + "Teleported " + player.getDisplayName() + " to you");
@@ -85,7 +86,7 @@ import wyspr.BTE.utils.Teleport;
 		}
 
 		if (didTeleport) {
-			playerData.removeRequest(target.username);
+			playerTPM.removeRequest(target.username);
 			if (targetNotAdmin) {
 				target.score -= Essentials.TPACost;
 			}
@@ -100,20 +101,20 @@ import wyspr.BTE.utils.Teleport;
 		Player        player         = source.getSender();
 		PlayerServer  target         = context.getArgument("target", PlayerServer.class);
 		PlayerData    targetData     = PlayerData.get(target);
-		PlayerData    playerData     = PlayerData.get(player);
+		TPManager     playerTPM     = PlayerData.get(player).tpManager;
 		boolean       targetNotAdmin = !target.isOperator();
 
-		if (playerData.hasNoRequests()) {
+		if (playerTPM.hasNoRequests()) {
 			player.sendMessage(TextFormatting.YELLOW + "You don't have any requests.");
 			return 1;
 		}
 
-		if (!playerData.hasRequestFrom(target.username)) {
+		if (!playerTPM.hasRequestFrom(target.username)) {
 			player.sendMessage(TextFormatting.ORANGE + "You don't have a request from " + TextFormatting.YELLOW + target);
 			return 1;
 		}
 
-		TPARequestType request = playerData.getRequest(target.username);
+		TPARequestType request = playerTPM.getRequest(target.username);
 
 		int cost = Essentials.TPACost;
 		if (target.score < cost && targetNotAdmin) {
@@ -126,13 +127,13 @@ import wyspr.BTE.utils.Teleport;
 		boolean didTeleport = false;
 
 		if (request == TPARequestType.TPA) {
-			targetData.updateBackPos();
+			targetData.tpManager.updateBackPos();
 			didTeleport = Teleport.teleport(target, player);
 			if (didTeleport) {
 				target.sendMessage(TextFormatting.ORANGE + "Teleported to " + player.getDisplayName());
 			}
 		} else if (request == TPARequestType.TPAHERE) {
-			playerData.updateBackPos();
+			playerTPM.updateBackPos();
 			didTeleport = Teleport.teleport(player, target);
 			if (didTeleport) {
 				target.sendMessage(TextFormatting.ORANGE + "Teleported " + player.getDisplayName() + " to you");
@@ -141,7 +142,7 @@ import wyspr.BTE.utils.Teleport;
 		}
 
 		if (didTeleport) {
-			playerData.removeRequest(target.username);
+			playerTPM.removeRequest(target.username);
 			if (targetNotAdmin) {
 				target.score -= Essentials.TPACost;
 			}

@@ -44,7 +44,7 @@ import wyspr.BTE.utils.PlayerData;
 					}
 
 					PlayerData
-						.get(sender).updateBackPos();
+						.get(sender).tpManager.updateBackPos();
 
 					source.teleportPlayerToPos(
 						sender,

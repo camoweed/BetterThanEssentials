@@ -9,7 +9,6 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.server.entity.player.PlayerServer;
 import net.minecraft.server.net.command.ServerCommandSource;
-import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
 
 import java.util.Arrays;
@@ -25,11 +24,11 @@ public class ArgumentTypeHome implements ArgumentType<String> {
 		this.type = type;
 	}
 
-	public static ArgumentType<String> senderHomes() {
-		return new ArgumentTypeHome(HomesType.SELF);
+	public static ArgumentType<String> ownHomes() {
+		return new ArgumentTypeHome(HomesType.OWN);
 	}
 
-	public static ArgumentType<String> otherHomes() {
+	public static ArgumentType<String> othersHomes() {
 		return new ArgumentTypeHome(HomesType.OTHERS);
 	}
 
@@ -40,10 +39,10 @@ public class ArgumentTypeHome implements ArgumentType<String> {
 	public <S> String parse(StringReader reader, S source) throws CommandSyntaxException {
 		final String input      = reader.readString();
 		List<String> homes;
-		if (type== HomesType.SELF) {
+		if (type== HomesType.OWN) {
 			Player       sender     = ((ServerCommandSource) source).getSender();
 			PlayerData   playerData = PlayerData.get(sender);
-			homes      = playerData.getHomesList();
+			homes      = playerData.homes.getHomesList();
 		} else {
 			return input;
 		}
@@ -74,7 +73,7 @@ public class ArgumentTypeHome implements ArgumentType<String> {
 			playerData = PlayerData.get(sender);
 		}
 
-		List<String> homes = playerData.getHomesList();
+		List<String> homes = playerData.homes.getHomesList();
 
 		for (String home : homes) {
 			if (home.startsWith(builder.getRemaining()) || builder.getRemaining().isEmpty()) {
@@ -90,6 +89,6 @@ public class ArgumentTypeHome implements ArgumentType<String> {
 	}
 
 	private enum HomesType {
-		SELF, OTHERS
+		OWN, OTHERS
 	}
 }

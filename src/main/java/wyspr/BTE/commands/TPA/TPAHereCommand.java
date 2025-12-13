@@ -44,7 +44,7 @@ import wyspr.BTE.utils.TPARequestType;
 			return 1;
 		}
 
-		boolean isOnlyRequest = targetData.sendTPARequest(
+		boolean isOnlyRequest = targetData.tpManager.sendTPARequest(
 			player.username,
 			TPARequestType.TPAHERE
 		);

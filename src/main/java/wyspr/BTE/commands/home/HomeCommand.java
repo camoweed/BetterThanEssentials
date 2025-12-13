@@ -15,6 +15,7 @@ import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeHome;
 import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.Teleport;
 import wyspr.BTE.utils.WorldPosition;
 
@@ -28,13 +29,13 @@ import java.util.Optional;
 			.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.HomeCommand)
 			.executes(this::noArg)
 			.then(ArgumentBuilderRequired
-				.argument("home", ArgumentTypeHome.senderHomes())
+				.argument("home", ArgumentTypeHome.ownHomes())
 				.executes(this::homeArg))
 			.then(ArgumentBuilderRequired
 				.argument("player", ArgumentTypeUser.user())
 				.requires(source -> ((CommandSource) source).hasAdmin())
 				.then(ArgumentBuilderRequired
-					.argument("home", ArgumentTypeHome.otherHomes())
+					.argument("home", ArgumentTypeHome.othersHomes())
 					.executes(this::playerHomeArg))));
 	}
 
@@ -44,7 +45,7 @@ import java.util.Optional;
 		Player                  player     = source.getSender();
 		PlayerData              playerData = PlayerData.get(player);
 		String                  homeName   = "home";
-		Optional<WorldPosition> homePos    = playerData.getHomePos(homeName);
+		Optional<WorldPosition> homePos    = playerData.homes.getHomePos(homeName);
 
 		return goHome(homePos, player, homeName, playerData, isAdmin);
 	}
@@ -66,7 +67,7 @@ import java.util.Optional;
 			}
 			homePos = Optional.of(new WorldPosition(bed.x, bed.y + 1.0, bed.z, 0));
 		} else {
-			homePos = playerData.getHomePos(homeName);
+			homePos = playerData.homes.getHomePos(homeName);
 		}
 
 		return goHome(homePos, player, homeName, playerData, isAdmin);
@@ -76,18 +77,18 @@ import java.util.Optional;
 		CommandSource source       = (CommandSource) context.getSource();
 		boolean       isAdmin      = source.hasAdmin();
 		Player        player       = source.getSender();
-		PlayerData    playerData   = PlayerData.get(player);
+		TPManager     playerTP     = PlayerData.get(player).tpManager;
 		String        homeName     = context.getArgument("home", String.class);
 		PlayerServer  targetPlayer = context.getArgument("player", PlayerServer.class);
 		PlayerData    targetData   = PlayerData.get(targetPlayer);
 
-		int homes = targetData.getHomesAmount();
+		int homes = targetData.homes.getHomesAmount();
 		if (homes == 0) {
 			player.sendMessage(targetPlayer.getDisplayName() + TextFormatting.ORANGE + " does not have any homes!");
 			return 1;
 		}
 
-		Optional<WorldPosition> homePos = targetData.getHomePos(homeName);
+		Optional<WorldPosition> homePos = targetData.homes.getHomePos(homeName);
 
 		boolean homeNotFound = !homePos.isPresent();
 		if (homeNotFound) {
@@ -96,7 +97,7 @@ import java.util.Optional;
 			return 1;
 		}
 
-		playerData.updateBackPos();
+		playerTP.updateBackPos();
 		WorldPosition home = homePos.get();
 		if (Teleport.teleport(player, home)) {
 			player.sendMessage(TextFormatting.YELLOW + "Teleported to " + TextFormatting.RESET + targetPlayer.getDisplayName() + TextFormatting.YELLOW + "'s home: " + TextFormatting.ORANGE + homeName);
@@ -121,7 +122,7 @@ import java.util.Optional;
 			return 1;
 		}
 
-		int homes = playerData.getHomesAmount();
+		int homes = playerData.homes.getHomesAmount();
 		if (homes == 0) {
 			player.sendMessage(TextFormatting.ORANGE + "You do not have any homes!");
 			player.sendMessage(TextFormatting.ORANGE + "Set a home with: §3/sethome [name]");
@@ -135,14 +136,14 @@ import java.util.Optional;
 			return 1;
 		}
 
-		if (playerData.canTP() || isAdmin) {
-			playerData.updateBackPos();
+		if (playerData.tpManager.canTP() || isAdmin) {
+			playerData.tpManager.updateBackPos();
 			WorldPosition home = homePos.get();
 			if (Teleport.teleport(player, home)) {
 				player.sendMessage(TextFormatting.YELLOW + "Teleported to " + TextFormatting.ORANGE + homeName);
 			}
 		} else {
-			int waitTime = playerData.TPCooldown();
+			int waitTime = playerData.tpManager.TPCooldown();
 			player.sendMessage(TextFormatting.YELLOW + "Teleport available in " + TextFormatting.ORANGE + waitTime + TextFormatting.YELLOW + " seconds.");
 		}
 		return 1;

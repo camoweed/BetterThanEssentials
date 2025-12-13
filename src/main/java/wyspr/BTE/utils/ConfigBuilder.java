@@ -119,14 +119,16 @@ public class ConfigBuilder {
 
 	private String parseTags(String line) {
 		// Handle escaping
-		line = line.replaceAll("\\\\<", "ESCAPED_LT")
+		line = line
+			.replaceAll("\\\\<", "ESCAPED_LT")
 			.replaceAll("\\\\>", "ESCAPED_GT");
 		// Process color tags
 		for (Map.Entry<String, String> entry : colorMap.entrySet()) {
 			line = line.replaceAll("<" + entry.getKey() + ">", entry.getValue());
 		}
 		// Revert escaped characters
-		return line.replaceAll("ESCAPED_LT", "<")
+		return line
+			.replaceAll("ESCAPED_LT", "<")
 			.replaceAll("ESCAPED_GT", ">");
 	}
 }

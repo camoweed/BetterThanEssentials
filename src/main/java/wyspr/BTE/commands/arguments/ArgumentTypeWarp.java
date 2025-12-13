@@ -15,14 +15,11 @@ import java.util.concurrent.CompletableFuture;
 
 // Adapted from
 // https://github.com/MelonModding/MelonUtilities/blob/main/src/main/java/MelonUtilities/command/arguments/ArgumentTypeWarp.java
-//
-
 
 public class ArgumentTypeWarp implements ArgumentType<String> {
 	private static final List<String> EXAMPLES = Arrays.asList("market", "arena", "parkour");
 
-	public ArgumentTypeWarp() {
-	}
+	public ArgumentTypeWarp() {}
 
 	public static ArgumentType<String> warp() {
 		return new ArgumentTypeWarp();

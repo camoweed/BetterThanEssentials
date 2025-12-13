@@ -10,6 +10,7 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.Teleport;
 import wyspr.BTE.utils.WorldPosition;
 
@@ -25,8 +26,8 @@ import wyspr.BTE.utils.WorldPosition;
 	private int command(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source     = (CommandSource) context.getSource();
 		boolean       isAdmin    = source.hasAdmin();
-		Player        player     = source.getSender();
-		PlayerData    playerData = PlayerData.get(player);
+		Player    player     = source.getSender();
+		TPManager playerData = PlayerData.get(player).tpManager;
 
 		int cost = Essentials.BackCost;
 		if (player.score < cost && !isAdmin) {

@@ -25,7 +25,7 @@ import java.util.List;
 					boolean       isAdmin    = source.hasAdmin();
 					Player        player     = source.getSender();
 					PlayerData    playerData = PlayerData.get(player);
-					List<String> allRequests = playerData.getAllRequests();
+					List<String> allRequests = playerData.tpManager.getAllRequests();
 
 					if (allRequests.isEmpty()) {
 						player.sendMessage(TextFormatting.ORANGE + "No current TP requests");

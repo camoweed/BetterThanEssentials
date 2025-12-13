@@ -36,8 +36,18 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 
 						sender.score -= amount;
 						reciever.score += amount;
-						sender.sendMessage(TextFormatting.ORANGE + "Paid " + TextFormatting.YELLOW + reciever.username + " " + TextFormatting.LIGHT_BLUE + amount + TextFormatting.ORANGE + " points.");
-						reciever.sendMessage(TextFormatting.YELLOW + "" + sender.username + TextFormatting.ORANGE + " has paid you " + TextFormatting.LIGHT_BLUE + amount + TextFormatting.ORANGE + " points.");
+						sender.sendMessage(
+							TextFormatting.ORANGE + "Paid " +
+								TextFormatting.YELLOW + reciever.username + " " +
+								TextFormatting.LIGHT_BLUE + amount +
+								TextFormatting.ORANGE + " points."
+						);
+						reciever.sendMessage(
+							TextFormatting.YELLOW + sender.username +
+							TextFormatting.ORANGE + " has paid you " +
+							TextFormatting.LIGHT_BLUE + amount +
+							TextFormatting.ORANGE + " points."
+						);
 
 						return 1;
 					}))));
