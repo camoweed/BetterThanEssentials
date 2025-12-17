@@ -15,8 +15,6 @@ import net.minecraft.server.entity.player.PlayerServer;
 import org.jetbrains.annotations.NotNull;
 import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 
-import java.util.Random;
-
 @SuppressWarnings("ALL") public class TrollCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> dispatcher) {
@@ -71,8 +69,6 @@ import java.util.Random;
 	}
 
 	private class TrollTNT extends EntityPrimedTNT {
-		private Random random = new Random();
-
 		public TrollTNT(
 			World world,
 			double x,
@@ -103,7 +99,6 @@ import java.util.Random;
 
 		@Override
 		public void tick() {
-			this.checkOnWater(true);
 			this.checkOnWater(true);
 			this.pushTime *= 0.98F;
 			if (this.pushTime < 0.05F || (double) this.pushTime < (double) 0.25F && this.onGround) {

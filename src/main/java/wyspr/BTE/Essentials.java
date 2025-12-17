@@ -350,11 +350,13 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 		CommandManager.registerServerCommand(new BackCommand());
 		CommandManager.registerServerCommand(new ColorsCommand());
 		CommandManager.registerServerCommand(new CraftingCommand());
+		CommandManager.registerServerCommand(new DisconnectCommand());
 		CommandManager.registerServerCommand(new FixCommand());
 		CommandManager.registerServerCommand(new FireballCommand());
 		CommandManager.registerServerCommand(new ImportMelonUtilsCommand());
 		CommandManager.registerServerCommand(new GodCommand());
 		CommandManager.registerServerCommand(new InvseeCommand());
+		CommandManager.registerServerCommand(new LeaveBedCommand());
 		CommandManager.registerServerCommand(new MOTDCommand());
 		CommandManager.registerServerCommand(new OPChatCommand());
 		CommandManager.registerServerCommand(new PayCommand());

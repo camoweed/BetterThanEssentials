@@ -40,9 +40,8 @@ public class ArgumentTypeCommand implements ArgumentType<String> {
 			MinecraftServer.getInstance(),
 			target
 		);
-		CommandDispatcher<CommandSource> dispatcher = MinecraftServer
-			.getInstance()
-			.getDimensionWorld(target.dimension)
+
+		CommandDispatcher<CommandSource> dispatcher = target.world
 			.getCommandManager()
 			.getDispatcher();
 
