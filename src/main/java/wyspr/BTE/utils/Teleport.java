@@ -10,6 +10,8 @@ import net.minecraft.server.entity.player.PlayerServer;
 import net.minecraft.server.net.PlayerList;
 import net.minecraft.server.world.WorldServer;
 
+import wyspr.BTE.Essentials;
+
 public class Teleport {
 	public static boolean teleport(Player player, double x, double y, double z, int dimID) {
 		return teleport(player, new WorldPosition(x, y, z, dimID));
@@ -55,7 +57,7 @@ public class Teleport {
 			player.xRot
 		);
 		player.moveTo(destination.x, destination.y, destination.z, player.yRot, player.xRot);
-		player.world.playSoundAtEntity(null, player, "random.explode", 2, 2);
+		player.world.playSoundAtEntity(null, player, Essentials.TeleportSound, 2, 2);
 		player.world.spawnParticle("smoke", destination.x + 0.5, destination.y, destination.z + 0.5, 0, 0, 0, 0);
 		// Show the teleported player  instantly
 		// instead of waiting on the server to send the packet
