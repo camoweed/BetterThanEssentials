@@ -88,6 +88,8 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 	public static       boolean           GamemodeCommand;
 	public static       boolean           FixCommand;
 
+	public static       String            TeleportSound;
+
 	static {
 		Toml cfg = new Toml();
 		cfg.addCategory("Options");
@@ -188,6 +190,7 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 		cfg.addEntry("Commands.Gamemode", "Let non-opped players use /gamemode.", false);
 		cfg.addEntry("Commands.FixCommand", "Let non-opped players use /fix.", false);
 
+		cfg.addEntry("Options.TeleportSound", "Sounds can be found in bta.jar/assets/minecraft/sounds/sounds.json e.g. note.snare, mob.sheep, mob.skeletondeath.", "random.explode");
 		CFG = new TomlConfigHandler(MOD_ID, cfg);
 
 		// Options
@@ -233,6 +236,8 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 		GiveCommand     = CFG.getBoolean("Commands.Give");
 		GamemodeCommand = CFG.getBoolean("Commands.Gamemode");
 		FixCommand      = CFG.getBoolean("Commands.FixCommand");
+
+		TeleportSound                = CFG.getString("Options.TeleportSound");
 	}
 
 	@Override
