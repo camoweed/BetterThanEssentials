@@ -31,8 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-
-public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEntrypoint {
+public class Essentials implements DedicatedServerModInitializer, GameStartEntrypoint {
 	public static final String            MOD_ID     = "BTEssentials";
 	public static final Logger            LOGGER     = LoggerFactory.getLogger(MOD_ID);
 	public static final TomlConfigHandler CFG;
@@ -190,7 +189,27 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 		cfg.addEntry("Commands.Gamemode", "Let non-opped players use /gamemode.", false);
 		cfg.addEntry("Commands.FixCommand", "Let non-opped players use /fix.", false);
 
-		cfg.addEntry("Options.TeleportSound", "Sounds can be found in bta.jar/assets/minecraft/sounds/sounds.json e.g. note.snare, mob.sheep, mob.skeletondeath.", "random.explode");
+		cfg.addCategory(
+			"Sounds can be found in bta.jar/assets/minecraft/sounds/sounds.json e.g. note.snare, mob.sheep, mob.skeletondeath. Pitch and volume can optionally be specified after the sound, separated by colons e.g note.celesta:1:2",
+			"Sounds"
+		);
+		cfg.addEntry(
+			"Sounds.TeleportSound",
+			"Plays when the player teleports",
+			"random.explode:2:2"
+		);
+		cfg.addEntry(
+			"Sounds.TPANotificationSound",
+			"Plays when the user receives a TPA request",
+			"note.harp:1:2"
+		);
+		cfg.addEntry(
+			"Sounds.MailNotificationSound",
+			"Plays when the user receives mail",
+			"random.page:2:0.5"
+		);
+		cfg.addEntry("Sounds.MutedSound", "Plays when the user chats while muted", "note.chant:2:0");
+
 		CFG = new TomlConfigHandler(MOD_ID, cfg);
 
 		// Options
@@ -236,6 +255,11 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 		GiveCommand     = CFG.getBoolean("Commands.Give");
 		GamemodeCommand = CFG.getBoolean("Commands.Gamemode");
 		FixCommand      = CFG.getBoolean("Commands.FixCommand");
+		// Sounds
+		TeleportSound = CFG.getString("Sounds.TeleportSound");
+		TPANotificationSound = CFG.getString("Sounds.TPANotificationSound");
+		MailNotificationSound = CFG.getString("Sounds.MailNotificationSound");
+		MutedSound = CFG.getString("Sounds.MutedSound");
 
 		TeleportSound                = CFG.getString("Options.TeleportSound");
 	}
@@ -402,13 +426,8 @@ public class Essentials implements ModInitializer, RecipeEntrypoint, GameStartEn
 	}
 
 	@Override
-	public void onRecipesReady() {}
-
-	@Override
-	public void initNamespaces() {}
-
-	@Override
-	public void beforeGameStart() {}
+	public void beforeGameStart() {
+	}
 
 	@Override
 	public void afterGameStart() {
