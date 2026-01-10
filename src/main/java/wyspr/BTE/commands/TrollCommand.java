@@ -13,9 +13,10 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.world.World;
 import net.minecraft.server.entity.player.PlayerServer;
 import org.jetbrains.annotations.NotNull;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 
-@SuppressWarnings("ALL") public class TrollCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class TrollCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> dispatcher) {
 		dispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
@@ -23,7 +24,7 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 			.requires(source -> ((CommandSource) source).hasAdmin())
 			.executes(this::noArg)
 			.then(ArgumentBuilderRequired
-				.argument("player", ArgumentTypeUser.user())
+				.argument("player", ArgumentTypeOnlineUser.online())
 				.executes(this::userArg)));
 	}
 

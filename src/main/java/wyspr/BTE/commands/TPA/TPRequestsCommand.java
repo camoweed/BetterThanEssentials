@@ -11,7 +11,8 @@ import wyspr.BTE.utils.PlayerData;
 
 import java.util.List;
 
-@SuppressWarnings("ALL") public class TPRequestsCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class TPRequestsCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 
@@ -21,11 +22,11 @@ import java.util.List;
 				.literal(literal)
 				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.TPACommand)
 				.executes(context -> {
-					CommandSource source     = (CommandSource) context.getSource();
-					boolean       isAdmin    = source.hasAdmin();
-					Player        player     = source.getSender();
-					PlayerData    playerData = PlayerData.get(player);
-					List<String> allRequests = playerData.tpManager.getAllRequests();
+					CommandSource source      = (CommandSource) context.getSource();
+					boolean       isAdmin     = source.hasAdmin();
+					Player        player      = source.getSender();
+					PlayerData    playerData  = PlayerData.get(player);
+					List<String>  allRequests = playerData.tpManager.getAllRequests();
 
 					if (allRequests.isEmpty()) {
 						player.sendMessage(TextFormatting.ORANGE + "No current TP requests");

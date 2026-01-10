@@ -9,10 +9,11 @@ import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 
-@SuppressWarnings("ALL") public class GodCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class GodCommand implements CommandManager.CommandRegistry {
 
 	@Override
 	public void register(CommandDispatcher<CommandSource> dispatcher) {
@@ -23,7 +24,7 @@ import wyspr.BTE.utils.PlayerData;
 				.requires(source -> ((CommandSource) source).hasAdmin())
 				.executes(this::noArg)
 				.then(ArgumentBuilderRequired
-					.argument("player", ArgumentTypeUser.user())
+					.argument("player", ArgumentTypeOnlineUser.online())
 					.executes(this::userArg)));
 		}
 	}
@@ -54,7 +55,7 @@ import wyspr.BTE.utils.PlayerData;
 		CommandSource source = (CommandSource) context.getSource();
 		Player        player = source.getSender();
 		PlayerServer  target = context.getArgument("player", PlayerServer.class);
-		boolean    isGodMode = PlayerData
+		boolean isGodMode = PlayerData
 			.get(target)
 			.toggleGodMode();
 

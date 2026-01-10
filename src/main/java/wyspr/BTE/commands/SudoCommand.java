@@ -15,9 +15,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.entity.player.PlayerServer;
 import net.minecraft.server.net.command.ServerCommandSource;
 import wyspr.BTE.commands.arguments.ArgumentTypeCommand;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 
-@SuppressWarnings("ALL") public class SudoCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class SudoCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"sudo", "doas"};
@@ -26,7 +27,7 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 				.literal(literal)
 				.requires(source -> ((CommandSource) source).hasAdmin())
 				.then(ArgumentBuilderRequired
-					.argument("player", ArgumentTypeUser.user())
+					.argument("player", ArgumentTypeOnlineUser.online())
 					.then(ArgumentBuilderRequired
 						.argument("command", ArgumentTypeCommand.commands())
 						.executes(this::exec))));
@@ -41,16 +42,11 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 
 		if (!command.startsWith("/")) {
 			player.playerNetServerHandler.handleChat(new PacketChat(command));
-			sender.sendMessage((
-				TextFormatting.YELLOW + "Sent \"" +
-				TextFormatting.LIGHT_BLUE + command +
-				TextFormatting.YELLOW + "\" as " +
-				TextFormatting.RESET + player.getDisplayName()
-			));
+			sender.sendMessage((TextFormatting.YELLOW + "Sent \"" + TextFormatting.LIGHT_BLUE + command + TextFormatting.YELLOW + "\" as " + TextFormatting.RESET + player.getDisplayName()));
 			return 1;
 		}
 
-		MinecraftServer mcServer = MinecraftServer.getInstance();
+		MinecraftServer     mcServer            = MinecraftServer.getInstance();
 		ServerCommandSource playerCommandSource = new ServerCommandSource(mcServer, player);
 		CommandDispatcher<CommandSource> dispatcher = mcServer
 			.getDimensionWorld(player.dimension)
@@ -60,23 +56,10 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 		try {
 			command = command.substring(1);
 			dispatcher.execute(command, playerCommandSource);
-			sender.sendMessage((
-				TextFormatting.YELLOW + "Ran " +
-				TextFormatting.LIGHT_BLUE + "/" + command +
-				TextFormatting.YELLOW + " as " +
-				TextFormatting.RESET + player.getDisplayName()
-			));
+			sender.sendMessage((TextFormatting.YELLOW + "Ran " + TextFormatting.LIGHT_BLUE + "/" + command + TextFormatting.YELLOW + " as " + TextFormatting.RESET + player.getDisplayName()));
 		} catch (CommandSyntaxException e) {
-			sender.sendMessage((
-				TextFormatting.ORANGE + "Failed to run " +
-				TextFormatting.LIGHT_BLUE + "/" + command +
-				TextFormatting.ORANGE + " as " +
-				TextFormatting.RESET + player.getDisplayName()
-			));
-			sender.sendMessage((
-				TextFormatting.RED + "Error: " +
-				TextFormatting.WHITE + e.getMessage()
-			));
+			sender.sendMessage((TextFormatting.ORANGE + "Failed to run " + TextFormatting.LIGHT_BLUE + "/" + command + TextFormatting.ORANGE + " as " + TextFormatting.RESET + player.getDisplayName()));
+			sender.sendMessage((TextFormatting.RED + "Error: " + TextFormatting.WHITE + e.getMessage()));
 		}
 
 		return 1;

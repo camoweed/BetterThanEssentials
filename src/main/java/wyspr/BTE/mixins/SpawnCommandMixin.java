@@ -16,7 +16,8 @@ import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
 
 @SuppressWarnings("ALL")
-@Mixin(value = CommandSpawn.class, remap = false) public class SpawnCommandMixin {
+@Mixin(value = CommandSpawn.class, remap = false)
+public class SpawnCommandMixin {
 
 	/**
 	 * @author ipiepiepie
@@ -28,7 +29,8 @@ import wyspr.BTE.utils.PlayerData;
 		method = "register", at = @At("HEAD"), cancellable = true
 	)
 	private void setSpawn(CommandDispatcher<CommandSource> dispatcher, CallbackInfo ci) {
-		dispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral.literal("spawn")
+		dispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
+			.literal("spawn")
 			.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.SpawnCommand)
 			.executes(context -> {
 				CommandSource    source           = (CommandSource) context.getSource();
@@ -37,14 +39,14 @@ import wyspr.BTE.utils.PlayerData;
 				ChunkCoordinates spawnCoordinates = world.getSpawnPoint();
 				if (sender == null) {
 					throw CommandExceptions
-						.notInWorld().create();
+						.notInWorld()
+						.create();
 				} else {
 					if (sender.dimension != 0) {
 						source.movePlayerToDimension(sender, 0);
 					}
 
-					PlayerData
-						.get(sender).tpManager.updateBackPos();
+					PlayerData.get(sender).tpManager.updateBackPos();
 
 					source.teleportPlayerToPos(
 						sender,
@@ -58,8 +60,7 @@ import wyspr.BTE.utils.PlayerData;
 					source.sendTranslatableMessage("command.commands.spawn.success", new Object[0]);
 					return 1;
 				}
-			})
-		);
+			}));
 
 		ci.cancel();
 	}

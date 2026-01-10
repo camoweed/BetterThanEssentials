@@ -10,11 +10,14 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.TPARequestType;
 
-@SuppressWarnings("ALL") public class TPACommand implements CommandManager.CommandRegistry {
+import static wyspr.BTE.utils.Utils.playNotificationAtPlayer;
+
+@SuppressWarnings("ALL")
+public class TPACommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 
@@ -24,7 +27,7 @@ import wyspr.BTE.utils.TPARequestType;
 				.literal(literal)
 				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.TPACommand)
 				.then(ArgumentBuilderRequired
-					.argument("target", ArgumentTypeUser.user())
+					.argument("target", ArgumentTypeOnlineUser.online())
 					.executes(this::exec)));
 		}
 	}
@@ -51,7 +54,8 @@ import wyspr.BTE.utils.TPARequestType;
 
 		if (isOnlyRequest) {
 			player.sendMessage(TextFormatting.YELLOW + "Sent a request to " + target.username);
-			target.world.playSoundAtEntity(null, target, "note.celesta", 1, 2);
+
+			playNotificationAtPlayer(target, Essentials.TPANotificationSound);
 			target.sendMessage(TextFormatting.YELLOW + "" + player.username + TextFormatting.ORANGE + " has sent you a TP request.");
 			target.sendMessage(TextFormatting.LIME + "/tpyes " + TextFormatting.ORANGE + "to accept, " + TextFormatting.RED + "/tpno " + TextFormatting.ORANGE + "to deny.");
 		} else {

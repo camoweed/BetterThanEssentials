@@ -7,7 +7,7 @@ import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import wyspr.BTE.Essentials;
-import wyspr.BTE.utils.Warps;
+import wyspr.BTE.utils.WarpsManager;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 			.executes(context -> {
 				CommandSource source = (CommandSource) context.getSource();
 				Player        player = source.getSender();
-				List<String>  warps  = Warps.getWarps();
+				List<String>  warps  = WarpsManager.getWarps();
 
 				if (warps.isEmpty()) {
 					player.sendMessage(TextFormatting.ORANGE + "There are no warps!");

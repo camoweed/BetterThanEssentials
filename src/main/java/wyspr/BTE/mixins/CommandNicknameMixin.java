@@ -6,8 +6,6 @@ import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
 import com.mojang.brigadier.builder.ArgumentBuilderRequired;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.CommandNode;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.exceptions.CommandExceptions;
@@ -17,11 +15,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import wyspr.BTE.Essentials;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 
-@Environment(EnvType.SERVER) @SuppressWarnings("ALL") @Mixin(
+@SuppressWarnings("ALL")
+@Mixin(
 	value = CommandNickname.class, remap = false
-) public class CommandNicknameMixin implements CommandManager.CommandRegistry {
+)
+public class CommandNicknameMixin implements CommandManager.CommandRegistry {
 
 	@Shadow
 	private static SimpleCommandExceptionType NICKNAME_TOO_LARGE;
@@ -40,7 +40,7 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 			.then(((ArgumentBuilderLiteral) ArgumentBuilderLiteral
 				.literal("set")
 				.then(((ArgumentBuilderRequired) ArgumentBuilderRequired
-					.argument("target", ArgumentTypeUser.user())
+					.argument("target", ArgumentTypeOnlineUser.online())
 					.requires(source -> ((CommandSource) source).hasAdmin())).then(ArgumentBuilderRequired
 					.argument("nickname", ArgumentTypeString.string())
 					.executes((c) -> {
@@ -94,7 +94,9 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 					} else {
 						PlayerServer player = (PlayerServer) source.getSender();
 						if (player == null) {
-							throw CommandExceptions.notInWorld().create();
+							throw CommandExceptions
+								.notInWorld()
+								.create();
 						} else {
 							player.nickname       = nickname;
 							player.hadNicknameSet = true;
@@ -116,21 +118,23 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 					}
 				})))).then(ArgumentBuilderLiteral
 			.literal("get")
-			.then(ArgumentBuilderRequired.argument("target", ArgumentTypeUser.user()).executes((c) -> {
-				CommandSource source = (CommandSource) c.getSource();
-				PlayerServer player = c.getArgument("target", PlayerServer.class);
-				source.sendTranslatableMessage(
-					"command.commands.nickname.get.success",
-					new Object[]{player.username, player.nickname}
-				);
-				return 1;
-			})))).then(((ArgumentBuilderLiteral) ArgumentBuilderLiteral
+			.then(ArgumentBuilderRequired
+				.argument("target", ArgumentTypeOnlineUser.online())
+				.executes((c) -> {
+					CommandSource source = (CommandSource) c.getSource();
+					PlayerServer  player = c.getArgument("target", PlayerServer.class);
+					source.sendTranslatableMessage(
+						"command.commands.nickname.get.success",
+						new Object[]{player.username, player.nickname}
+					);
+					return 1;
+				})))).then(((ArgumentBuilderLiteral) ArgumentBuilderLiteral
 			.literal("reset")
 			.then(((ArgumentBuilderRequired) ArgumentBuilderRequired
-				.argument("target", ArgumentTypeUser.user())
+				.argument("target", ArgumentTypeOnlineUser.online())
 				.requires(source -> ((CommandSource) source).hasAdmin())).executes(c -> {
 				CommandSource source = (CommandSource) c.getSource();
-				PlayerServer player = (PlayerServer) c.getArgument("target", PlayerServer.class);
+				PlayerServer  player = (PlayerServer) c.getArgument("target", PlayerServer.class);
 				player.nickname       = "";
 				player.hadNicknameSet = false;
 				player.mcServer.playerList.updatePlayerProfile(
@@ -161,7 +165,9 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 			CommandSource source = (CommandSource) c.getSource();
 			PlayerServer  player = (PlayerServer) source.getSender();
 			if (player == null) {
-				throw CommandExceptions.notInWorld().create();
+				throw CommandExceptions
+					.notInWorld()
+					.create();
 			} else {
 				player.nickname       = "";
 				player.hadNicknameSet = false;

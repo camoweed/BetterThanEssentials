@@ -6,8 +6,6 @@ import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
 import com.mojang.brigadier.builder.ArgumentBuilderRequired;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.item.ItemStack;
@@ -19,26 +17,32 @@ import net.minecraft.core.net.command.commands.CommandGive;
 import net.minecraft.core.net.command.helpers.EntitySelector;
 import net.minecraft.core.net.command.util.CommandHelper;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import wyspr.BTE.Essentials;
 
 import java.util.List;
 
 
-@Environment(EnvType.SERVER) @SuppressWarnings("ALL") @Mixin(
-	value = CommandGive.class
-) public class CommandGiveMixin implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+@Mixin(value = CommandGive.class, remap = false)
+public class CommandGiveMixin implements CommandManager.CommandRegistry {
+	@Overwrite
 	public void register(CommandDispatcher<CommandSource> dispatcher) {
 		String[] literals = {"i", "give"};
 		for (String literal : literals) {
 			dispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
 				.literal(literal)
 				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.GiveCommand)
-				.then(ArgumentBuilderRequired.argument("item", ArgumentTypeItemStack.itemStack())
+				.then(ArgumentBuilderRequired
+					.argument("item", ArgumentTypeItemStack.itemStack())
 					.executes(this::fullStackToSelf))
-				.then(ArgumentBuilderRequired.argument("target", ArgumentTypeEntity.usernames())
-					.then(ArgumentBuilderRequired.argument("item", ArgumentTypeItemStack.itemStack())
+				.then(ArgumentBuilderRequired
+					.argument("target", ArgumentTypeEntity.usernames())
+					.then(ArgumentBuilderRequired
+						.argument("item", ArgumentTypeItemStack.itemStack())
 						.executes(this::fullStack)
-						.then(ArgumentBuilderRequired.argument("amount", ArgumentTypeInteger.integer(1, 6400))
+						.then(ArgumentBuilderRequired
+							.argument("amount", ArgumentTypeInteger.integer(1, 6400))
 							.executes(this::amountArg)))));
 		}
 	}
@@ -64,14 +68,14 @@ import java.util.List;
 	}
 
 	private int fullStack(CommandContext<Object> c) throws CommandSyntaxException {
-		CommandSource source    = (CommandSource) c.getSource();
-		ItemStack     itemStack = (ItemStack) c.getArgument("item", ItemStack.class);
-		int           amount    = itemStack.stackSize;
-		EntitySelector entitySelector = (EntitySelector) c.getArgument(
+		CommandSource          source         = (CommandSource) c.getSource();
+		ItemStack              itemStack      = (ItemStack) c.getArgument("item", ItemStack.class);
+		int                    amount         = itemStack.stackSize;
+		EntitySelector         entitySelector = (EntitySelector) c.getArgument(
 			"target",
 			EntitySelector.class
 		);
-		List<? extends Entity> entities = entitySelector.get(source);
+		List<? extends Entity> entities       = entitySelector.get(source);
 
 		for (Entity player : entities) {
 			((Player) player).inventory.insertItem(itemStack, true);
@@ -97,14 +101,14 @@ import java.util.List;
 	}
 
 	private int amountArg(CommandContext<Object> c) throws CommandSyntaxException {
-		CommandSource source    = (CommandSource) c.getSource();
-		ItemStack     itemStack = (ItemStack) c.getArgument("item", ItemStack.class);
-		EntitySelector entitySelector = (EntitySelector) c.getArgument(
+		CommandSource          source         = (CommandSource) c.getSource();
+		ItemStack              itemStack      = (ItemStack) c.getArgument("item", ItemStack.class);
+		EntitySelector         entitySelector = (EntitySelector) c.getArgument(
 			"target",
 			EntitySelector.class
 		);
-		List<? extends Entity> entities = entitySelector.get(source);
-		int                    amount   = (Integer) c.getArgument("amount", Integer.class);
+		List<? extends Entity> entities       = entitySelector.get(source);
+		int                    amount         = (Integer) c.getArgument("amount", Integer.class);
 
 		for (Entity player : entities) {
 			int incompleteStack = amount % 64;

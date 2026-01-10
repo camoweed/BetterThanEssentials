@@ -1,7 +1,5 @@
 package wyspr.BTE.mixins;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.block.BlockLogicBed;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.TextFormatting;
@@ -13,10 +11,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import wyspr.BTE.Essentials;
 
-@Environment(EnvType.SERVER) @Mixin(value = BlockLogicBed.class, remap = false) public class BlockBedMixin {
+@Mixin(value = BlockLogicBed.class, remap = false)
+public class BlockBedMixin {
 	@Inject(
 		method = "onBlockRightClicked", at = @At(
-		value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockWithNotify(IIII)Z", shift = At.Shift.BEFORE, by = 1
+		value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockWithNotify(IIII)Z",
+		shift = At.Shift.BEFORE, by = 1
 	), cancellable = true
 	)
 	public void bedBoomStop(

@@ -5,15 +5,13 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
-  "client": [
-  ],
   "injectors": {
     "defaultRequire": 1
   },
   "server": [
     "BlockBedMixin",
     "BlockFarmlandMixin",
-    "BlockTNTMixin",
+    "BlockLogicTNTMixin",
     "CommandGiveMixin",
     "CommandGameModeMixin",
     "CommandNicknameMixin",

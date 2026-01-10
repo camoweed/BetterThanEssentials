@@ -14,7 +14,8 @@ import wyspr.BTE.utils.Teleport;
 
 import java.util.Random;
 
-@SuppressWarnings("ALL") public class RTPCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class RTPCommand implements CommandManager.CommandRegistry {
 	Random r = new Random();
 
 	@Override

@@ -14,7 +14,7 @@ import wyspr.BTE.commands.arguments.ArgumentTypeWarp;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.Teleport;
-import wyspr.BTE.utils.Warps;
+import wyspr.BTE.utils.WarpsManager;
 import wyspr.BTE.utils.WorldPosition;
 
 import java.util.Optional;
@@ -37,7 +37,7 @@ import java.util.Optional;
 		boolean       isAdmin   = source.hasAdmin();
 		String        target    = context.getArgument("target", String.class);
 
-		Optional<WorldPosition> warp = Warps.getWarp(target);
+		Optional<WorldPosition> warp = WarpsManager.getWarp(target);
 
 		if (!warp.isPresent()) {
 			player.sendMessage(TextFormatting.ORANGE + "There is no warp named: " + TextFormatting.YELLOW + target);

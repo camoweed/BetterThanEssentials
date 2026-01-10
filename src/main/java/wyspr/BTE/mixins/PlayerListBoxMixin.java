@@ -12,7 +12,8 @@ import wyspr.BTE.utils.PlayerData;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mixin(value = PlayerListBox.class, remap = false) public class PlayerListBoxMixin {
+@Mixin(value = PlayerListBox.class, remap = false)
+public class PlayerListBoxMixin {
 	/**
 	 * @author wyspr
 	 * @reason hide spectators from playerlist

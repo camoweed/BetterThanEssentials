@@ -6,7 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import wyspr.BTE.utils.Warps;
+import wyspr.BTE.utils.WarpsManager;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,7 +28,7 @@ public class ArgumentTypeWarp implements ArgumentType<String> {
 	public String parse(StringReader reader) throws CommandSyntaxException {
 		final String string = reader.readString();
 
-		List<String> warps  = Warps.getWarps();
+		List<String> warps = WarpsManager.getWarps();
 		for (String warp : warps) {
 			if (warp.equalsIgnoreCase(string)) {
 				return warp;
@@ -45,7 +45,7 @@ public class ArgumentTypeWarp implements ArgumentType<String> {
 		SuggestionsBuilder builder
 	)
 	{
-		List<String> warps = Warps.getWarps();
+		List<String> warps = WarpsManager.getWarps();
 		for (String warp : warps) {
 			if (warp.startsWith(builder.getRemaining())) {
 				builder.suggest(warp);

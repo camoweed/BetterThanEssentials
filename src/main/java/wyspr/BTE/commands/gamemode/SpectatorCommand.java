@@ -12,11 +12,12 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 
 import java.text.MessageFormat;
 
-@SuppressWarnings("ALL") public class SpectatorCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class SpectatorCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"spectator", "gmsp", "spec"};
@@ -26,7 +27,7 @@ import java.text.MessageFormat;
 				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.GamemodeCommand)
 				.executes(this::noArg)
 				.then(ArgumentBuilderRequired
-					.argument("user", ArgumentTypeUser.user())
+					.argument("user", ArgumentTypeOnlineUser.online())
 					.requires(source -> ((CommandSource) source).hasAdmin())
 					.executes(this::playerArg)));
 		}

@@ -10,9 +10,10 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 
-@SuppressWarnings("ALL") public class FixCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class FixCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"fix", "repair"};
@@ -34,7 +35,7 @@ import wyspr.BTE.commands.arguments.ArgumentTypeUser;
 					return 1;
 				})
 				.then(ArgumentBuilderRequired
-					.argument("player", ArgumentTypeUser.user())
+					.argument("player", ArgumentTypeOnlineUser.online())
 					.requires(source -> ((CommandSource) source).hasAdmin())
 					.executes(context -> {
 						CommandSource source = (CommandSource) context.getSource();

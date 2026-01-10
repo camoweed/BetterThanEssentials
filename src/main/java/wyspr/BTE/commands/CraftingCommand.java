@@ -8,7 +8,8 @@ import net.minecraft.core.net.command.CommandSource;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
 
-@SuppressWarnings("ALL") public class CraftingCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class CraftingCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"craft", "crafting", "cb", "craftingtable"};

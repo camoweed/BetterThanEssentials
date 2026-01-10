@@ -1,11 +1,6 @@
 package wyspr.BTE.mixins;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.core.block.Block;
-import net.minecraft.core.block.BlockLogic;
 import net.minecraft.core.block.BlockLogicTNT;
-import net.minecraft.core.block.material.Material;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.core.world.World;
@@ -15,11 +10,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wyspr.BTE.Essentials;
 
-@Environment(EnvType.SERVER) @Mixin(value = BlockLogicTNT.class, remap = false) public class BlockTNTMixin extends BlockLogic {
-	public BlockTNTMixin(Block<?> block, Material material) {
-		super(block, material);
-	}
-
+@Mixin(value = BlockLogicTNT.class, remap = false)
+public class BlockLogicTNTMixin {
 	@Inject(
 		method = "ignite(Lnet/minecraft/core/world/World;IIILnet/minecraft/core/entity/player/Player;Z)V", at = @At("HEAD"), cancellable = true
 	)

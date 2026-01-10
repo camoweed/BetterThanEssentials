@@ -37,12 +37,12 @@ public class ArgumentTypeHome implements ArgumentType<String> {
 	}
 
 	public <S> String parse(StringReader reader, S source) throws CommandSyntaxException {
-		final String input      = reader.readString();
+		final String input = reader.readString();
 		List<String> homes;
-		if (type== HomesType.OWN) {
-			Player       sender     = ((ServerCommandSource) source).getSender();
-			PlayerData   playerData = PlayerData.get(sender);
-			homes      = playerData.homes.getHomesList();
+		if (type == HomesType.OWN) {
+			Player     sender     = ((ServerCommandSource) source).getSender();
+			PlayerData playerData = PlayerData.get(sender);
+			homes = playerData.homes.getHomesList();
 		} else {
 			return input;
 		}
@@ -76,7 +76,9 @@ public class ArgumentTypeHome implements ArgumentType<String> {
 		List<String> homes = playerData.homes.getHomesList();
 
 		for (String home : homes) {
-			if (home.startsWith(builder.getRemaining()) || builder.getRemaining().isEmpty()) {
+			if (home.startsWith(builder.getRemaining()) || builder
+				.getRemaining()
+				.isEmpty()) {
 				builder.suggest(home);
 			}
 		}

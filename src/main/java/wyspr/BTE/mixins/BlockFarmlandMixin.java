@@ -1,7 +1,5 @@
 package wyspr.BTE.mixins;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.BlockLogicFarmland;
 import net.minecraft.core.block.Blocks;
@@ -13,7 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wyspr.BTE.Essentials;
 
-@Environment(EnvType.SERVER) @Mixin(value = BlockLogicFarmland.class, remap = false) public class BlockFarmlandMixin {
+@Mixin(value = BlockLogicFarmland.class, remap = false)
+public class BlockFarmlandMixin {
 	@Inject(
 		method = "onEntityWalking", at = @At("HEAD"), cancellable = true
 	)

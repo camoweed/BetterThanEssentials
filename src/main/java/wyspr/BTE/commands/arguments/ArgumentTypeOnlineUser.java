@@ -9,18 +9,19 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.entity.player.PlayerServer;
 import net.minecraft.server.net.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class ArgumentTypeUser implements ArgumentType<PlayerServer> {
-	public ArgumentTypeUser() {}
+public class ArgumentTypeOnlineUser implements ArgumentType<PlayerServer> {
+	public ArgumentTypeOnlineUser() {}
 
-	public static ArgumentType<PlayerServer> user() {
-		return new ArgumentTypeUser();
+	public static ArgumentType<PlayerServer> online() {
+		return new ArgumentTypeOnlineUser();
 	}
 
-	public PlayerServer parse(StringReader reader) throws CommandSyntaxException {
+	public @NotNull PlayerServer parse(StringReader reader) throws CommandSyntaxException {
 		final String       string  = reader.readString();
 		List<PlayerServer> players = MinecraftServer.getInstance().playerList.playerEntities;
 

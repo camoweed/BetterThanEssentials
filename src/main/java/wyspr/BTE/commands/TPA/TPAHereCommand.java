@@ -11,11 +11,12 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.TPARequestType;
 
-@SuppressWarnings("ALL") public class TPAHereCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class TPAHereCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"tphere", "tph", "tpahere"};
@@ -24,7 +25,7 @@ import wyspr.BTE.utils.TPARequestType;
 				.literal(literal)
 				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.TPACommand)
 				.then(ArgumentBuilderRequired
-					.argument("player", ArgumentTypeUser.user())
+					.argument("player", ArgumentTypeOnlineUser.online())
 					.executes(this::exec)));
 		}
 	}

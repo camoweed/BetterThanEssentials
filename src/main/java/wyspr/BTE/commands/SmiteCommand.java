@@ -13,10 +13,11 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.core.util.phys.HitResult;
 import net.minecraft.server.entity.player.PlayerServer;
 import org.jetbrains.annotations.NotNull;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.Utils;
 
-@SuppressWarnings("ALL") public class SmiteCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class SmiteCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> dispatcher) {
 		dispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
@@ -24,13 +25,13 @@ import wyspr.BTE.utils.Utils;
 			.requires(source -> ((CommandSource) source).hasAdmin())
 			.executes(this::noArg)
 			.then(ArgumentBuilderRequired
-				.argument("player", ArgumentTypeUser.user())
+				.argument("player", ArgumentTypeOnlineUser.online())
 				.executes(this::userArg)));
 	}
 
 	private @NotNull int noArg(CommandContext<Object> context) throws CommandSyntaxException {
-		CommandSource source    = (CommandSource) context.getSource();
-		Player        player    = source.getSender();
+		CommandSource source = (CommandSource) context.getSource();
+		Player        player = source.getSender();
 		HitResult     hitresult = Utils.rayCastFromPlayer((PlayerServer) player, 100);
 
 		if (hitresult == null) {
@@ -42,9 +43,7 @@ import wyspr.BTE.utils.Utils;
 				hitresult.y,
 				hitresult.z
 			));
-			player.sendMessage(TextFormatting.YELLOW + "Struck at: " +
-				TextFormatting.LIGHT_BLUE + String.format(
-				"%d, %d, %d",
+			player.sendMessage(TextFormatting.YELLOW + "Struck at: " + TextFormatting.LIGHT_BLUE + String.format("%d, %d, %d",
 				hitresult.x,
 				hitresult.y,
 				hitresult.z
@@ -57,26 +56,15 @@ import wyspr.BTE.utils.Utils;
 	private @NotNull int userArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
 		Player        player = source.getSender();
-		PlayerServer  target  = context.getArgument("player", PlayerServer.class);
+		PlayerServer  target = context.getArgument("player", PlayerServer.class);
 
-		target.world.addWeatherEffect(new EntityLightning(
-			target.world,
-			target.x,
-			target.y,
-			target.z
-		));
-		player.sendMessage(TextFormatting.YELLOW + "Struck " +
-			TextFormatting.RESET + target.getDisplayName() +
-			TextFormatting.YELLOW + " at: " +
-			TextFormatting.LIGHT_BLUE + String.format(
+		target.world.addWeatherEffect(new EntityLightning(target.world, target.x, target.y, target.z));
+		player.sendMessage(TextFormatting.YELLOW + "Struck " + TextFormatting.RESET + target.getDisplayName() + TextFormatting.YELLOW + " at: " + TextFormatting.LIGHT_BLUE + String.format(
 			"%d, %d, %d",
-				(int)target.x,
-				(int)target.y,
-				(int)target.z
-		) +
-			TextFormatting.YELLOW + " in " +
-			TextFormatting.LIGHT_BLUE + target.world.dimension.getTranslatedName()
-		);
+			(int) target.x,
+			(int) target.y,
+			(int) target.z
+		) + TextFormatting.YELLOW + " in " + TextFormatting.LIGHT_BLUE + target.world.dimension.getTranslatedName());
 
 		return 1;
 	}

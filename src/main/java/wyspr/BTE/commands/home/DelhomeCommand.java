@@ -12,10 +12,11 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeHome;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 
-@SuppressWarnings("ALL") public class DelhomeCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class DelhomeCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"delhome", "rmhome"};
@@ -26,7 +27,7 @@ import wyspr.BTE.utils.PlayerData;
 					.argument("home", ArgumentTypeHome.ownHomes())
 					.executes(this::homeArg))
 				.then(ArgumentBuilderRequired
-					.argument("player", ArgumentTypeUser.user())
+					.argument("player", ArgumentTypeOnlineUser.online())
 					.requires(source -> ((CommandSource) source).hasAdmin())
 					.then(ArgumentBuilderRequired
 						.argument("home", ArgumentTypeHome.othersHomes())

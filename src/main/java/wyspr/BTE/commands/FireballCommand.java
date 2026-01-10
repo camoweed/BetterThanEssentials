@@ -11,7 +11,8 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.world.World;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("ALL") public class FireballCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class FireballCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> dispatcher) {
 		dispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral

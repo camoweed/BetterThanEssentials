@@ -6,7 +6,8 @@ import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.server.entity.player.PlayerServer;
 
-@SuppressWarnings("ALL") public class DisconnectCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class DisconnectCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"disconnect", "kickself"};

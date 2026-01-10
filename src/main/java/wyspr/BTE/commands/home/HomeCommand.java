@@ -13,7 +13,7 @@ import net.minecraft.core.world.chunk.ChunkCoordinates;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeHome;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.Teleport;
@@ -21,7 +21,8 @@ import wyspr.BTE.utils.WorldPosition;
 
 import java.util.Optional;
 
-@SuppressWarnings("ALL") public class HomeCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class HomeCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
@@ -32,7 +33,7 @@ import java.util.Optional;
 				.argument("home", ArgumentTypeHome.ownHomes())
 				.executes(this::homeArg))
 			.then(ArgumentBuilderRequired
-				.argument("player", ArgumentTypeUser.user())
+				.argument("player", ArgumentTypeOnlineUser.online())
 				.requires(source -> ((CommandSource) source).hasAdmin())
 				.then(ArgumentBuilderRequired
 					.argument("home", ArgumentTypeHome.othersHomes())

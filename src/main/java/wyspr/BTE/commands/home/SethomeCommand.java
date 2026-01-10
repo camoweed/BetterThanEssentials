@@ -13,7 +13,8 @@ import net.minecraft.core.net.command.TextFormatting;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
 
-@SuppressWarnings("ALL") public class SethomeCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class SethomeCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"addhome", "sethome"};

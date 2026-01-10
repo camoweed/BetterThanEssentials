@@ -11,12 +11,13 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 
 import java.util.List;
 
-@SuppressWarnings("ALL") public class HomesCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class HomesCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
@@ -24,7 +25,7 @@ import java.util.List;
 			.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.HomeCommand)
 			.executes(this::noArg)
 			.then(ArgumentBuilderRequired
-				.argument("player", ArgumentTypeUser.user())
+				.argument("player", ArgumentTypeOnlineUser.online())
 				.requires(source -> ((CommandSource) source).hasAdmin())
 				.executes(this::playerArg)));
 	}

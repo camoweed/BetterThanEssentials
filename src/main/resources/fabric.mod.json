@@ -15,16 +15,13 @@
 	"license": "CC0-1.0",
 	"environment": "server",
 	"entrypoints": {
-		"main": [
+		"server": [
 			"wyspr.BTE.Essentials"
 		],
 		"beforeGameStart": [
 			"wyspr.BTE.Essentials"
 		],
 		"afterGameStart": [
-			"wyspr.BTE.Essentials"
-		],
-		"recipesReady": [
 			"wyspr.BTE.Essentials"
 		]
 	},

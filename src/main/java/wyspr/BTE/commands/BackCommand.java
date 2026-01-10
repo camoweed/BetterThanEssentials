@@ -12,9 +12,11 @@ import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.Teleport;
+import wyspr.BTE.utils.Utils;
 import wyspr.BTE.utils.WorldPosition;
 
-@SuppressWarnings("ALL") public class BackCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class BackCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
@@ -26,8 +28,8 @@ import wyspr.BTE.utils.WorldPosition;
 	private int command(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source     = (CommandSource) context.getSource();
 		boolean       isAdmin    = source.hasAdmin();
-		Player    player     = source.getSender();
-		TPManager playerData = PlayerData.get(player).tpManager;
+		Player        player     = Utils.requirePlayer(source);
+		TPManager     playerData = PlayerData.get(player).tpManager;
 
 		int cost = Essentials.BackCost;
 		if (player.score < cost && !isAdmin) {

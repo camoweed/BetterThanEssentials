@@ -13,13 +13,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.entity.player.PlayerServer;
 import org.apache.commons.lang3.tuple.Pair;
 import wyspr.BTE.Essentials;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.TPARequestType;
 import wyspr.BTE.utils.Teleport;
 
-@SuppressWarnings("ALL") public class TPConfirmCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class TPConfirmCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 
@@ -30,7 +31,7 @@ import wyspr.BTE.utils.Teleport;
 				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.TPACommand)
 				.executes(this::noArg)
 				.then(ArgumentBuilderRequired
-					.argument("target", ArgumentTypeUser.user())
+					.argument("target", ArgumentTypeOnlineUser.online())
 					.executes(this::playerArg)));
 		}
 
@@ -101,7 +102,7 @@ import wyspr.BTE.utils.Teleport;
 		Player        player         = source.getSender();
 		PlayerServer  target         = context.getArgument("target", PlayerServer.class);
 		PlayerData    targetData     = PlayerData.get(target);
-		TPManager     playerTPM     = PlayerData.get(player).tpManager;
+		TPManager     playerTPM      = PlayerData.get(player).tpManager;
 		boolean       targetNotAdmin = !target.isOperator();
 
 		if (playerTPM.hasNoRequests()) {

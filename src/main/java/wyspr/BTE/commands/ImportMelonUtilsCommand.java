@@ -10,7 +10,7 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.world.chunk.ChunkCoordinates;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.InstantTypeAdapter;
-import wyspr.BTE.utils.Warps;
+import wyspr.BTE.utils.WarpsManager;
 import wyspr.BTE.utils.WorldPosition;
 
 import java.io.File;
@@ -25,7 +25,8 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 
-@SuppressWarnings("ALL") public class ImportMelonUtilsCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class ImportMelonUtilsCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
@@ -37,18 +38,24 @@ import java.util.List;
 
 				Path melonutilsDir = Essentials.CFG_DIR.resolve("melonutilities");
 
-				if (!melonutilsDir.toFile().exists()) {
+				if (!melonutilsDir
+					.toFile()
+					.exists()) {
 					player.sendMessage("melonutilities direcory not found");
 					return 1;
 				}
 
-				Gson gson = new GsonBuilder().setPrettyPrinting().create();
+				Gson gson = new GsonBuilder()
+					.setPrettyPrinting()
+					.create();
 
 				File melonutilsConfig = new File(melonutilsDir.toFile(), "config.json");
 				// Load full JSON document
 				JsonObject root = null;
 				try {
-					root = JsonParser.parseReader(new FileReader(melonutilsConfig)).getAsJsonObject();
+					root = JsonParser
+						.parseReader(new FileReader(melonutilsConfig))
+						.getAsJsonObject();
 				} catch (FileNotFoundException e) {
 					Essentials.LOGGER.error(
 						"Failed to load file: {}",
@@ -76,7 +83,9 @@ import java.util.List;
 				try {
 					Files.write(
 						melonutilsConfig.toPath(),
-						gson.toJson(root).getBytes(StandardCharsets.UTF_8)
+						gson
+							.toJson(root)
+							.getBytes(StandardCharsets.UTF_8)
 					);
 					player.sendMessage("Config updated successfully.");
 				} catch (Exception e) {
@@ -85,7 +94,9 @@ import java.util.List;
 				}
 
 				// Locate the "Warp Data" → "warps" array
-				JsonArray warpsArray = root.getAsJsonObject("Warp Data").getAsJsonArray("warps");
+				JsonArray warpsArray = root
+					.getAsJsonObject("Warp Data")
+					.getAsJsonArray("warps");
 
 				// Convert JSON array to List<Warp>
 				List<MelonPosition> warpList = gson.fromJson(
@@ -100,13 +111,17 @@ import java.util.List;
 					warpMap.put(w.name, new WorldPosition(w.x, w.y, w.z, w.dimID));
 				}
 
-				Warps.importWarps(warpMap);
+				WarpsManager.importWarps(warpMap);
 
-				File   melonutilsPlayerDir = melonutilsDir.resolve("users").toFile();
+				File   melonutilsPlayerDir = melonutilsDir
+					.resolve("users")
+					.toFile();
 				File[] playersDirList      = melonutilsPlayerDir.listFiles();
 
 				if (playersDirList != null) {
-					ChunkCoordinates spawnCC = source.getWorld().getSpawnPoint();
+					ChunkCoordinates spawnCC = source
+						.getWorld()
+						.getSpawnPoint();
 					WorldPosition    spawn   = new WorldPosition(spawnCC.x, spawnCC.y, spawnCC.z, 0);
 
 					for (File melonUserfile : playersDirList) {
@@ -129,7 +144,9 @@ import java.util.List;
 	}
 
 	private void loadPlayerFile(File melonUserFile, WorldPosition spawn) throws Exception {
-		JsonObject melonPlayerJson = JsonParser.parseReader(new FileReader(melonUserFile)).getAsJsonObject();
+		JsonObject melonPlayerJson = JsonParser
+			.parseReader(new FileReader(melonUserFile))
+			.getAsJsonObject();
 		Gson gson = new GsonBuilder()
 			.setPrettyPrinting()
 			.registerTypeAdapter(Instant.class, new InstantTypeAdapter())
@@ -139,7 +156,9 @@ import java.util.List;
 			.getAsJsonPrimitive("userUUID")
 			.getAsString();
 
-		JsonArray homesArray = melonPlayerJson.getAsJsonObject("Home Data").getAsJsonArray("homes");
+		JsonArray homesArray = melonPlayerJson
+			.getAsJsonObject("Home Data")
+			.getAsJsonArray("homes");
 
 		List<MelonPosition> homesList = gson.fromJson(
 			homesArray,
@@ -155,7 +174,9 @@ import java.util.List;
 		}
 
 		MockPlayerData playerData = new MockPlayerData();
-		playerData.lastTPTime = Instant.now().minus(Duration.ofSeconds(Essentials.TPTimeout));
+		playerData.lastTPTime = Instant
+			.now()
+			.minus(Duration.ofSeconds(Essentials.TPTimeout));
 		playerData.backPos    = spawn;
 		playerData.homes      = homesMap;
 

@@ -9,7 +9,7 @@ import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import wyspr.BTE.commands.arguments.ArgumentTypeWarp;
-import wyspr.BTE.utils.Warps;
+import wyspr.BTE.utils.WarpsManager;
 
 @SuppressWarnings("ALL") public class DelWarpCommand implements CommandManager.CommandRegistry {
 	@Override
@@ -31,7 +31,7 @@ import wyspr.BTE.utils.Warps;
 		Player        player = source.getSender();
 		String        target = context.getArgument("target", String.class);
 
-		if (Warps.removeWarp(target)) {
+		if (WarpsManager.removeWarp(target)) {
 			player.sendMessage(TextFormatting.ORANGE + "Removed warp: " + TextFormatting.YELLOW + target);
 		} else {
 			player.sendMessage(TextFormatting.ORANGE + "There is no warp named: " + TextFormatting.YELLOW + target);

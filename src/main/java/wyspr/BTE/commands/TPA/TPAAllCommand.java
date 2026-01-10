@@ -13,7 +13,8 @@ import wyspr.BTE.utils.TPARequestType;
 
 import java.util.List;
 
-@SuppressWarnings("ALL") public class TPAAllCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class TPAAllCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"tpall", "tpaall"};

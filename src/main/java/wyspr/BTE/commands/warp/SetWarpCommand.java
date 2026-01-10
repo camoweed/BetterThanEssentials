@@ -9,10 +9,11 @@ import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
-import wyspr.BTE.utils.Warps;
+import wyspr.BTE.utils.WarpsManager;
 import wyspr.BTE.utils.WorldPosition;
 
-@SuppressWarnings("ALL") public class SetWarpCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class SetWarpCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"setwarp", "addwarp"};
@@ -31,7 +32,7 @@ import wyspr.BTE.utils.WorldPosition;
 		Player        player = source.getSender();
 		String        target = context.getArgument("target", String.class);
 
-		if (Warps.addWarp(
+		if (WarpsManager.addWarp(
 			target,
 			new WorldPosition(player.x, player.y, player.z, player.dimension)
 		)) {

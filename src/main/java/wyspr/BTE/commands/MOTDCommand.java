@@ -8,7 +8,8 @@ import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.server.MinecraftServer;
 
-@SuppressWarnings("ALL") public class MOTDCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class MOTDCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral

@@ -13,12 +13,13 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import org.apache.commons.lang3.tuple.Pair;
 import wyspr.BTE.Essentials;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.TPARequestType;
 
-@SuppressWarnings("ALL") public class TPDenyCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class TPDenyCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"tpno", "tn", "tpdeny"};
@@ -29,16 +30,16 @@ import wyspr.BTE.utils.TPARequestType;
 				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.TPACommand)
 				.executes(this::noArg)
 				.then(ArgumentBuilderRequired
-					.argument("target", ArgumentTypeUser.user())
+					.argument("target", ArgumentTypeOnlineUser.online())
 					.executes(this::playerArg)));
 		}
 	}
 
 	private int noArg(CommandContext<Object> context) throws CommandSyntaxException {
-		CommandSource source     = (CommandSource) context.getSource();
-		boolean       isAdmin    = source.hasAdmin();
-		Player               player     = source.getSender();
-		TPManager playerTPM = PlayerData.get(player).tpManager;
+		CommandSource source    = (CommandSource) context.getSource();
+		boolean       isAdmin   = source.hasAdmin();
+		Player        player    = source.getSender();
+		TPManager     playerTPM = PlayerData.get(player).tpManager;
 
 		if (playerTPM.hasNoRequests()) {
 			player.sendMessage(TextFormatting.YELLOW + "You don't have any requests.");

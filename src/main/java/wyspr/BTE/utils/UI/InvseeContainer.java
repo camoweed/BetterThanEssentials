@@ -1,14 +1,14 @@
-package wyspr.BTE.utils;
+package wyspr.BTE.utils.UI;
 
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.container.Container;
 import org.jetbrains.annotations.Nullable;
 
-public class ContainerInvsee implements Container {
+public class InvseeContainer implements Container {
 	private final Player player;
 
-	public ContainerInvsee(Player player) {
+	public InvseeContainer(Player player) {
 		this.player = player;
 	}
 

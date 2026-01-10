@@ -9,16 +9,19 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.player.PlayerListBox;
 import wyspr.BTE.utils.PlayerData;
 
-@SuppressWarnings("ALL") public class VanishCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class VanishCommand implements CommandManager.CommandRegistry {
 
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
-		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral.literal("vanish")
+		commandDispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral
+			.literal("vanish")
 			.requires(source -> ((CommandSource) source).hasAdmin())
 			.executes(context -> {
 				CommandSource source = (CommandSource) context.getSource();
 				Player        player = source.getSender();
-				boolean   isVanished = PlayerData.get(player)
+				boolean isVanished = PlayerData
+					.get(player)
 					.toggleVanished();
 
 				PlayerListBox.updateList();

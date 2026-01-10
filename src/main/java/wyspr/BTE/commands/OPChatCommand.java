@@ -11,7 +11,8 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.net.PlayerList;
 
-@SuppressWarnings("ALL") public class OPChatCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class OPChatCommand implements CommandManager.CommandRegistry {
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
 		String[] literals = {"chatop", "opc", "opchat"};
@@ -35,6 +36,9 @@ import net.minecraft.server.net.PlayerList;
 	}
 
 	public String opChat(Player player, String message) {
-		return "[" + TextFormatting.RED + TextFormatting.BOLD + "OP CHAT" + TextFormatting.RESET + "] <" + player.username + TextFormatting.RESET + "> " + message.replace("$$", "§");
+		return "[" + TextFormatting.RED + TextFormatting.BOLD + "OP CHAT" + TextFormatting.RESET + "] <" + player.username + TextFormatting.RESET + "> " + message.replace(
+			"$$",
+			"§"
+		);
 	}
 }

@@ -8,10 +8,11 @@ import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
-import wyspr.BTE.commands.arguments.ArgumentTypeUser;
+import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 
-@SuppressWarnings("ALL") public class MuteCommand implements CommandManager.CommandRegistry {
+@SuppressWarnings("ALL")
+public class MuteCommand implements CommandManager.CommandRegistry {
 
 	@Override
 	public void register(CommandDispatcher<CommandSource> commandDispatcher) {
@@ -19,7 +20,7 @@ import wyspr.BTE.utils.PlayerData;
 			.literal("mute")
 			.requires(source -> ((CommandSource) source).hasAdmin())
 			.then(ArgumentBuilderRequired
-				.argument("player", ArgumentTypeUser.user())
+				.argument("player", ArgumentTypeOnlineUser.online())
 				.executes(context -> {
 					CommandSource source     = (CommandSource) context.getSource();
 					Player        player     = source.getSender();
