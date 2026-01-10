@@ -1,12 +1,12 @@
 package wyspr.BTE;
 
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.GameStartEntrypoint;
-import turniplabs.halplibe.util.RecipeEntrypoint;
 import turniplabs.halplibe.util.TomlConfigHandler;
 import turniplabs.halplibe.util.toml.Toml;
 import wyspr.BTE.commands.*;
@@ -22,25 +22,28 @@ import wyspr.BTE.commands.warp.DelWarpCommand;
 import wyspr.BTE.commands.warp.SetWarpCommand;
 import wyspr.BTE.commands.warp.WarpCommand;
 import wyspr.BTE.commands.warp.WarpsCommand;
+import wyspr.BTE.utils.AllUsersMap;
 import wyspr.BTE.utils.ConfigBuilder;
-import wyspr.BTE.utils.Warps;
+import wyspr.BTE.utils.WarpsManager;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class Essentials implements DedicatedServerModInitializer, GameStartEntrypoint {
 	public static final String            MOD_ID     = "BTEssentials";
 	public static final Logger            LOGGER     = LoggerFactory.getLogger(MOD_ID);
 	public static final TomlConfigHandler CFG;
-	//  server/config/
-	public static final Path              CFG_DIR    = Paths.get("config");
-	//  server/config/BTEssentials
+	///  server/config/
+	public static final Path              CFG_DIR    = FabricLoader
+		.getInstance()
+		.getConfigDir();
+	///  server/config/BTEssentials
 	public static final Path              DATA_DIR   = CFG_DIR.resolve(MOD_ID);
-	//  server/config/BTEssentials/players
+	///  server/config/BTEssentials/players
 	public static final Path              PLAYER_DIR = DATA_DIR.resolve("players");
+	public static final int               MAX_MAILS  = 36;
 	public static       ConfigBuilder     info;
 	public static       ConfigBuilder     rules;
 	// Options
@@ -86,8 +89,11 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 	public static       boolean           GiveCommand;
 	public static       boolean           GamemodeCommand;
 	public static       boolean           FixCommand;
-
+	// Sounds
 	public static       String            TeleportSound;
+	public static       String            TPANotificationSound;
+	public static       String            MailNotificationSound;
+	public static       String            MutedSound;
 
 	static {
 		Toml cfg = new Toml();
@@ -261,22 +267,21 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 		MailNotificationSound = CFG.getString("Sounds.MailNotificationSound");
 		MutedSound = CFG.getString("Sounds.MutedSound");
 
-		TeleportSound                = CFG.getString("Options.TeleportSound");
 	}
 
 	@Override
-	public void onInitialize() {
-		System.out.println("┌───────────────────────────────────┐");
-		System.out.println("│ Better than Essentials loading... │");
-		System.out.println("└───────────────────────────────────┘");
+	public void onInitializeServer() {
+		System.out.println("+-----------------------------------+");
+		System.out.println("| Better than Essentials loading... |");
+		System.out.println("+-----------------------------------+");
 
 		for (Path dir : new Path[]{DATA_DIR, PLAYER_DIR}) {
 			if (!Files.exists(dir)) {
 				try {
-					Files.createDirectory(dir);
+					Files.createDirectories(dir);
 					LOGGER.info("Created {}", dir);
 				} catch (IOException e) {
-					LOGGER.error("Could not create: {}", dir, new RuntimeException(e));
+					LOGGER.error("Could not create: {}", dir, e);
 				}
 			}
 		}
@@ -284,19 +289,20 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 		initInfo();
 		initRules();
 		initCommands();
-		Warps.load();
+		WarpsManager.load();
+		AllUsersMap.load();
 
-		System.out.println("┌─────────────────────────────────────┐");
-		System.out.println("│ Better than Essentials initialized! │");
-		System.out.println("└─────────────────────────────────────┘");
+		System.out.println("+-------------------------------------+");
+		System.out.println("| Better than Essentials initialized! |");
+		System.out.println("+-------------------------------------+");
 	}
 
 	static void initInfo() {
 		info = new ConfigBuilder(
 			"Info", Arrays.asList(
 			"<aqua>Thanks for installing Better Than Essentials!<r>",
-			"<yellow>this is an automatically generated message<r>",
-			"<lime>and you may customize it in the config folder!<r>",
+			"<yellow>This is an automatically generated message<r>",
+			"<lime>you may customize it in the config folder!<r>",
 			"///  ----------------==================== INFO ===================-----------------",
 			"///",
 			"/// - You are able to add more pages to info and rules by following this format",
@@ -336,9 +342,9 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 		rules = new ConfigBuilder(
 			"Rules", Arrays.asList(
 			"<aqua>Basic rules:<r>",
-			"  <yellow>No cheating<r>",
-			"  <yellow>No harassing<r>",
-			"  <yellow>No minecraft youtuber shenanigans<r>",
+			"  <yellow>- No cheating<r>",
+			"  <yellow>- No harassing<r>",
+			"  <yellow>- No Minecraft youtuber shenanigans<r>",
 			"///  -----------------=================== INFO ===================-----------------",
 			"///                                                                                ",
 			"///",
@@ -379,6 +385,7 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 		CommandManager.registerServerCommand(new BackCommand());
 		CommandManager.registerServerCommand(new ColorsCommand());
 		CommandManager.registerServerCommand(new CraftingCommand());
+		CommandManager.registerServerCommand(new DraftCommand());
 		CommandManager.registerServerCommand(new DisconnectCommand());
 		CommandManager.registerServerCommand(new FixCommand());
 		CommandManager.registerServerCommand(new FireballCommand());
@@ -386,6 +393,7 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 		CommandManager.registerServerCommand(new GodCommand());
 		CommandManager.registerServerCommand(new InvseeCommand());
 		CommandManager.registerServerCommand(new LeaveBedCommand());
+		CommandManager.registerServerCommand(new MailCommand());
 		CommandManager.registerServerCommand(new MOTDCommand());
 		CommandManager.registerServerCommand(new OPChatCommand());
 		CommandManager.registerServerCommand(new PayCommand());
