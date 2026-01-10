@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class ConfigBuilder {
-	private static final Map<String, String> colorMap = new HashMap<>(33);
+	private static final Map<String, String> colorMap = new HashMap<>();
 
 	static {
 		colorMap.put("white", TextFormatting.WHITE.toString());
@@ -84,11 +84,8 @@ public class ConfigBuilder {
 		}
 	}
 
-	public List<String> get(int pageNumber) {
-		if (pageNumber <= 1) {
-			return readFile(cfgPath.resolve(fileName + ".txt"));
-		}
-		return readFile(cfgPath.resolve(fileName + pageNumber + ".txt"));
+	public List<String> get(String subFileName) {
+		return readFile(cfgPath.resolve(fileName + subFileName + ".txt"));
 	}
 
 	private List<String> readFile(Path path) {

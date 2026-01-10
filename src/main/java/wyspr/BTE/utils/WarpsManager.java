@@ -16,21 +16,20 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-public class Warps {
+public class WarpsManager {
 	private static final File warpFile = Essentials.DATA_DIR.resolve("warps.json").toFile();
 
-	private static HashMap<String, WorldPosition> warps;
+	private static HashMap<String, WorldPosition> WARPS;
 
 	static {
 		if (!warpFile.exists()) {
-			warps = new HashMap<>();
+			WARPS = new HashMap<>();
 			try {
 				warpFile.createNewFile();
+				save();
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		} else {
-			load();
 		}
 	}
 
@@ -38,9 +37,9 @@ public class Warps {
 		Gson gson = new Gson();
 		try {
 			String json = new String(Files.readAllBytes(warpFile.toPath()), StandardCharsets.UTF_8);
-			warps = gson.fromJson(json, new TypeToken<HashMap<String, WorldPosition>>() {}.getType());
-			if (warps == null) {
-				warps = new HashMap<>();
+			WARPS = gson.fromJson(json, new TypeToken<HashMap<String, WorldPosition>>() {}.getType());
+			if (WARPS == null) {
+				WARPS = new HashMap<>();
 			}
 		} catch (IOException e) {
 			System.err.println("Error reading file: " + e.getMessage());
@@ -48,13 +47,13 @@ public class Warps {
 	}
 
 	public static void importWarps(HashMap<String, WorldPosition> newWarps) {
-		warps = newWarps;
+		WARPS = newWarps;
 		save();
 	}
 
 	public static void save() {
 		Gson   gson = new GsonBuilder().setPrettyPrinting().create();
-		String json = gson.toJson(warps);
+		String json = gson.toJson(WARPS);
 		try {
 			Files.write(warpFile.toPath(), json.getBytes(StandardCharsets.UTF_8));
 		} catch (IOException e) {
@@ -63,30 +62,31 @@ public class Warps {
 	}
 
 	public static boolean addWarp(String name, WorldPosition position) {
-		if (warps.containsKey(name)) {
+		if (WARPS.containsKey(name)) {
 			return false;
 		}
-		warps.put(name, position);
+		WARPS.put(name, position);
 		return true;
 	}
 
 	public static boolean removeWarp(String name) {
-		if (!warps.containsKey(name)) {
+		if (!WARPS.containsKey(name)) {
 			return false;
 		}
-		warps.remove(name);
+		WARPS.remove(name);
 		return true;
 	}
 
 	public static Optional<WorldPosition> getWarp(String name) {
-		return Optional.ofNullable(warps.get(name));
+		return Optional.ofNullable(WARPS.get(name));
 	}
 
 	public static List<String> getWarps() {
-		if (warps.isEmpty()) {
+		if (WARPS.isEmpty()) {
 			return new ArrayList<>();
 		}
 
-		return warps.keySet().stream().sorted().collect(Collectors.toList());
+		return WARPS
+			.keySet().stream().sorted().collect(Collectors.toList());
 	}
 }
