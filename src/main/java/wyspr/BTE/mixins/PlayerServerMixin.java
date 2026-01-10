@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
 
-@Mixin(value = PlayerServer.class, remap = false) public abstract class PlayerServerMixin extends Player {
+@Mixin(value = PlayerServer.class, remap = false)
+public abstract class PlayerServerMixin extends Player {
 	public PlayerServerMixin(World world) {
 		super(world);
 		PlayerData.set(this);
@@ -33,18 +34,11 @@ import wyspr.BTE.utils.PlayerData;
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
-		PlayerData playerData = PlayerData.get(this);
-		this.speed            = playerData.speed;
-		this.flySpeed         = playerData.flySpeed;
-	}
-
-	@Override
 	public void onDeath(Entity entityKilledBy) {
 		if (Essentials.BackOnDeath) {
 			PlayerData.get(this).tpManager.updateBackPos();
 		}
+		if (PlayerData.get(this).godMode) return;
 		super.onDeath(entityKilledBy);
 	}
 
