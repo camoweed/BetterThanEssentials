@@ -1,4 +1,4 @@
-@file:Suppress("UnstableApiUsage", "PropertyName")
+@file:Suppress("UnstableApiUsage", "PropertyName", "SpellCheckingInspection")
 
 import org.apache.tools.ant.taskdefs.condition.Os
 

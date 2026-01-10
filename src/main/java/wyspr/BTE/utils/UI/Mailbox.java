@@ -14,10 +14,11 @@ import wyspr.BTE.utils.PlayerData.MailManager.Mail;
 import java.util.List;
 
 public class Mailbox implements Container {
-	public static final String      ENVELOPE = "✉";
-	private final       Player      player;
-	private final       PlayerData  playerData;
-	private final       MailboxType type;
+	public static final  String      ENVELOPE               = "✉";
+	private static final int         MAX_TOOLTIP_TEXT_WIDTH = 50;
+	private final        Player      player;
+	private final        PlayerData  playerData;
+	private final        MailboxType type;
 
 	private Mailbox(MailboxType type, Player player) {
 		this.type       = type;
@@ -87,9 +88,14 @@ public class Mailbox implements Container {
 					TextFormatting.LIGHT_GRAY + " (" +
 					TextFormatting.WHITE + mail.senderUsername +
 					TextFormatting.LIGHT_GRAY + ")\n" +
-					TextFormatting.LIGHT_GRAY + "Subject: " + TextFormatting.RESET + mail.subject + "\n" +
+					TextFormatting.LIGHT_GRAY + "Sent at: " + TextFormatting.LIGHT_BLUE + mail.getSentDate() + "\n" +
+					TextFormatting.LIGHT_GRAY + "Subject: " + TextFormatting.YELLOW + mail.subject + "\n" +
 					TextFormatting.GRAY + TextFormatting.STRIKETHROUGH + "                                            \n" +
-					TextFormatting.LIGHT_GRAY + "Message: " + TextFormatting.RESET + message
+					TextFormatting.LIGHT_GRAY + "Message: " + TextFormatting.RESET + wrapMessage(
+					message,
+					MAX_TOOLTIP_TEXT_WIDTH
+				) +
+					TextFormatting.GRAY + TextFormatting.STRIKETHROUGH + "                                            "
 			);
 
 			return item;
@@ -113,22 +119,72 @@ public class Mailbox implements Container {
 			);
 
 			if (playerData.mail.selectedDraft == index) {
-				// Make map item "initialized"
 				item
 					.getData()
 					.putBoolean("initialized", true);
 			}
 
+			String msg = wrapMessage(message, MAX_TOOLTIP_TEXT_WIDTH);
+
 			item.setCustomName(
-				TextFormatting.RESET + "" + TextFormatting.LIGHT_GRAY + "Subject: " + TextFormatting.RESET + mail.subject + "\n" +
-					TextFormatting.GRAY + TextFormatting.STRIKETHROUGH + "                                            \n" +
-					TextFormatting.LIGHT_GRAY + "Message: " + TextFormatting.RESET + message
+				TextFormatting.RESET + "" +
+				TextFormatting.LIGHT_GRAY + "Subject: " + TextFormatting.RESET + mail.subject + "\n" +
+				TextFormatting.GRAY + TextFormatting.STRIKETHROUGH + "                                            \n" +
+				TextFormatting.LIGHT_GRAY + "Message: " + TextFormatting.RESET + msg + '\n' +
+				TextFormatting.GRAY + TextFormatting.STRIKETHROUGH + "                                            "
 			);
 
 			return item;
 		} catch (IndexOutOfBoundsException e) {
 			return null;
 		}
+	}
+
+	public static String wrapMessage(String message, int lineLength) {
+		int messageLen = message.length();
+		int lines      = (int) Math.ceil((double) messageLen / (double) lineLength);
+
+		if (messageLen < lineLength) {
+			return message;
+		}
+
+		String output       = "";
+		String activeFormat = "";
+
+		for (int i = 0; i < lines; i++) {
+			int index = i * lineLength;
+
+			output += message
+				.substring(index, Math.min(index + lineLength, messageLen - 1))
+				.trim();
+			int lastFormat = output.lastIndexOf('§');
+			if (lastFormat != -1) {
+				char code = message.charAt(i + 1);
+
+				if (code == 'r') {
+					activeFormat = "";
+				}
+				// Color codes wipe previous colors but keep styles
+				if ((code >= '0' && code <= '9') || (code >= 'a' && code <= 'f')) {
+					activeFormat = "§" + code;
+				}
+
+				// Formatting codes stack
+				//noinspection SpellCheckingInspection
+				if ("klmno".indexOf(code) >= 0) {
+					if (!activeFormat.contains("§" + code)) {
+						activeFormat = activeFormat + "§" + code;
+					}
+				}
+				i++;
+				continue;
+			}
+			if (i != lines - 1) {
+				output += '\n' + activeFormat;
+			}
+		}
+
+		return output;
 	}
 
 	@Override
@@ -175,7 +231,7 @@ public class Mailbox implements Container {
 				case Drafts:
 					return ENVELOPE + " Drafts";
 			}
-			return "";
+			return "Mailbox";
 		}
 	}
 }

@@ -25,16 +25,16 @@ import java.util.*;
 import static wyspr.BTE.Essentials.PLAYER_DIR;
 
 public class PlayerData {
+	public final  TPManager   tpManager;
+	public final  MailManager mail;
 	private final File        saveFile;
-	public        TPManager   tpManager;
+	private final Player      player;
 	public        Homes       homes;
-	public        MailManager mail;
 	public        boolean     craftCommandOpen = false;
 	public        boolean     godMode          = false;
 	public        boolean     muted;
 	public        boolean     vanished;
 	public        Gamemode    vanishedGamemode;
-	private final Player      player;
 
 	public PlayerData(Player player) {
 		this.saveFile  = new File(PLAYER_DIR.toFile(), player.uuid + ".json");
@@ -57,11 +57,11 @@ public class PlayerData {
 			.create();
 		PlayerDataFile dataFile = new PlayerDataFile();
 
-		dataFile.backPos          = this.tpManager.backPos;
-		dataFile.lastTPTime       = this.tpManager.lastTPTime;
-		dataFile.homes            = this.homes;
-		dataFile.vanished         = this.vanished;
-		dataFile.muted            = this.muted;
+		dataFile.backPos    = this.tpManager.backPos;
+		dataFile.lastTPTime = this.tpManager.lastTPTime;
+		dataFile.homes      = this.homes;
+		dataFile.vanished   = this.vanished;
+		dataFile.muted      = this.muted;
 
 		String json = gson.toJson(dataFile);
 		try {
@@ -76,7 +76,7 @@ public class PlayerData {
 			.registerTypeAdapter(Instant.class, new InstantTypeAdapter())
 			.create();
 		try {
-			String         json     = new String(
+			String json = new String(
 				Files.readAllBytes(saveFile.toPath()),
 				StandardCharsets.UTF_8
 			);
@@ -148,9 +148,182 @@ public class PlayerData {
 
 		public Instant                        lastTPTime;
 		public WorldPosition                  backPos;
-		public boolean                        muted     = false;
-		public boolean                        vanished  = false;
+		public boolean                        muted    = false;
+		public boolean                        vanished = false;
 		public HashMap<String, WorldPosition> homes;
+	}
+
+	public static class MailManager {
+		private final transient File       saveFile;
+		public transient        int        selectedDraft = -1;
+		public                  List<Mail> readMail;
+		public                  List<Mail> inbox;
+		public                  List<Mail> drafts;
+
+		public MailManager(String uuid) {
+			this.saveFile = new File(PLAYER_DIR.toFile(), uuid + ".mail.json");
+			this.readMail = new ArrayList<>();
+			this.inbox    = new ArrayList<>();
+			this.drafts   = new ArrayList<>();
+
+			if (!this.saveFile.exists()) {
+				this.save();
+			} else {
+				this.load();
+			}
+		}
+
+		private void save() {
+			Gson gson = new GsonBuilder()
+				.setPrettyPrinting()
+				.create();
+			String json = gson.toJson(this);
+			try {
+				Files.write(saveFile.toPath(), json.getBytes(StandardCharsets.UTF_8));
+			} catch (IOException e) {
+				Essentials.LOGGER.error("Error writing file: {}", e.getMessage());
+			}
+		}
+
+		private void load() {
+			Gson gson = new GsonBuilder()
+				.registerTypeAdapter(Instant.class, new InstantTypeAdapter())
+				.create();
+			try {
+				String json = new String(
+					Files.readAllBytes(saveFile.toPath()),
+					StandardCharsets.UTF_8
+				);
+				MailManager loadedInfo = gson.fromJson(json, MailManager.class);
+
+				this.readMail = loadedInfo.readMail;
+				this.inbox    = loadedInfo.inbox;
+				this.drafts   = loadedInfo.drafts;
+			} catch (IOException e) {
+				Essentials.LOGGER.error("Error reading file: {}", e.getMessage());
+			}
+		}
+
+		public void reload() {
+			load();
+		}
+
+		public boolean sendDraft(MailManager otherPlayerMail) {
+			if (this.selectedDraft >= this.drafts.size() || this.selectedDraft == -1) return false;
+
+			Mail draft = this.drafts.remove(this.selectedDraft);
+			draft.sentDate = new Date();
+			otherPlayerMail.inbox.add(draft);
+
+			otherPlayerMail.save();
+			save();
+			return true;
+		}
+
+		public @Nullable Mail markMailRead(int mailIndex) {
+			try {
+				Mail removed = this.inbox.remove(mailIndex);
+				this.readMail.add(removed);
+				return removed;
+			} catch (Exception e) {
+				return null;
+			}
+		}
+
+		public @Nullable Mail deleteReadMail(int mailIndex) {
+			try {
+				Mail removed = this.readMail.remove(mailIndex);
+				save();
+				return removed;
+			} catch (Exception e) {
+				return null;
+			}
+		}
+
+		public @Nullable Mail deleteDraft(int mailIndex) {
+			try {
+				Mail removed = this.drafts.remove(mailIndex);
+				if (this.selectedDraft == mailIndex) {
+					// If the deleted draft was selected reset the selection
+					this.selectedDraft = -1;
+				}
+				save();
+				return removed;
+			} catch (Exception e) {
+				return null;
+			}
+		}
+
+		/**
+		 * Adds a new draft with a subject and sender information.
+		 *
+		 * @param subject String
+		 * @param player  Player
+		 */
+		public boolean newDraftOutline(String subject, Player player) {
+			Mail    mail  = new Mail(subject, player); // message empty for outline
+			boolean isNew = this.drafts.add(mail);
+			save();
+			return isNew;
+		}
+
+		/**
+		 * Adds a message to the currently selected draft
+		 *
+		 * @param message String
+		 * @return the subject of the draft (<code>String</code>) or null if no draft is selected
+		 */
+		public @Nullable String attachMessageToDraft(String message) {
+			Mail draft = this.drafts.get(this.selectedDraft);
+
+			draft.message = message;
+			save();
+			return draft.subject;
+		}
+
+		public static class Mail {
+			public final String subject;
+			public final String senderUsername;
+			public final String senderDisplayname;
+			public       String message;
+			public       Date   sentDate;
+
+			public Mail(String subject, Player player) {
+				this.subject           = subject;
+				this.senderUsername    = player.username;
+				this.senderDisplayname = player.getDisplayName();
+			}
+
+			public String getSentDate() {
+				ZonedDateTime now  = ZonedDateTime.now();
+				ZonedDateTime then = ZonedDateTime.ofInstant(sentDate.toInstant(), ZoneId.systemDefault());
+
+				Duration diff    = Duration.between(then, now);
+				long     minutes = diff.toMinutes();
+
+				// Within the last hour
+				if (minutes >= 0 && minutes < 60) {
+					if (minutes == 0) return "just now";
+					if (minutes == 1) return "1 minute ago";
+					return minutes + " minutes ago";
+				}
+
+				// Same day
+				boolean sameDay
+					= now.getYear() == then.getYear() && now.getDayOfYear() == then.getDayOfYear();
+
+				if (sameDay) {
+					SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+					return timeFormat
+						.format(sentDate)
+						.toLowerCase(); // e.g., "9:17 am"
+				}
+
+				// Date (e.g., "Dec 27")
+				SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d");
+				return dateFormat.format(sentDate);
+			}
+		}
 	}
 
 	public class TPManager {
@@ -319,179 +492,6 @@ public class PlayerData {
 		 */
 		public List<String> getHomesList() {
 			return new ArrayList<>(this.keySet());
-		}
-	}
-
-	public static class MailManager {
-		private final transient File       saveFile;
-		public transient        int        selectedDraft = -1;
-		public                  List<Mail> readMail;
-		public                  List<Mail> inbox;
-		public                  List<Mail> drafts;
-
-		public MailManager(String uuid) {
-			this.saveFile = new File(PLAYER_DIR.toFile(), uuid + ".mail.json");
-			this.readMail = new ArrayList<>();
-			this.inbox    = new ArrayList<>();
-			this.drafts   = new ArrayList<>();
-
-			if (!this.saveFile.exists()) {
-				this.save();
-			} else {
-				this.load();
-			}
-		}
-
-		public void reload() {
-			load();
-		}
-
-		private void load() {
-			Gson gson = new GsonBuilder()
-				.registerTypeAdapter(Instant.class, new InstantTypeAdapter())
-				.create();
-			try {
-				String      json       = new String(
-					Files.readAllBytes(saveFile.toPath()),
-					StandardCharsets.UTF_8
-				);
-				MailManager loadedInfo = gson.fromJson(json, MailManager.class);
-
-				this.readMail = loadedInfo.readMail;
-				this.inbox    = loadedInfo.inbox;
-				this.drafts   = loadedInfo.drafts;
-			} catch (IOException e) {
-				Essentials.LOGGER.error("Error reading file: {}", e.getMessage());
-			}
-		}
-
-		public boolean sendDraft(MailManager otherPlayerMail) {
-			if (this.selectedDraft >= this.drafts.size() || this.selectedDraft == -1) return false;
-
-			Mail draft = this.drafts.remove(this.selectedDraft);
-			draft.sentDate = draft.getDate(new Date());
-			otherPlayerMail.inbox.add(draft);
-
-			otherPlayerMail.save();
-			save();
-			return true;
-		}
-
-		private void save() {
-			Gson gson = new GsonBuilder()
-				.setPrettyPrinting()
-				.create();
-			String json = gson.toJson(this);
-			try {
-				Files.write(saveFile.toPath(), json.getBytes(StandardCharsets.UTF_8));
-			} catch (IOException e) {
-				Essentials.LOGGER.error("Error writing file: {}", e.getMessage());
-			}
-		}
-
-		public @Nullable Mail markMailRead(int mailIndex) {
-			try {
-				Mail removed = this.inbox.remove(mailIndex);
-				this.readMail.add(removed);
-				return removed;
-			} catch (Exception e) {
-				return null;
-			}
-		}
-
-		public @Nullable Mail deleteReadMail(int mailIndex) {
-			try {
-				Mail removed = this.readMail.remove(mailIndex);
-				save();
-				return removed;
-			} catch (Exception e) {
-				return null;
-			}
-		}
-
-		public @Nullable Mail deleteDraft(int mailIndex) {
-			try {
-				Mail removed = this.drafts.remove(mailIndex);
-				if (this.selectedDraft == mailIndex) {
-					// If the deleted draft was selected reset the selection
-					this.selectedDraft = -1;
-				}
-				save();
-				return removed;
-			} catch (Exception e) {
-				return null;
-			}
-		}
-
-		/**
-		 * Adds a new draft with a subject and sender information.
-		 *
-		 * @param subject String
-		 * @param player  Player
-		 */
-		public boolean newDraftOutline(String subject, Player player) {
-			Mail mail = new Mail(subject, player); // message empty for outline
-			boolean isNew = this.drafts.add(mail);
-			save();
-			return isNew;
-		}
-
-		/**
-		 * Adds a message to the currently selected draft
-		 *
-		 * @param message String
-		 * @return the subject of the draft (<code>String</code>) or null if no draft is selected
-		 */
-		public @Nullable String attachMessageToDraft(String message) {
-			Mail draft = this.drafts.get(this.selectedDraft);
-
-			draft.message = message;
-			save();
-			return draft.subject;
-		}
-
-		public static class Mail {
-			public final String subject;
-			public final String senderUsername;
-			public final String senderDisplayname;
-			public       String message;
-			public       String sentDate;
-
-			public Mail(String subject, Player player) {
-				this.subject           = subject;
-				this.senderUsername    = player.username;
-				this.senderDisplayname = player.getDisplayName();
-			}
-
-			private String getDate(Date date) {
-				ZonedDateTime now  = ZonedDateTime.now();
-				ZonedDateTime then = ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-
-				Duration diff    = Duration.between(then, now);
-				long     minutes = diff.toMinutes();
-
-				// Within the last hour
-				if (minutes >= 0 && minutes < 60) {
-					if (minutes == 0) return "just now";
-					if (minutes == 1) return "1 minute ago";
-					return minutes + " minutes ago";
-				}
-
-				// Same day
-				boolean sameDay
-					= now.getYear() == then.getYear() && now.getDayOfYear() == then.getDayOfYear();
-
-				if (sameDay) {
-					SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
-					return timeFormat
-						.format(date)
-						.toLowerCase(); // e.g., "9:17 am"
-				}
-
-				// Date (e.g., "Dec 27")
-				SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d");
-				return dateFormat.format(date);
-			}
 		}
 	}
 }

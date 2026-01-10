@@ -6,8 +6,8 @@ import java.util.Objects;
 public class WorldPosition implements Serializable {
 	private static final long serialVersionUID = 1L; // Ensures version compatibility during deserialization
 
-	public double x, y, z;
-	public int dimID;
+	public final double x, y, z;
+	public final int    dimID;
 
 	public WorldPosition(double x, double y, double z, int dimID) {
 		this.x     = x;

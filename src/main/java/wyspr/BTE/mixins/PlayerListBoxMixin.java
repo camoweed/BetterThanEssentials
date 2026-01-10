@@ -16,7 +16,7 @@ import java.util.List;
 public class PlayerListBoxMixin {
 	/**
 	 * @author wyspr
-	 * @reason hide spectators from playerlist
+	 * @reason hide spectators from player list
 	 */
 	@Overwrite
 	public static void updateList() {

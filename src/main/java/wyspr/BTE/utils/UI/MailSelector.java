@@ -104,11 +104,10 @@ public class MailSelector extends TileEntityTrommel {
 
 	@Override
 	public @Nullable ItemStack getItem(int index) {
-		if (
-			(index == 0
-				|| index == 1
-				|| index == 3)
-				&& this.confirmAction
+		if (this.confirmAction && (
+			index == 0
+		 || index == 1
+		 || index == 3)
 		) {
 			if (this.type == MailboxType.Inbox) {
 				return INBOX_CANCEL_ITEM;
@@ -121,17 +120,14 @@ public class MailSelector extends TileEntityTrommel {
 				break;
 			case 1: // West slot: Select draft / reply
 				if (type == MailboxType.Drafts) {
-					if (mailItem != null) {
-						return mailItem
-							.getItem()
-							.equals(Items.MAP)
-							? DESELECT_MAIL_ITEM
-							: SELECT_MAIL_ITEM;
+					if (mailIndex == playerData.mail.selectedDraft) {
+						return DESELECT_MAIL_ITEM;
+					} else {
+						return SELECT_MAIL_ITEM;
 					}
 				} else {
 					return REPLY_ITEM;
 				}
-				break;
 			case 2: // East slot: Read / Delete item
 				if (type == MailboxType.Inbox) {
 					if (confirmAction) {
@@ -189,7 +185,7 @@ public class MailSelector extends TileEntityTrommel {
 									TextFormatting.LIGHT_BLUE + "/draft <message>"
 							);
 						}
-						player.displayTrommelScreen(MailSelector.drafts(player, mailIndex, false, mailItem));
+						player.displayTrommelScreen(MailSelector.drafts(player, mailIndex, false, getDraftItem(playerData, mailIndex)));
 						break;
 				}
 				break;

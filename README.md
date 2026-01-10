@@ -14,6 +14,7 @@ Adds various new commands and features for server administration and gameplay en
 | `/delhome`    |     ❌/✅     |       ✅       | `/rmhome`                         | Remove a home<br><sup>(OPs can remove other players homes)                                                        |
 | `/delwarp`    |      ✅      |       ❌       | `/rmwarp`                         | Remove a warp                                                                                                     |
 | `/disconnect` |      ❌      |       ❌       | `/kickself`                       | Disconnect yourself from the game                                                                                 |
+| `/draft`      |      ❌      |       ❌       | `/drafts`                         | Open your drafts or compose a new one<br><sup>(See below for details)</sup>                                       |
 | `/fireball`   |      ✅      |       ❌       |                                   | Fires a ghast fireball from the player                                                                            |
 | `/fix`        |      ❌      |       ✅       | `/repair`                         | Repairs currently held item                                                                                       |
 | `/give`       |      ❌      |       ✅       | `/i`                              | Shorthand for giving items                                                                                        |
@@ -24,6 +25,7 @@ Adds various new commands and features for server administration and gameplay en
 | `/info`       |      ❌      |       ❌       |                                   | Prints info pages into chat, see below for creating info pages                                                    |
 | `/invsee`     |      ✅      |       ❌       | `/openinv`                        | View and modify other players inventories                                                                         |
 | `/leavebed`   |      ❌      |       ❌       | `/wakeup`                         | Removes the player from a bed, useful for instances when players get stuck.<sup><br>(Can only be used from a bed) |
+| `/mail`       |      ❌      |       ❌       |                                   | View and interact with your mailboxes<br><sup>(See below for details)</sup>                                       |
 | `/motd`       |     ❌/✅     |       ❌       |                                   | View and edit the server MOTD<br><sup>(Anyone can view, OPs can edit)                                             |
 | `/mute`       |      ✅      |       ❌       |                                   | Stop players from chatting<br><sup>(OPs can still see muted messages)                                             |
 | `/opchat`     |      ✅      |       ❌       | `/chatop`, `/opc`                 | A private chat channel for OPs                                                                                    |
@@ -42,7 +44,7 @@ Adds various new commands and features for server administration and gameplay en
 | `/tpconfirm`  |      ❌      |       ✅       | `/ty` , `/tpyes`                  | Accepts a teleport request                                                                                        |
 | `/tpdeny`     |      ❌      |       ✅       | `/tn` , `/tpno`                   | Denies a teleport request                                                                                         |
 | `/tprequests` |      ❌      |       ✅       | `/tpreq` , `/tpr`                 | Prints teleport requests into chat                                                                                |
-| `/vanish`     |      ✅      |       ❌       |                                   | Extend spectator mode to hide your name from the playerlist                                                       |
+| `/vanish`     |      ✅      |       ❌       |                                   | Extend spectator mode to hide your name from the player list                                                      |
 | `/warp`       |      ❌      |       ✅       |                                   | Travel to a warp                                                                                                  |
 | `/warps`      |      ❌      |       ✅       |                                   | Lists the available warps                                                                                         |
 
@@ -62,6 +64,25 @@ Adds various new commands and features for server administration and gameplay en
 - Lose a portion of points on death (instead of all)
 - Custom rules and info pages
 
+## Mail
+
+#### Draft command
+
+`/draft new <subject>` Create a new draft outline
+
+`/draft` opens the draft mailbox ![View draft mailbox](imgs/drafts_mailbox_preview.png)
+
+clicking a draft opens a submenu where you may select or delete the draft. ![Draft selector](imgs/drafts_selector_preview.png)
+
+After you have selected a draft use `/draft <message>` to attach a message to the selected draft.
+
+
+#### Mail command
+
+`/mail view <inbox|read|draft>` view a mailbox
+
+`/mail send <recipient>` send the currently selected draft to another player
+
 ## Rules and Info
 
 ### Pages
@@ -70,14 +91,15 @@ The `info` and `rules` directories will be created automatically in the plugin c
 The commands read these files as pages. 
 #### Examples: 
 - `/info`   = `config/BTEssentials/info/Info.txt`
-- `/info 1` = `config/BTEssentials/info/Info.txt`
+- `/info 1` = `config/BTEssentials/info/Info1.txt`
 - `/info 2` = `config/BTEssentials/info/Info2.txt`
+- `/info red` = `config/BTEssentials/info/InfoRed.txt`
+- `/info blue` = `config/BTEssentials/info/InfoBlue.txt`
 
 ### Syntax
 
-Rules and info have a text parser that allows html-like tags to be used to format the pages. 
+Rules and info have a text parser that allows html-like tags to be used to format the pages. Lines staring with '///' are a comment and are not displayed to the player.
 
-- Lines staring with '///' are a comment and are not displayed to the player.
 - Format example: `<red><b>BOLD RED<r> normal text`
 - Comment example: `/// this is a comment that will not be shown in game!`
 
@@ -113,7 +135,7 @@ Rules and info have a text parser that allows html-like tags to be used to forma
 
 #### Default configuration file
 
-```
+```toml
 [Options]
 	# Message of the day, shows up in server list.
 	MOTD = "§5§lWelcome!"
@@ -199,4 +221,16 @@ Rules and info have a text parser that allows html-like tags to be used to forma
 	Gamemode = false
 	# Let non-opped players use /fix.
 	FixCommand = false
+
+# Sounds can be found in bta.jar/assets/minecraft/sounds/sounds.json e.g. note.snare, mob.sheep. Pitch and volume can optionally be specified after the sound, separated by colons e.g. note.celesta:1:2
+[Sounds]
+    # Plays when the player teleports
+    TeleportSound = "random.explode:2:2"
+    # Plays when the user receives a TPA request
+    TPANotificationSound = "note.harp:1:2"
+    # Plays when the user receives mail
+    MailNotificationSound = "random.page:2:0.5"
+    # Plays when the user chats while muted
+    MutedSound = "note.chant:2:0"
+
 ```

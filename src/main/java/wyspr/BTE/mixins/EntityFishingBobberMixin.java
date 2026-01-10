@@ -18,7 +18,7 @@ public class EntityFishingBobberMixin {
 			opcode = Opcodes.PUTFIELD
 		)
 	)
-	public void test(EntityFishingBobber bobber, int value, Operation<Void> original) {
+	public void bobberAddTicks(EntityFishingBobber bobber, int value, Operation<Void> original) {
 		if (Essentials.AddedTicksCatchable <= -40) {
 			bobber.remove();
 		} else {

@@ -58,13 +58,10 @@ public class MailCommand implements CommandManager.CommandRegistry {
 				.literal("draft")
 				.executes(MailCommand::viewDraftMailbox)
 				.then(ArgumentBuilderLiteral
-					.literal("view")
-					.executes(MailCommand::viewDraftMailbox))
-				.then(ArgumentBuilderLiteral
 					.literal("new")
 					.then(ArgumentBuilderRequired
 						.argument("subject", ArgumentTypeString.greedyString())
-						.executes(this::createDraftMailOutline)))));
+						.executes(MailCommand::createDraftMailOutline)))));
 	}
 
 	private @NotNull int viewMailbox(CommandContext<Object> context) throws CommandSyntaxException {
@@ -130,7 +127,7 @@ public class MailCommand implements CommandManager.CommandRegistry {
 		if (mailManager.inbox.size() >= Essentials.MAX_MAILS) {
 			sender.sendMessage(
 				TextFormatting.YELLOW + recipientUsername +
-					TextFormatting.ORANGE + " has a full inbox and cannot recieve mails."
+				TextFormatting.ORANGE + " has a full inbox and cannot recieve mails."
 			);
 			return 1;
 		}
@@ -153,7 +150,7 @@ public class MailCommand implements CommandManager.CommandRegistry {
 		return 1;
 	}
 
-	private @NotNull int createDraftMailOutline(CommandContext<Object> context) throws CommandSyntaxException {
+	public static @NotNull int createDraftMailOutline(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
 		Player        player = requirePlayer(source);
 		PlayerData    data   = PlayerData.get(player);

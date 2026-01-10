@@ -47,53 +47,53 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 	public static       ConfigBuilder     info;
 	public static       ConfigBuilder     rules;
 	// Options
-	public static       String            MOTD;
-	public static       int               NickLength;
-	public static       int               TPTimeout;
-	public static       double            DeathCost;
-	public static       int               DisableTNTOverworld;
-	public static       int               DisableTNTNether;
-	public static       int               DisableTNTSky;
-	public static       int               AddedTicksCatchable;
-	public static       boolean           EnableAntiTrampleFence;
-	public static       boolean           DisableTrample;
-	public static       boolean           DisableBedExplosion;
-	public static       boolean           HeadSit;
-	public static       boolean           HeadSitSaddle;
-	public static       boolean           ColorChat;
-	public static       boolean           GreenText;
+	public static final String            MOTD;
+	public static final int               NickLength;
+	public static final int               TPTimeout;
+	public static final double            DeathCost;
+	public static final int               DisableTNTOverworld;
+	public static final int               DisableTNTNether;
+	public static final int               DisableTNTSky;
+	public static final int               AddedTicksCatchable;
+	public static final boolean           EnableAntiTrampleFence;
+	public static final boolean           DisableTrample;
+	public static final boolean           DisableBedExplosion;
+	public static final boolean           HeadSit;
+	public static final boolean           HeadSitSaddle;
+	public static final boolean           ColorChat;
+	public static final boolean           GreenText;
 	// Home
-	public static       boolean           HomeCommand;
-	public static       int               MaxHomes;
-	public static       int               HomeCost;
+	public static final boolean           HomeCommand;
+	public static final int               MaxHomes;
+	public static final int               HomeCost;
 	// Back
-	public static       boolean           BackCommand;
-	public static       int               BackCost;
-	public static       boolean           BackOnDeath;
+	public static final  boolean           BackCommand;
+	public static final  int               BackCost;
+	public static final  boolean           BackOnDeath;
 	// TPA
-	public static       boolean           TPACommand;
-	public static       int               TPACost;
+	public static final boolean           TPACommand;
+	public static final int               TPACost;
 	// Warp
-	public static       boolean           WarpCommand;
-	public static       int               WarpCost;
+	public static final boolean           WarpCommand;
+	public static final int               WarpCost;
 	// RTP
-	public static       boolean           RTPCommand;
-	public static       int               RTPCost;
-	public static       int               RTPMin;
-	public static       int               RTPMax;
+	public static final boolean           RTPCommand;
+	public static final int               RTPCost;
+	public static final int               RTPMin;
+	public static final int               RTPMax;
 	// Command toggles
-	public static       boolean           SpawnCommand;
-	public static       boolean           ClearCommand;
-	public static       boolean           PayCommand;
-	public static       boolean           CraftCommand;
-	public static       boolean           GiveCommand;
-	public static       boolean           GamemodeCommand;
-	public static       boolean           FixCommand;
+	public static final boolean           SpawnCommand;
+	public static final boolean           ClearCommand;
+	public static final boolean           PayCommand;
+	public static final boolean           CraftCommand;
+	public static final boolean           GiveCommand;
+	public static final boolean           GamemodeCommand;
+	public static final boolean           FixCommand;
 	// Sounds
-	public static       String            TeleportSound;
-	public static       String            TPANotificationSound;
-	public static       String            MailNotificationSound;
-	public static       String            MutedSound;
+	public static final String            TeleportSound;
+	public static final String            TPANotificationSound;
+	public static final String            MailNotificationSound;
+	public static final String            MutedSound;
 
 	static {
 		Toml cfg = new Toml();
@@ -195,6 +195,7 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 		cfg.addEntry("Commands.Gamemode", "Let non-opped players use /gamemode.", false);
 		cfg.addEntry("Commands.FixCommand", "Let non-opped players use /fix.", false);
 
+		//noinspection SpellCheckingInspection
 		cfg.addCategory(
 			"Sounds can be found in bta.jar/assets/minecraft/sounds/sounds.json e.g. note.snare, mob.sheep, mob.skeletondeath. Pitch and volume can optionally be specified after the sound, separated by colons e.g note.celesta:1:2",
 			"Sounds"

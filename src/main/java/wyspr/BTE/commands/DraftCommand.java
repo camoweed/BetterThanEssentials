@@ -30,7 +30,12 @@ public class DraftCommand implements CommandManager.CommandRegistry {
 				.executes(MailCommand::viewDraftMailbox)
 				.then(ArgumentBuilderRequired
 					.argument("message", ArgumentTypeString.greedyString())
-					.executes(this::attachMessageToDraft)));
+					.executes(this::attachMessageToDraft))
+				.then(ArgumentBuilderLiteral
+					.literal("new")
+					.then(ArgumentBuilderRequired
+						.argument("subject", ArgumentTypeString.greedyString())
+						.executes(MailCommand::createDraftMailOutline))));
 		}
 	}
 

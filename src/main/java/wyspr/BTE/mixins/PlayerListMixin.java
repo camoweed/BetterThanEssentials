@@ -31,8 +31,8 @@ public class PlayerListMixin {
 	}
 
 	@Inject(at = @At("HEAD"), method = "playerLoggedOut")
-	public void onLogout(PlayerServer entityplayermp, CallbackInfo ci) {
-		PlayerData.set(entityplayermp);
+	public void onLogout(PlayerServer player, CallbackInfo ci) {
+		PlayerData.set(player);
 	}
 
 

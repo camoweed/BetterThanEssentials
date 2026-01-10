@@ -2,15 +2,15 @@ package wyspr.BTE.utils;
 
 
 public enum TPARequestType {
-	TPA {
-		@Override
-		public String toString() {
-			return "To you";
+	TPA, TPAHERE;
+
+	public String toString() {
+		switch (this) {
+			case TPA:
+				return "To you";
+			case TPAHERE:
+				return "To them";
 		}
-	}, TPAHERE {
-		@Override
-		public String toString() {
-			return "To them";
-		}
+		return "";
 	}
 }
