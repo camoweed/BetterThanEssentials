@@ -68,11 +68,9 @@ Adds various new commands and features for server administration and gameplay en
 
 #### Draft command
 
-`/draft new <subject>` Create a new draft outline
+`/draft new <subject>` Create a new draft outline.
 
-`/draft` opens the draft mailbox ![View draft mailbox](imgs/drafts_mailbox_preview.png)
-
-clicking a draft opens a submenu where you may select or delete the draft. ![Draft selector](imgs/drafts_selector_preview.png)
+`/draft` opens the draft mailbox, clicking a draft opens a submenu where you may select or delete the draft.
 
 After you have selected a draft use `/draft <message>` to attach a message to the selected draft.
 
