@@ -153,7 +153,7 @@ public class PlayerData {
 		public HashMap<String, WorldPosition> homes;
 	}
 
-	public static class MailManager {
+	public static class MailManager implements Serializable {
 		private final transient File       saveFile;
 		public transient        int        selectedDraft = -1;
 		public                  List<Mail> readMail;

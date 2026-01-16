@@ -1,6 +1,7 @@
 package wyspr.BTE.mixins;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import net.minecraft.server.net.PlayerList;
@@ -49,6 +50,9 @@ public class PlayerListMixin {
 		@Local(name = "newPlayer") final PlayerServer newPlayer
 	)
 	{
+		if (previousPlayer.passenger instanceof Player) {
+			previousPlayer.ejectRider();
+		}
 		newPlayer.score = (int) (previousPlayer.score * Essentials.DeathCost);
 	}
 }

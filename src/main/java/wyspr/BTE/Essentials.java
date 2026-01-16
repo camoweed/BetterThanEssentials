@@ -44,8 +44,6 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 	///  server/config/BTEssentials/players
 	public static final Path              PLAYER_DIR = DATA_DIR.resolve("players");
 	public static final int               MAX_MAILS  = 36;
-	public static       ConfigBuilder     info;
-	public static       ConfigBuilder     rules;
 	// Options
 	public static final String            MOTD;
 	public static final int               NickLength;
@@ -67,9 +65,9 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 	public static final int               MaxHomes;
 	public static final int               HomeCost;
 	// Back
-	public static final  boolean           BackCommand;
-	public static final  int               BackCost;
-	public static final  boolean           BackOnDeath;
+	public static final boolean           BackCommand;
+	public static final int               BackCost;
+	public static final boolean           BackOnDeath;
 	// TPA
 	public static final boolean           TPACommand;
 	public static final int               TPACost;
@@ -94,6 +92,8 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 	public static final String            TPANotificationSound;
 	public static final String            MailNotificationSound;
 	public static final String            MutedSound;
+	public static       ConfigBuilder     info;
+	public static       ConfigBuilder     rules;
 
 	static {
 		Toml cfg = new Toml();
@@ -263,10 +263,10 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 		GamemodeCommand = CFG.getBoolean("Commands.Gamemode");
 		FixCommand      = CFG.getBoolean("Commands.FixCommand");
 		// Sounds
-		TeleportSound = CFG.getString("Sounds.TeleportSound");
-		TPANotificationSound = CFG.getString("Sounds.TPANotificationSound");
+		TeleportSound         = CFG.getString("Sounds.TeleportSound");
+		TPANotificationSound  = CFG.getString("Sounds.TPANotificationSound");
 		MailNotificationSound = CFG.getString("Sounds.MailNotificationSound");
-		MutedSound = CFG.getString("Sounds.MutedSound");
+		MutedSound            = CFG.getString("Sounds.MutedSound");
 
 	}
 

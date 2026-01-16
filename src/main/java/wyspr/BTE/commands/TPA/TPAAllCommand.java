@@ -31,6 +31,7 @@ public class TPAAllCommand implements CommandManager.CommandRegistry {
 						= MinecraftServer.getInstance().playerList.playerEntities;
 
 					for (PlayerServer targetPlayer : players) {
+						if (targetPlayer.uuid == player.uuid) continue; // Dont /tpall yourself
 						PlayerData targetData = PlayerData.get(targetPlayer);
 						targetData.tpManager.sendTPARequest(player.username, TPARequestType.TPAHERE);
 						targetPlayer.world.playSoundAtEntity(null, targetPlayer, "note.celesta", 1, 2);

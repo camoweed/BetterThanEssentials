@@ -28,16 +28,20 @@ public class AllUsersMap {
 	static {
 		if (!userFile.exists()) {
 			USERS = HashBiMap.create();
-			// Populate file first time
+			// Populate file first time                                                                       o
 			for (String uuid : Objects.requireNonNull(FabricLoader
 				.getInstance()
 				.getGameDir()
 				.resolve("world/players")
 				.toFile()
 				.list((dir, name) -> name.endsWith(".dat")))) {
-				uuid = uuid.substring(0, 36); // remove ".dat"
+				uuid = uuid.replace(".dat", ""); // remove ".dat"
+				if (uuid.length() != 36) continue;
+				Essentials.LOGGER.info("Looking up username for UUID: " + uuid);
 				String username = Utils.getNameFromUUID(uuid); // lookup username
-				USERS.put(uuid, username); // add to map
+				if (username != null) {
+					USERS.put(uuid, username); // add to map
+				}
 			}
 			try {
 				userFile.createNewFile();
