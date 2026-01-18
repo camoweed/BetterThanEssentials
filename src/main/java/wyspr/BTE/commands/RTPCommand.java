@@ -54,10 +54,16 @@ public class RTPCommand implements CommandManager.CommandRegistry {
 					return 1;
 				}
 
-				int min   = Essentials.RTPMin;
-				int max   = Essentials.RTPMax;
-				int randX = (int) (r.nextDouble() * (max - min) + min);
-				int randZ = (int) (r.nextDouble() * (max - min) + min);
+				int min = Essentials.RTPMin;
+				int max = Essentials.RTPMax;
+
+				int randX = r.nextBoolean()
+					? r.nextInt(max - min + 1) + min
+					: -(r.nextInt(max - min + 1) + min);
+
+				int randZ = r.nextBoolean()
+					? r.nextInt(max - min + 1) + min
+					: -(r.nextInt(max - min + 1) + min);
 
 				playerTPM.updateBackPos();
 
