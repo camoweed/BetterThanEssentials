@@ -8,6 +8,7 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.Utils;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class TPRequestsCommand implements CommandManager.CommandRegistry {
 				.executes(context -> {
 					CommandSource source      = (CommandSource) context.getSource();
 					boolean       isAdmin     = source.hasAdmin();
-					Player        player      = source.getSender();
+					Player        player      = Utils.requirePlayer(source);
 					PlayerData    playerData  = PlayerData.get(player);
 					List<String>  allRequests = playerData.tpManager.getAllRequests();
 

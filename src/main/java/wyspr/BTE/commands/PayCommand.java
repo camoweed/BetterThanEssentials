@@ -11,6 +11,7 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class PayCommand implements CommandManager.CommandRegistry {
@@ -25,7 +26,7 @@ public class PayCommand implements CommandManager.CommandRegistry {
 					.argument("amount", ArgumentTypeInteger.integer(1))
 					.executes(context -> {
 						CommandSource source        = (CommandSource) context.getSource();
-						Player        sender        = source.getSender();
+						Player        sender        = Utils.requirePlayer(source);
 						boolean       senderIsAdmin = source.hasAdmin();
 						int           amount        = context.getArgument("amount", Integer.class);
 						PlayerServer  reciever      = context.getArgument("player", PlayerServer.class);

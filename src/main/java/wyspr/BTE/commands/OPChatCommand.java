@@ -10,6 +10,7 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.net.PlayerList;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class OPChatCommand implements CommandManager.CommandRegistry {
@@ -24,7 +25,7 @@ public class OPChatCommand implements CommandManager.CommandRegistry {
 					.<CommandSource, String>argument("message", ArgumentTypeString.greedyString())
 					.executes(context -> {
 						CommandSource source     = (CommandSource) context.getSource();
-						Player        player     = source.getSender();
+						Player        player     = Utils.requirePlayer(source);
 						String        message    = context.getArgument("message", String.class);
 						String        opChat     = opChat(player, message);
 						PlayerList    playerList = MinecraftServer.getInstance().playerList;

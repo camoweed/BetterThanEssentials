@@ -13,6 +13,7 @@ import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.Utils;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class HomesCommand implements CommandManager.CommandRegistry {
 	private int noArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source     = (CommandSource) context.getSource();
 		boolean       isAdmin    = source.hasAdmin();
-		Player        player     = source.getSender();
+		Player        player     = Utils.requirePlayer(source);
 		PlayerData    playerData = PlayerData.get(player);
 		List<String>  homes      = playerData.homes.getHomesList();
 
@@ -51,7 +52,7 @@ public class HomesCommand implements CommandManager.CommandRegistry {
 
 	private int playerArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source     = (CommandSource) context.getSource();
-		Player        player     = source.getSender();
+		Player        player     = Utils.requirePlayer(source);
 		Player        target     = context.getArgument("player", PlayerServer.class);
 		PlayerData    playerData = PlayerData.get(target);
 		List<String>  homes      = playerData.homes.getHomesList();

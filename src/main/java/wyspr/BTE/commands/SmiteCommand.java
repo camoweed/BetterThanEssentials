@@ -31,7 +31,7 @@ public class SmiteCommand implements CommandManager.CommandRegistry {
 
 	private @NotNull int noArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
-		Player        player = source.getSender();
+		Player        player = Utils.requirePlayer(source);
 		HitResult     hitresult = Utils.rayCastFromPlayer((PlayerServer) player, 100);
 
 		if (hitresult == null) {
@@ -55,7 +55,7 @@ public class SmiteCommand implements CommandManager.CommandRegistry {
 
 	private @NotNull int userArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
-		Player        player = source.getSender();
+		Player        player = Utils.requirePlayer(source);
 		PlayerServer  target = context.getArgument("player", PlayerServer.class);
 
 		target.world.addWeatherEffect(new EntityLightning(target.world, target.x, target.y, target.z));

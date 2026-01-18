@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
 import com.mojang.brigadier.builder.ArgumentBuilderRequired;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
@@ -13,6 +14,7 @@ import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.TPARequestType;
+import wyspr.BTE.utils.Utils;
 
 import static wyspr.BTE.utils.Utils.playNotificationAtPlayer;
 
@@ -32,11 +34,11 @@ public class TPACommand implements CommandManager.CommandRegistry {
 		}
 	}
 
-	private int exec(CommandContext<Object> context) {
+	private int exec(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source     = (CommandSource) context.getSource();
 		boolean       isAdmin    = source.hasAdmin();
 		PlayerServer  target     = context.getArgument("target", PlayerServer.class);
-		Player        player     = source.getSender();
+		Player        player     = Utils.requirePlayer(source);
 		PlayerData    targetData = PlayerData.get(target);
 		PlayerData    playerData = PlayerData.get(player);
 

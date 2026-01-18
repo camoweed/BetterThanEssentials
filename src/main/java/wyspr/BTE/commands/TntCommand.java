@@ -13,6 +13,7 @@ import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.world.World;
 import org.jetbrains.annotations.NotNull;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class TntCommand implements CommandManager.CommandRegistry {
@@ -32,7 +33,7 @@ public class TntCommand implements CommandManager.CommandRegistry {
 
 	private @NotNull int noArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
-		Player        player = source.getSender();
+		Player        player = Utils.requirePlayer(source);
 
 		DirectionalTNT tnt = new DirectionalTNT(
 			player.world,
@@ -52,7 +53,7 @@ public class TntCommand implements CommandManager.CommandRegistry {
 
 	private @NotNull int velArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source   = (CommandSource) context.getSource();
-		Player        player   = source.getSender();
+		Player        player   = Utils.requirePlayer(source);
 		int           velocity = context.getArgument("velocity", Integer.class);
 
 		DirectionalTNT tnt = new DirectionalTNT(

@@ -12,6 +12,7 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class SethomeCommand implements CommandManager.CommandRegistry {
@@ -32,7 +33,7 @@ public class SethomeCommand implements CommandManager.CommandRegistry {
 	private int noArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source      = (CommandSource) context.getSource();
 		boolean       isAdmin     = source.hasAdmin();
-		Player        player      = source.getSender();
+		Player        player      = Utils.requirePlayer(source);
 		PlayerData    playerData  = PlayerData.get(player);
 		int           homesAmount = playerData.homes.getHomesAmount();
 
@@ -42,7 +43,7 @@ public class SethomeCommand implements CommandManager.CommandRegistry {
 	private int homeArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source      = (CommandSource) context.getSource();
 		boolean       isAdmin     = source.hasAdmin();
-		Player        player      = source.getSender();
+		Player        player      = Utils.requirePlayer(source);
 		PlayerData    playerData  = PlayerData.get(player);
 		int           homesAmount = playerData.homes.getHomesAmount();
 		String        homeName    = context.getArgument("homeName", String.class);

@@ -8,6 +8,7 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.player.PlayerListBox;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class VanishCommand implements CommandManager.CommandRegistry {
@@ -19,7 +20,7 @@ public class VanishCommand implements CommandManager.CommandRegistry {
 			.requires(source -> ((CommandSource) source).hasAdmin())
 			.executes(context -> {
 				CommandSource source = (CommandSource) context.getSource();
-				Player        player = source.getSender();
+				Player        player = Utils.requirePlayer(source);
 				boolean isVanished = PlayerData
 					.get(player)
 					.toggleVanished();

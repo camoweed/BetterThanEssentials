@@ -7,6 +7,7 @@ import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class CraftingCommand implements CommandManager.CommandRegistry {
@@ -19,7 +20,7 @@ public class CraftingCommand implements CommandManager.CommandRegistry {
 				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.CraftCommand)
 				.executes(context -> {
 					CommandSource source = (CommandSource) context.getSource();
-					Player        player = source.getSender();
+					Player        player = Utils.requirePlayer(source);
 					PlayerData.get(player).craftCommandOpen = true;
 					player.displayWorkbenchScreen((int) player.x, (int) player.y, (int) player.z);
 					return 1;

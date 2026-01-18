@@ -11,6 +11,7 @@ import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.Teleport;
+import wyspr.BTE.utils.Utils;
 
 import java.util.Random;
 
@@ -26,7 +27,7 @@ public class RTPCommand implements CommandManager.CommandRegistry {
 			.executes(context -> {
 				CommandSource source    = (CommandSource) context.getSource();
 				boolean       isAdmin   = source.hasAdmin();
-				Player        player    = source.getSender();
+				Player        player    = Utils.requirePlayer(source);
 				TPManager     playerTPM = PlayerData.get(player).tpManager;
 
 				int cost = Essentials.RTPCost;

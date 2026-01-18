@@ -48,7 +48,6 @@ public class PacketHandlerServerMixin {
 	}
 
 	/// Sends muted players messages to server ops
-	@SuppressWarnings("SpellCheckingInspection")
 	@WrapOperation(
 		method = "handleChat", at = @At(
 		value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;)V"
@@ -110,6 +109,7 @@ public class PacketHandlerServerMixin {
 	}
 
 	/// Ride player feature
+	@SuppressWarnings("SameReturnValue")
 	@Unique
 	private static boolean mountPlayer(PlayerServer player, Entity targetEntity) {
 		player.startRiding(targetEntity);

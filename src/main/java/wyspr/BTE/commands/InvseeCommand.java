@@ -9,6 +9,7 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.UI.InvseeContainer;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class InvseeCommand implements CommandManager.CommandRegistry {
@@ -24,7 +25,7 @@ public class InvseeCommand implements CommandManager.CommandRegistry {
 					.executes(context -> {
 						CommandSource source = (CommandSource) context.getSource();
 						PlayerServer  target = context.getArgument("target", PlayerServer.class);
-						Player        player = source.getSender();
+						Player        player = Utils.requirePlayer(source);
 						player.displayContainerScreen(new InvseeContainer(target));
 
 						return 1;

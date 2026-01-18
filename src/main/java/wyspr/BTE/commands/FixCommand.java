@@ -11,6 +11,7 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class FixCommand implements CommandManager.CommandRegistry {
@@ -23,7 +24,7 @@ public class FixCommand implements CommandManager.CommandRegistry {
 				.requires(source -> ((CommandSource) source).hasAdmin() || Essentials.FixCommand)
 				.executes(context -> {
 					CommandSource source = (CommandSource) context.getSource();
-					Player        player = source.getSender();
+					Player        player = Utils.requirePlayer(source);
 					ItemStack     held   = player.getHeldItem();
 					if (held.isItemStackDamageable()) {
 						held.setMetadata(0);
@@ -39,7 +40,7 @@ public class FixCommand implements CommandManager.CommandRegistry {
 					.requires(source -> ((CommandSource) source).hasAdmin())
 					.executes(context -> {
 						CommandSource source = (CommandSource) context.getSource();
-						Player        player = source.getSender();
+						Player        player = Utils.requirePlayer(source);
 						PlayerServer  target = context.getArgument("player", PlayerServer.class);
 						ItemStack     held   = target.getHeldItem();
 						if (held.isItemStackDamageable()) {

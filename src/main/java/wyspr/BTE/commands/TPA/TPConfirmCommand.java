@@ -18,6 +18,7 @@ import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.TPARequestType;
 import wyspr.BTE.utils.Teleport;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class TPConfirmCommand implements CommandManager.CommandRegistry {
@@ -40,7 +41,7 @@ public class TPConfirmCommand implements CommandManager.CommandRegistry {
 	private int noArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source    = (CommandSource) context.getSource();
 		boolean       isAdmin   = source.hasAdmin();
-		Player        player    = source.getSender();
+		Player        player    = Utils.requirePlayer(source);
 		TPManager     playerTPM = PlayerData.get(player).tpManager;
 
 		if (playerTPM.hasNoRequests()) {
@@ -99,7 +100,7 @@ public class TPConfirmCommand implements CommandManager.CommandRegistry {
 	private int playerArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source         = (CommandSource) context.getSource();
 		boolean       isAdmin        = source.hasAdmin();
-		Player        player         = source.getSender();
+		Player        player         = Utils.requirePlayer(source);
 		PlayerServer  target         = context.getArgument("target", PlayerServer.class);
 		PlayerData    targetData     = PlayerData.get(target);
 		TPManager     playerTPM      = PlayerData.get(player).tpManager;

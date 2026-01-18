@@ -195,7 +195,6 @@ public class Essentials implements DedicatedServerModInitializer, GameStartEntry
 		cfg.addEntry("Commands.Gamemode", "Let non-opped players use /gamemode.", false);
 		cfg.addEntry("Commands.FixCommand", "Let non-opped players use /fix.", false);
 
-		//noinspection SpellCheckingInspection
 		cfg.addCategory(
 			"Sounds can be found in bta.jar/assets/minecraft/sounds/sounds.json e.g. note.snare, mob.sheep, mob.skeletondeath. Pitch and volume can optionally be specified after the sound, separated by colons e.g note.celesta:1:2",
 			"Sounds"

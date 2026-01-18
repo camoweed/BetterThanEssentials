@@ -17,6 +17,7 @@ import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.PlayerData.TPManager;
 import wyspr.BTE.utils.Teleport;
+import wyspr.BTE.utils.Utils;
 import wyspr.BTE.utils.WorldPosition;
 
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class HomeCommand implements CommandManager.CommandRegistry {
 	private int noArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource           source     = (CommandSource) context.getSource();
 		boolean                 isAdmin    = source.hasAdmin();
-		Player                  player     = source.getSender();
+		Player                  player     = Utils.requirePlayer(source);
 		PlayerData              playerData = PlayerData.get(player);
 		String                  homeName   = "home";
 		Optional<WorldPosition> homePos    = playerData.homes.getHomePos(homeName);
@@ -54,7 +55,7 @@ public class HomeCommand implements CommandManager.CommandRegistry {
 	private int homeArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source     = (CommandSource) context.getSource();
 		boolean       isAdmin    = source.hasAdmin();
-		Player        player     = source.getSender();
+		Player        player     = Utils.requirePlayer(source);
 		PlayerData    playerData = PlayerData.get(player);
 		String        homeName   = context.getArgument("home", String.class);
 
@@ -74,10 +75,10 @@ public class HomeCommand implements CommandManager.CommandRegistry {
 		return goHome(homePos, player, homeName, playerData, isAdmin);
 	}
 
-	private int playerHomeArg(CommandContext<Object> context) {
+	private int playerHomeArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source       = (CommandSource) context.getSource();
 		boolean       isAdmin      = source.hasAdmin();
-		Player        player       = source.getSender();
+		Player        player       = Utils.requirePlayer(source);
 		TPManager     playerTP     = PlayerData.get(player).tpManager;
 		String        homeName     = context.getArgument("home", String.class);
 		PlayerServer  targetPlayer = context.getArgument("player", PlayerServer.class);

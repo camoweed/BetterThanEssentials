@@ -10,6 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.TPARequestType;
+import wyspr.BTE.utils.Utils;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class TPAAllCommand implements CommandManager.CommandRegistry {
 				.requires(source -> ((CommandSource) source).hasAdmin())
 				.executes(context -> {
 					CommandSource source     = (CommandSource) context.getSource();
-					Player        player     = source.getSender();
+					Player        player     = Utils.requirePlayer(source);
 					PlayerData    playerData = PlayerData.get(player);
 
 					List<PlayerServer> players

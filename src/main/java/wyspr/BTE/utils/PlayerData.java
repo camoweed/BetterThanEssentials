@@ -24,6 +24,7 @@ import java.util.*;
 
 import static wyspr.BTE.Essentials.PLAYER_DIR;
 
+@SuppressWarnings("LoggingSimilarMessage")
 public class PlayerData {
 	public final  TPManager   tpManager;
 	public final  MailManager mail;
@@ -153,6 +154,7 @@ public class PlayerData {
 		public HashMap<String, WorldPosition> homes;
 	}
 
+	@SuppressWarnings("LoggingSimilarMessage")
 	public static class MailManager implements Serializable {
 		private final transient File       saveFile;
 		public transient        int        selectedDraft = -1;
@@ -426,6 +428,7 @@ public class PlayerData {
 			return TPARequests.isEmpty();
 		}
 
+		@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 		public boolean hasRequestFrom(String username) {
 			return TPARequests.containsKey(username);
 		}

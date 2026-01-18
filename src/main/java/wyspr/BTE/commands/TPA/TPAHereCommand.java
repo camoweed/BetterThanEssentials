@@ -14,6 +14,7 @@ import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
 import wyspr.BTE.utils.TPARequestType;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class TPAHereCommand implements CommandManager.CommandRegistry {
@@ -34,7 +35,7 @@ public class TPAHereCommand implements CommandManager.CommandRegistry {
 		CommandSource source     = (CommandSource) context.getSource();
 		boolean       isAdmin    = source.hasAdmin();
 		PlayerServer  target     = context.getArgument("player", PlayerServer.class);
-		Player        player     = source.getSender();
+		Player        player     = Utils.requirePlayer(source);
 		PlayerData    targetData = PlayerData.get(target);
 		PlayerData    playerData = PlayerData.get(player);
 

@@ -10,6 +10,7 @@ import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.world.World;
 import org.jetbrains.annotations.NotNull;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class FireballCommand implements CommandManager.CommandRegistry {
@@ -23,7 +24,7 @@ public class FireballCommand implements CommandManager.CommandRegistry {
 
 	private @NotNull int exec(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
-		Player        player = source.getSender();
+		Player        player = Utils.requirePlayer(source);
 
 		World world = player.world;
 

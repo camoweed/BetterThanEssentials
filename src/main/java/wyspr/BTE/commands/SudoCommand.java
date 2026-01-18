@@ -16,6 +16,7 @@ import net.minecraft.server.entity.player.PlayerServer;
 import net.minecraft.server.net.command.ServerCommandSource;
 import wyspr.BTE.commands.arguments.ArgumentTypeCommand;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class SudoCommand implements CommandManager.CommandRegistry {
@@ -34,9 +35,9 @@ public class SudoCommand implements CommandManager.CommandRegistry {
 		}
 	}
 
-	private int exec(CommandContext<Object> context) {
+	private int exec(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source  = (CommandSource) context.getSource();
-		Player        sender  = source.getSender();
+		Player        sender  = Utils.requirePlayer(source);
 		PlayerServer  player  = context.getArgument("player", PlayerServer.class);
 		String        command = context.getArgument("command", String.class);
 

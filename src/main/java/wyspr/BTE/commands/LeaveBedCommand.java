@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class LeaveBedCommand implements CommandManager.CommandRegistry {
@@ -19,7 +20,7 @@ public class LeaveBedCommand implements CommandManager.CommandRegistry {
 					.isPlayerSleeping())
 				.executes(context -> {
 					CommandSource source = (CommandSource) context.getSource();
-					Player        player = source.getSender();
+					Player        player = Utils.requirePlayer(source);
 					player.wakeUpPlayer(true, true);
 					return 1;
 				}));

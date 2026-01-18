@@ -10,6 +10,7 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class UnmuteCommand implements CommandManager.CommandRegistry {
@@ -23,7 +24,7 @@ public class UnmuteCommand implements CommandManager.CommandRegistry {
 				.argument("player", ArgumentTypeOnlineUser.online())
 				.executes(context -> {
 					CommandSource source     = (CommandSource) context.getSource();
-					Player        player     = source.getSender();
+					Player        player     = Utils.requirePlayer(source);
 					PlayerServer  target     = context.getArgument("player", PlayerServer.class);
 					PlayerData    targetData = PlayerData.get(target);
 

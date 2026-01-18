@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
 import com.mojang.brigadier.builder.ArgumentBuilderRequired;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
@@ -11,6 +12,7 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class GodCommand implements CommandManager.CommandRegistry {
@@ -29,9 +31,9 @@ public class GodCommand implements CommandManager.CommandRegistry {
 		}
 	}
 
-	private int noArg(CommandContext<Object> context) {
+	private int noArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
-		Player        player = source.getSender();
+		Player        player = Utils.requirePlayer(source);
 		boolean isGodMode = PlayerData
 			.get(player)
 			.toggleGodMode();
@@ -51,9 +53,9 @@ public class GodCommand implements CommandManager.CommandRegistry {
 		return 1;
 	}
 
-	private int userArg(CommandContext<Object> context) {
+	private int userArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
-		Player        player = source.getSender();
+		Player        player = Utils.requirePlayer(source);
 		PlayerServer  target = context.getArgument("player", PlayerServer.class);
 		boolean isGodMode = PlayerData
 			.get(target)

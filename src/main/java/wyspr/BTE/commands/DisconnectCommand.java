@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.server.entity.player.PlayerServer;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class DisconnectCommand implements CommandManager.CommandRegistry {
@@ -16,7 +17,7 @@ public class DisconnectCommand implements CommandManager.CommandRegistry {
 				.literal(literal)
 				.executes(context -> {
 					CommandSource source = (CommandSource) context.getSource();
-					PlayerServer  player = (PlayerServer) source.getSender();
+					PlayerServer  player = (PlayerServer) Utils.requirePlayer(source);
 					player.playerNetServerHandler.kickPlayer("You have disconnected.");
 					return 1;
 				}));

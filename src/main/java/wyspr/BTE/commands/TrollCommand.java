@@ -14,6 +14,7 @@ import net.minecraft.core.world.World;
 import net.minecraft.server.entity.player.PlayerServer;
 import org.jetbrains.annotations.NotNull;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class TrollCommand implements CommandManager.CommandRegistry {
@@ -30,7 +31,7 @@ public class TrollCommand implements CommandManager.CommandRegistry {
 
 	private @NotNull int noArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
-		Player        player = source.getSender();
+		Player        player = Utils.requirePlayer(source);
 
 		TrollTNT tnt = new TrollTNT(
 			player.world,
@@ -50,7 +51,7 @@ public class TrollCommand implements CommandManager.CommandRegistry {
 
 	private @NotNull int userArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
-		Player        player = source.getSender();
+		Player        player = Utils.requirePlayer(source);
 		PlayerServer  target = context.getArgument("player", PlayerServer.class);
 
 		TrollTNT tnt = new TrollTNT(

@@ -13,6 +13,7 @@ import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.server.entity.player.PlayerServer;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
+import wyspr.BTE.utils.Utils;
 
 import java.text.MessageFormat;
 
@@ -35,7 +36,7 @@ public class SurvivalCommand implements CommandManager.CommandRegistry {
 
 	private int noArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
-		Player        player = source.getSender();
+		Player        player = Utils.requirePlayer(source);
 		player.setGamemode(Gamemode.survival);
 		player.sendMessage(TextFormatting.YELLOW + "Set own gamemode to " + TextFormatting.CYAN + "Survival");
 		return 0;
@@ -43,7 +44,7 @@ public class SurvivalCommand implements CommandManager.CommandRegistry {
 
 	private int playerArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source = (CommandSource) context.getSource();
-		Player        player = source.getSender();
+		Player        player = Utils.requirePlayer(source);
 		PlayerServer  user   = context.getArgument("user", PlayerServer.class);
 		user.setGamemode(Gamemode.survival);
 		player.sendMessage(MessageFormat.format(

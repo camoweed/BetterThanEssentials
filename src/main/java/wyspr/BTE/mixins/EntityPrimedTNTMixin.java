@@ -12,7 +12,6 @@ import wyspr.BTE.Essentials;
 
 @Mixin(value = EntityPrimedTNT.class, remap = false)
 public class EntityPrimedTNTMixin {
-	@SuppressWarnings("SpellCheckingInspection")
 	@WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;createExplosion(Lnet/minecraft/core/entity/Entity;DDDF)Lnet/minecraft/core/world/Explosion;"))
 	public Explosion stopTNTBoom(
 		World instance,

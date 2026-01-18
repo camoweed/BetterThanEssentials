@@ -10,6 +10,7 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.world.chunk.ChunkCoordinates;
 import wyspr.BTE.Essentials;
 import wyspr.BTE.utils.InstantTypeAdapter;
+import wyspr.BTE.utils.Utils;
 import wyspr.BTE.utils.WarpsManager;
 import wyspr.BTE.utils.WorldPosition;
 
@@ -34,7 +35,7 @@ public class ImportMelonUtilsCommand implements CommandManager.CommandRegistry {
 			.requires(source -> ((CommandSource) source).hasAdmin())
 			.executes(context -> {
 				CommandSource source = (CommandSource) context.getSource();
-				Player        player = source.getSender();
+				Player        player = Utils.requirePlayer(source);
 
 				Path melonutilsDir = Essentials.CFG_DIR.resolve("melonutilities");
 

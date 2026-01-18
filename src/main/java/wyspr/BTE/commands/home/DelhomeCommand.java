@@ -14,6 +14,7 @@ import wyspr.BTE.Essentials;
 import wyspr.BTE.commands.arguments.ArgumentTypeHome;
 import wyspr.BTE.commands.arguments.ArgumentTypeOnlineUser;
 import wyspr.BTE.utils.PlayerData;
+import wyspr.BTE.utils.Utils;
 
 @SuppressWarnings("ALL")
 public class DelhomeCommand implements CommandManager.CommandRegistry {
@@ -40,7 +41,7 @@ public class DelhomeCommand implements CommandManager.CommandRegistry {
 	private int homeArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source     = (CommandSource) context.getSource();
 		boolean       isAdmin    = source.hasAdmin();
-		Player        player     = source.getSender();
+		Player        player     = Utils.requirePlayer(source);
 		PlayerData    playerData = PlayerData.get(player);
 		int           homes      = playerData.homes.getHomesAmount();
 		String        homeName   = context.getArgument("home", String.class);
@@ -68,7 +69,7 @@ public class DelhomeCommand implements CommandManager.CommandRegistry {
 
 	private int playerHomeArg(CommandContext<Object> context) throws CommandSyntaxException {
 		CommandSource source     = (CommandSource) context.getSource();
-		Player        player     = source.getSender();
+		Player        player     = Utils.requirePlayer(source);
 		PlayerServer  target     = context.getArgument("player", PlayerServer.class);
 		String        homeName   = context.getArgument("home", String.class);
 		PlayerData    playerData = PlayerData.get(target);
