@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "",
-		"sources": ""
+		"sources": "https://github.com/preprocessor/BetterThanEssentialsa"
 	},
 	"license": "CC0-1.0",
 	"environment": "server",
@@ -28,9 +28,12 @@
 		"BTE.mixins.json"
 	],
 	"depends": {
+		"fabricloader": ">=${fabricloader}",
+		"halplibe": ">=${halplibe}",
 		"minecraft": "*",
-		"fabricloader": ">=0.15.5"
+		"java": ">=${java}"
 	},
 	"suggests": {
+		"modmenu": ">=${modmenu}"
 	}
 }

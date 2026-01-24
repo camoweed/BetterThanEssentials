@@ -7,9 +7,9 @@ import net.minecraft.core.net.command.TextFormatting;
 import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 import wyspr.BTE.Essentials;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;

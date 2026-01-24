@@ -27,7 +27,7 @@ public class PlayerListMixin {
 				TextFormatting.YELLOW + " unread mail."
 			);
 		}
-		AllUsersMap.addUser(player);
+		AllUsersMap.updatePlayerID(player);
 		Essentials.LOGGER.info("Loading player data for: {}", player.username);
 	}
 

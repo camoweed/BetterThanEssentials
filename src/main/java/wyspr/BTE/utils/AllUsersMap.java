@@ -80,8 +80,8 @@ public class AllUsersMap {
 		}
 	}
 
-	public static void addUser(Player player) {
-		USERS.putIfAbsent(player.uuid.toString(), player.username);
+	public static void updatePlayerID(Player player) {
+		USERS.forcePut(player.uuid.toString(), player.username);
 	}
 
 	public static Set<String> getUsernames() {

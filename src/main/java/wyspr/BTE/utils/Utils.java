@@ -8,9 +8,9 @@ import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.util.phys.HitResult;
 import net.minecraft.server.entity.player.PlayerServer;
+import org.jetbrains.annotations.Nullable;
 import wyspr.BTE.Essentials;
 
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
